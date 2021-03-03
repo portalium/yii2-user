@@ -1,0 +1,22 @@
+{
+	"name" : "portalium/portalium-user",
+	"description" : "Portalium User Module",
+	"type" : "portalium-core",
+	"license": "MIT",
+	"homepage" : "https://portalium.dev",
+	"authors" : [
+		{
+			"name" : "Uğur YILDIZ",
+			"email" : "yildiz@diginova.com.tr",
+			"homepage" : "https://uguryildiz.net"
+		}
+	],
+	"support" : {
+		"issues" : "https://github.com/portalium/portalium-user/issues"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"portalium\\user\\" : "src/"
+		}
+	}
+}
