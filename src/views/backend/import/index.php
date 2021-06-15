@@ -1,14 +1,54 @@
 <?php
-$this->title = 'Portalium App';
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use yii\captcha\Captcha;
+use portalium\site\Module;
+use portalium\theme\widgets\Panel;
+use kartik\file\FileInput;
+
+$this->title = Module::t('Index');
+$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-index">
+<div class="site-signup">
+    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="row">
+        <div class="col-lg-10">
+            <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+            <?php Panel::begin([
+                'title' => Module::t('Create Users'),
+                'actions' => [
+                    'header' => [
+                        Html::submitButton(Module::t(''), ['class' => 'btn btn-success fa fa-save'])
+                    ]
+                ]
+            ]) ?>
 
-    <div class="jumbotron">
-        <h1>Portalium App - Frontend</h1>
 
-        <p class="lead">Portalium uygulamasını başarılı bir şekilde çalıştırdınız.</p>
-
-        <p><a class="btn btn-lg btn-success" href="#">Modüller ve konfürgasyon!</a></p>
+            <div id="internal">
+                <?= FileInput::widget([
+                    'model' => $model,
+                    'attribute' => 'file',
+                    'options' => [
+                        'multiple' => false,
+                        'accept' => 'doc/*'
+                    ],
+                    'pluginOptions' => [
+                        'allowedFileExtensions' => ['csv'],
+                        'showPreview' => true,
+                        'showCaption' => true,
+                        'showRemove' => true,
+                        'showUpload' => false,
+                        'initialCaption' => Module::t('Select Files'),
+                        'initialPreviewAsData' => true,
+                        'initialPreview' => false,
+                        'overwriteInitial' => true,
+                        'maxFileCount' => 10
+                    ]
+                ]) ?>
+            </div>
+            <?php Panel::end() ?>
+            <?php ActiveForm::end(); ?>
+        </div>
     </div>
-
 </div>

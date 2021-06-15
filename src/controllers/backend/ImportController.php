@@ -3,6 +3,7 @@
 namespace portalium\user\controllers\backend;
 
 use Yii;
+use yii\base\BaseObject;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\filters\VerbFilter;
@@ -15,42 +16,42 @@ use portalium\web\Controller as WebController;
 use yii\web\UploadedFile;
 use portalium\site\models\LoginForm;
 use portalium\user\models\ImportForm;
+
 class ImportController extends WebController
 {
     public function actionIndex()
     {
-        return $this->render('index');
-    }
-
-    public function actionImport()
-    {
-
         $model = new ImportForm();
         if ($model->load(Yii::$app->request->post())) {
             $model->file = UploadedFile::getInstance($model, 'file');
             $fileName = $this->upload($model->file);
             $path = realpath(Yii::$app->basePath . '/../data');
+            $users = array();
             if (!Yii::$app->user->isGuest) {
                 if (Setting::findOne(['name' => 'page::signup'])->value) {
                     $fileHandler = fopen($path . '/' . $fileName, 'r');
                     if ($fileHandler) {
                         while ($line = fgetcsv($fileHandler, 1000)) {
-                            $model = new ImportForm();
-                            $model->first_name = $line[0];
-                            $model->last_name = $line[1];
-                            $model->username = $line[2];
-                            $model->email = $line[3];
-                            $model->password = $line[4];
-                            if ($model->createUser()) {
-                            } else {
-                                return "User Already Registered";
-                            }
+                            $user = array();
+                            array_push($user, $line[0]);
+                            array_push($user, $line[1]);
+                            array_push($user, $line[2]);
+                            array_push($user, $line[3]);
+                            array_push($user, Yii::$app->security->generateRandomString());
+                            array_push($user, Yii::$app->security->generatePasswordHash($line[4]));
+                            array_push($user, Yii::$app->security->generateRandomString() . '_' . time());
+                            array_push($user, Yii::$app->security->generateRandomString());
+                            array_push($user, 10);
+                            array_push($users, $user);
                         }
                     }
                 }
             }
+            Yii::$app->db->createCommand()->batchInsert("user",
+                ["first_name", "last_name", "username", "email", "auth_key", "password_hash", "password_reset_token", "access_token", "status"], $users)
+                ->execute();
         }
-        return $this->render('import', [
+        return $this->render('index', [
             'model' => $model,
         ]);
 
