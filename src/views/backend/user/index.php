@@ -1,13 +1,14 @@
 <?php
 
-use yii\helpers\Html;
-use yii\grid\GridView;
+use portalium\theme\helpers\Html;
+use portalium\theme\widgets\GridView;
+use portalium\user\Module;
 
 /* @var $this yii\web\View */
 /* @var $searchModel portalium\user\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('site', 'Users');
+$this->title = Module::t('Users');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
@@ -15,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('site', 'Create User'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Module::t('Create User'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -30,10 +31,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'username',
             'first_name',
             'last_name',
-            'auth_key',
+            //'auth_key',
             //'password_hash',
             //'password_reset_token',
-            //'email:email',
+            'email:email',
             //'access_token',
             //'status',
             //'created_at',

@@ -3,7 +3,7 @@
 namespace portalium\user\controllers\backend;
 
 use portalium\user\models\User;
-use portalium\user\models\UserCreate;
+use portalium\user\models\UserRegistrationForm;
 use portalium\user\models\UserSearch;
 use portalium\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -15,7 +15,7 @@ use yii\filters\VerbFilter;
 class UserController extends Controller
 {
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function behaviors()
     {
@@ -26,6 +26,15 @@ class UserController extends Controller
                     'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'access' => [
+                    'class' => \yii\filters\AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
                     ],
                 ],
             ]
@@ -69,7 +78,7 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
-        $model = new UserCreate();
+        $model = new UserRegistrationForm();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {

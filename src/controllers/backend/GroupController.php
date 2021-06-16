@@ -8,6 +8,8 @@ use portalium\user\models\UserSearch;
 use portalium\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
+use portalium\user\Module;
 
 /**
  * GroupController implements the CRUD actions for Group model.
@@ -15,7 +17,7 @@ use yii\filters\VerbFilter;
 class GroupController extends Controller
 {
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function behaviors()
     {
@@ -26,6 +28,15 @@ class GroupController extends Controller
                     'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                'access' => [
+                    'class' => \yii\filters\AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
                     ],
                 ],
             ]
@@ -97,7 +108,6 @@ class GroupController extends Controller
 
         if ($this->request->isPost) {
             $model->load($this->request->post());
-            $model->setUserIds($this->request->post('selection'));
             $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -108,6 +118,46 @@ class GroupController extends Controller
             'model' => $model,
             'searchModel' => $searchModel,
             'dataProvider' => $searchModel->search($this->request->queryParams)
+        ]);
+    }
+
+    /**
+     * Manages members for an existing Group model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionMembers($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($this->request->isPost) {
+            $model->load($this->request->post());
+            if ($this->request->post('removeFromGroup')) {
+                $model->scenario = Group::SCENARIO_DELETE_USERS;
+                $model->setUserIds($this->request->post('removeUserIds'));
+            } elseif ($this->request->post('addToGroup')) {
+                $model->scenario = Group::SCENARIO_INSERT_USERS;
+                $model->setUserIds($this->request->post('addUserIds'));
+            }
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', Module::t('Settings saved.'));
+                return $this->redirect(['members', 'id' => $model->id]);
+            } else {
+                Yii::$app->session->setFlash('error', Module::t('There was an error. Settings not saved successfully.'));
+            }
+        }
+
+        $searchModel = new UserSearch();
+
+        $searchModel->setGroupId($model->id);
+
+        return $this->render('members', [
+            'model' => $model,
+            'searchModel' => $searchModel,
+            'dataProviderInGroup' => $searchModel->inGroup()->search($this->request->queryParams),
+            'dataProviderOutGroup' => $searchModel->outGroup()->search($this->request->queryParams)
         ]);
     }
 

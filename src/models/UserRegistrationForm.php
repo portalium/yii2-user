@@ -6,12 +6,35 @@ use yii\base\Model;
 use portalium\user\Module;
 use portalium\user\models\User;
 
-class UserCreate extends Model
+/**
+ * This is the registration form model class for `\portalium\user\models\User` model.
+ *
+ */
+class UserRegistrationForm extends Model
 {
+    /**
+     * @var string
+     */
     public $first_name;
+
+    /**
+     * @var string
+     */
     public $last_name;
+
+    /**
+     * @var string
+     */
     public $username;
+
+    /**
+     * @var string
+     */
     public $email;
+
+    /**
+     * @var string
+     */
     public $password;
 
     /**

@@ -1,14 +1,14 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\DetailView;
+use portalium\theme\helpers\Html;
+use portalium\theme\widgets\DetailView;
 use portalium\user\Module;
 
 /* @var $this yii\web\View */
 /* @var $model portalium\user\models\Group */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('site', 'Groups'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('Groups'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -18,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a(Yii::t('site', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('site', 'Manage Members'), ['members', 'id' => $model->id], ['class' => 'btn btn-warning']) ?>
         <?= Html::a(Yii::t('site', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [

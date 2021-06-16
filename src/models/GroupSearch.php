@@ -17,7 +17,7 @@ class GroupSearch extends Group
     public function rules()
     {
         return [
-            [['id', 'created_at', 'updated_at'], 'integer'],
+            [['id'], 'integer'],
             [['name', 'description'], 'safe'],
         ];
     }

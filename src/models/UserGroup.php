@@ -26,6 +26,9 @@ class UserGroup extends \yii\db\ActiveRecord
         return '{{user_group}}';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [

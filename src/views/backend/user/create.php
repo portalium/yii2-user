@@ -1,13 +1,14 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use portalium\theme\helpers\Html;
+use portalium\theme\widgets\ActiveForm;
+use portalium\user\Module;
 
 /* @var $this yii\web\View */
 /* @var $model portalium\user\models\Group */
 
-$this->title = Yii::t('site', 'Create User');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('site', 'Users'), 'url' => ['index']];
+$this->title = Module::t('Create User');
+$this->params['breadcrumbs'][] = ['label' => Module::t('Users'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-create">

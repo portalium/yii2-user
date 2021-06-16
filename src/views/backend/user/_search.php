@@ -1,11 +1,11 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use portalium\theme\helpers\Html;
+use portalium\theme\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model portalium\user\models\UserSearch */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $model portalium\user\models\GroupSearch */
+/* @var $form portalium\theme\widgets\ActiveForm */
 ?>
 
 <div class="user-search">
@@ -23,7 +23,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'last_name') ?>
 
-    <?= $form->field($model, 'auth_key') ?>
+    <?php // echo $form->field($model, 'auth_key') ?>
 
     <?php // echo $form->field($model, 'password_hash') ?>
 

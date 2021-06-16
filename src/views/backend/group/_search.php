@@ -1,11 +1,11 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use portalium\theme\helpers\Html;
+use portalium\theme\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model portalium\user\models\GroupSearch */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form portalium\theme\widgets\ActiveForm */
 ?>
 
 <div class="group-search">

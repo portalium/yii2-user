@@ -5,7 +5,6 @@ namespace portalium\user\models;
 use portalium\user\Module;
 use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "group".
@@ -13,16 +12,22 @@ use yii\web\IdentityInterface;
  * @property int $id
  * @property string $name
  * @property string|null $description
- * @property int $created_at
- * @property int $updated_at
+ * @property `\yii\db\Expression('NOW()')` $created_at
+ * @property `\yii\db\Expression('NOW()')` $updated_at
+ * 
+ * @property array $_userIds Virtual Attribute
+ * @property bool $_isUserGroupModified
  *
  * @property UserGroup[] $userGroups
  */
 class Group extends \yii\db\ActiveRecord
 {
 
+    const SCENARIO_INSERT_USERS = 'insert_users';
+    const SCENARIO_DELETE_USERS = 'delete_users';
+
     /**
-     * Virtual attribute for UserIds
+     * Virtual attribute for userIds
      * @var array
      */
     private $_userIds = [];
@@ -40,6 +45,9 @@ class Group extends \yii\db\ActiveRecord
         return '{{group}}';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [
@@ -68,12 +76,23 @@ class Group extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_INSERT_USERS] = $scenarios[self::SCENARIO_DEFAULT];
+        $scenarios[self::SCENARIO_DELETE_USERS] = $scenarios[self::SCENARIO_DEFAULT];
+        return $scenarios;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function attributeLabels()
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'description' => 'Description',
+            'name' => Module::t('Group Name'),
+            'description' => Module::t('Group Description'),
         ];
     }
 
@@ -88,24 +107,18 @@ class Group extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets group member Ids.
-     * @return array
+     * Sets $userIds for merging
+     * @return void
      */
-    public function getCurrentUserIds()
-    {
-        return $this->getUserGroups()->select('user_id')->column();
-    }
-
-
     public function setUserIds($userIds)
     {
-        $this->_userIds = $userIds;
+        $this->_userIds = !empty($userIds) ? $userIds : [];
     }
 
     /**
-     * Checks if not multidimensional and not empty array. 
+     * Checks if array and not multidimensional. 
      * 
-     * @return void
+     * @return bool
      * 
      * Valid:
      * ```php 
@@ -118,8 +131,7 @@ class Group extends \yii\db\ActiveRecord
      */
     protected function validateUserIds()
     {
-        $userIds = (!empty($this->_userIds) && is_array($this->_userIds) && !is_array($this->_userIds[0])) ? $this->_userIds : [];
-        $this->_userIds = $userIds;
+        return (is_array($this->_userIds) && count($this->_userIds) === count($this->_userIds, COUNT_RECURSIVE));
     }
 
     /**
@@ -130,14 +142,29 @@ class Group extends \yii\db\ActiveRecord
         if (!parent::beforeSave($insert)) {
             return false;
         }
-
         if (!$insert) {
-            // Exec only update
-            if ($this->mergeUserGroup() && $this->_isUserGroupModified) {
+            if ($this->getScenario() !== self::SCENARIO_DEFAULT && $this->mergeUserGroup() && $this->_isUserGroupModified) {
                 $this->touch('updated_at');
             }
         }
+        if ($this->hasErrors()) {
+            return false;
+        }
+        return true;
+    }
 
+
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeValidate($attributeNames = null, $clearErrors = true)
+    {
+        if ($this->getScenario() !== self::SCENARIO_DEFAULT) {
+            if (!$this->validateUserIds()) {
+                $this->addError('*', Module::t('userIds data not valid.'));
+                return false;
+            }
+        }
         return true;
     }
 
@@ -147,17 +174,18 @@ class Group extends \yii\db\ActiveRecord
      * @return bool `true` if success every id, otherwise `false`.
      * * Does not touch if userId exists.
      */
-    public function mergeUserGroup($userIds = [])
+    protected function mergeUserGroup()
     {
-        if (!empty($userIds)) {
-            $this->setUserIds($userIds);
+        $flag = false;
+
+        if ($this->getScenario() === self::SCENARIO_INSERT_USERS) {
+            $flag = $this->insertUsersToGroup($this->_userIds);
+        } elseif ($this->getScenario() === self::SCENARIO_DELETE_USERS) {
+            $flag = $this->deleteUsersFromGroup($this->_userIds);
         }
-        $this->validateUserIds();
-        $oldUserIds = $this->getCurrentUserIds();
-        $insertedIds = array_diff($this->_userIds, $oldUserIds);
-        $deletedIds = array_diff($oldUserIds, $this->_userIds);
-        $this->_isUserGroupModified = (count($insertedIds) > 0 || count($deletedIds) > 0) ? true : false;
-        return $this->insertUsersToGroup($insertedIds) && $this->deleteUsersFromGroup($deletedIds);
+
+        $this->_isUserGroupModified = (count($this->_userIds) > 0 && $flag === true) ? true : false;
+        return $flag;
     }
 
     /**
@@ -166,7 +194,7 @@ class Group extends \yii\db\ActiveRecord
      * @param array $userIds
      * @return bool `true` if success every id, otherwise `false`.
      */
-    public function insertUsersToGroup($userIds)
+    protected function insertUsersToGroup($userIds)
     {
         $isFailed = false;
 
@@ -175,13 +203,17 @@ class Group extends \yii\db\ActiveRecord
             foreach ($userIds as $userId) {
                 $rows[] = [$userId, $this->id];
             }
+            $transaction = Yii::$app->db->beginTransaction();
             try {
                 $numberAffectedRows = Yii::$app->db->createCommand()
                     ->batchInsert(UserGroup::getTableSchema()->fullName, ['user_id', 'group_id'], $rows)
                     ->execute();
-            } catch (\yii\db\Exception $e) {
+                $transaction->commit();
+            } catch (\Exception $e) {
                 $isFailed = true;
+                $transaction->rollBack();
             }
+            $numberAffectedRows = !empty($numberAffectedRows) ? $numberAffectedRows : 0;
             $isFailed = !($numberAffectedRows === count($userIds));
         }
 
@@ -193,38 +225,31 @@ class Group extends \yii\db\ActiveRecord
         return true;
     }
 
-     /**
-     * Returns relational users data.
-     * @return \use yii\db\ActiveQuery;
-     */
-    public function getUsers()
-    {
-        return $this->hasMany(User::class, ['id' => 'user_id'])
-            ->viaTable(UserGroup::getTableSchema()->fullName, ['group_id' => 'id']);
-    }
-
-
     /**
      * Delete users from group.
      * * Adds error to model if fails.
      * @param array $userIds
      * @return bool `true` if success every id, otherwise `false`.
      */
-    public function deleteUsersFromGroup($userIds)
+    protected function deleteUsersFromGroup($userIds)
     {
         $isFailed = false;
 
         if (count($userIds) > 0) {
             try {
+                $transaction = Yii::$app->db->beginTransaction();
                 $numberAffectedRows = Yii::$app->db->createCommand('DELETE FROM '
                     . UserGroup::getTableSchema()->fullName
                     . ' WHERE group_id=:group_id AND user_id IN ('
                     . implode(', ', $userIds) . ')')
                     ->bindValue(':group_id', $this->id)
                     ->execute();
-            } catch (\yii\db\Exception $e) {
+                $transaction->commit();
+            } catch (\Exception $e) {
                 $isFailed = true;
+                $transaction->rollBack();
             }
+            $numberAffectedRows = !empty($numberAffectedRows) ? $numberAffectedRows : 0;
             $isFailed = !($numberAffectedRows === count($userIds));
         }
 
@@ -234,5 +259,15 @@ class Group extends \yii\db\ActiveRecord
         }
 
         return true;
+    }
+
+    /**
+     * Returns relational users data.
+     * @return \yii\db\ActiveQuery;
+     */
+    public function getUsers()
+    {
+        return $this->hasMany(User::class, ['id' => 'user_id'])
+            ->viaTable(UserGroup::getTableSchema()->fullName, ['group_id' => 'id']);
     }
 }

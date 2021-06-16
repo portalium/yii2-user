@@ -5,12 +5,24 @@ namespace portalium\user\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use portalium\user\models\User;
+use Yii;
 
 /**
  * UserSearch represents the model behind the search form of `portalium\user\models\User`.
  */
 class UserSearch extends User
 {
+
+    /**
+     * @var yii\db\ActiveQuery
+     */
+    private $_query = null;
+
+    /**
+     * @var int|null
+     */
+    private $_groupId = null;
+
     /**
      * {@inheritdoc}
      */
@@ -32,6 +44,15 @@ class UserSearch extends User
     }
 
     /**
+     * @param int $groupId
+     * return void
+     */
+    public function setGroupId($groupId)
+    {
+        $this->_groupId = (int)$groupId;
+    }
+
+    /**
      * Creates data provider instance with search query applied
      *
      * @param array $params
@@ -40,9 +61,8 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find();
 
-        // add conditions that should always apply here
+        $query = !empty($this->_query) ? $this->_query : User::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -74,5 +94,33 @@ class UserSearch extends User
             ->andFilterWhere(['like', 'access_token', $this->access_token]);
 
         return $dataProvider;
+    }
+
+    /**
+     * Init query for group members.
+     * @return $this|void the model object itself or void if not set groupId.
+     */
+    public function inGroup()
+    {
+        if (!empty($this->_groupId)) {
+            $this->_query = User::find()->joinWith('groups')->where(['group.id' => $this->_groupId]);
+            return $this;
+        }
+    }
+
+    /**
+     * Init query for not group members.
+     * TODO: Refactoring with using join.
+     * @return $this|void the model object itself or void if not set groupId.
+     */
+    public function outGroup()
+    {
+        if (!empty($this->_groupId)) {
+            $this->_query = User::find()->where([
+                'not in', 'id',
+                UserGroup::find()->select('user_id')->where(['group_id' => $this->_groupId])->asArray()->column()
+            ]);
+            return $this;
+        }
     }
 }

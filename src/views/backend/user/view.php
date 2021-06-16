@@ -1,14 +1,14 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\DetailView;
+use portalium\theme\helpers\Html;
+use portalium\theme\widgets\DetailView;
 use portalium\user\Module;
 
 /* @var $this yii\web\View */
 /* @var $model portalium\user\models\User */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('site', 'Users'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Module::t('Users'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -52,5 +52,6 @@ $this->params['breadcrumbs'][] = $this->title;
         echo Module::t('User groups: ') . implode(", ", $groupNames);
     }
     ?>
+
 
 </div>
