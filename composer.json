@@ -14,6 +14,15 @@
 	"support" : {
 		"issues" : "https://github.com/portalium/portalium-user/issues"
 	},
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://asset-packagist.org"
+		}
+	],
+	"require": {
+		"kartik-v/yii2-widget-fileinput": "dev-master"
+	},
 	"autoload" : {
 		"psr-4" : {
 			"portalium\\user\\" : "src/"

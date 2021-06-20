@@ -13,25 +13,49 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return '{{user}}';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                'value' => new \yii\db\Expression('NOW()'),
+            ],
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [
-            [['username','email'],'safe'],
+            [['first_name', 'last_name', 'username', 'email'], 'safe'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
         ];
+    }
+
+    /**
+     * Returns relational groups data.
+     * @return \use yii\db\ActiveQuery;
+     */
+    public function getGroups()
+    {
+        return $this->hasMany(Group::class, ['id' => 'group_id'])
+            ->viaTable(UserGroup::getTableSchema()->fullName, ['user_id' => 'id']);
     }
 
     public static function findIdentity($id)
@@ -88,7 +112,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     public function validatePassword($password)
-    {   
+    {
         return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
 
