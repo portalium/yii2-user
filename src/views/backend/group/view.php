@@ -10,7 +10,6 @@ use portalium\user\Module;
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Module::t('Groups'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
 ?>
 <div class="group-view">
 

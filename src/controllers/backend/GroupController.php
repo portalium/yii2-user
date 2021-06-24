@@ -5,7 +5,7 @@ namespace portalium\user\controllers\backend;
 use portalium\user\models\Group;
 use portalium\user\models\GroupSearch;
 use portalium\user\models\UserSearch;
-use portalium\web\Controller;
+use portalium\web\Controller as WebController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
@@ -14,7 +14,7 @@ use portalium\user\Module;
 /**
  * GroupController implements the CRUD actions for Group model.
  */
-class GroupController extends Controller
+class GroupController extends WebController
 {
     /**
      * @inheritdoc

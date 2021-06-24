@@ -5,14 +5,14 @@ namespace portalium\user\controllers\backend;
 use portalium\user\models\User;
 use portalium\user\models\UserRegistrationForm;
 use portalium\user\models\UserSearch;
-use portalium\web\Controller;
+use portalium\web\Controller as WebController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * UserController implements the CRUD actions for User model.
  */
-class UserController extends Controller
+class UserController extends WebController
 {
     /**
      * @inheritdoc
