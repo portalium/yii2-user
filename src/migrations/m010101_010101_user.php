@@ -14,8 +14,8 @@ class m010101_010101_user extends Migration
         $this->createTable('user', [
             'id' => $this->primaryKey(),
             'username' => $this->string()->notNull()->unique(),
-            'first_name' => $this->string()->notNull(),
-            'last_name' => $this->string()->notNull(),
+            'first_name' => $this->string(),
+            'last_name' => $this->string(),
             'auth_key' => $this->string(32)->notNull(),
             'password_hash' => $this->string()->notNull(),
             'password_reset_token' => $this->string()->unique(),
