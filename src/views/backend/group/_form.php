@@ -14,7 +14,7 @@ use portalium\user\Module;
     'title' => Module::t('User Details'),
     'actions' => [
         'header' => [
-            Html::submitButton(Yii::t('site', 'Save'), ['class' => 'btn btn-success']),
+            Html::submitButton(Module::t( 'Save'), ['class' => 'btn btn-success']),
         ]
     ]
 ]) ?>

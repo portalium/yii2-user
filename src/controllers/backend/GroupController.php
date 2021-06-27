@@ -6,6 +6,7 @@ use portalium\user\models\Group;
 use portalium\user\models\GroupSearch;
 use portalium\user\models\UserSearch;
 use portalium\web\Controller as WebController;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
@@ -80,6 +81,9 @@ class GroupController extends WebController
      */
     public function actionCreate()
     {
+        if (!Yii::$app->user->can('createGroup'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to create Group"));
+
         $model = new Group();
 
         if ($this->request->isPost) {
@@ -104,6 +108,9 @@ class GroupController extends WebController
      */
     public function actionUpdate($id)
     {
+        if (!Yii::$app->user->can('updateGroup'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to update Group"));
+
         $model = $this->findModel($id);
 
         if ($this->request->isPost) {
@@ -130,6 +137,9 @@ class GroupController extends WebController
      */
     public function actionMembers($id)
     {
+        if (!Yii::$app->user->can('membersGroup'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to members Group"));
+
         $model = $this->findModel($id);
 
         if ($this->request->isPost) {
@@ -170,6 +180,9 @@ class GroupController extends WebController
      */
     public function actionDelete($id)
     {
+        if (!Yii::$app->user->can('deleteGroup'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete Group"));
+
         $this->findModel($id)->delete();
         return $this->redirect(['index']);
     }

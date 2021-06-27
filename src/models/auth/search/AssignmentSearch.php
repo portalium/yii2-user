@@ -2,6 +2,7 @@
 
 namespace portalium\user\models\auth\search;
 
+use portalium\user\Module;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -9,7 +10,7 @@ use portalium\user\models\User;
 
 /**
  * AssignmentSearch represents the model behind the search form about Assignment.
- * 
+ *
  */
 class AssignmentSearch extends Model
 {
@@ -40,9 +41,9 @@ class AssignmentSearch extends Model
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('site', 'ID'),
-            'username' => Yii::t('site', 'Username'),
-            'name' => Yii::t('site', 'Name'),
+            'id' => Module::t('ID'),
+            'username' => Module::t( 'Username'),
+            'name' => Module::t('Name'),
         ];
     }
 

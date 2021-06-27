@@ -49,6 +49,20 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'first_name' => Module::t('First Name'),
+            'last_name' => Module::t('Last Name'),
+            'username' => Module::t('Username'),
+            'email' => Module::t('Email'),
+            'password' => Module::t('Password')
+        ];
+    }
+    
+    /**
      * Returns relational groups data.
      * @return \use yii\db\ActiveQuery;
      */

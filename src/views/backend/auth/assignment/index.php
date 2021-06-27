@@ -11,7 +11,7 @@ use portalium\user\Module;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('site', 'Assignments');
+$this->title = Module::t( 'Assignments');
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>

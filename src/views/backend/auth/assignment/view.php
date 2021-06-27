@@ -31,7 +31,7 @@ $animateIcon = ' <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate
 ]) ?>
     <div class="row">
         <div class="col-sm-5">
-            <input class="form-control search" data-target="available" placeholder="<?= Yii::t('site', 'Search for available'); ?>">
+            <input class="form-control search" data-target="available" placeholder="<?= Module::t( 'Search for available'); ?>">
             <select multiple size="20" class="form-control list" data-target="available">
             </select>
         </div>
@@ -40,12 +40,12 @@ $animateIcon = ' <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate
             <?= Html::a('&gt;&gt;' . $animateIcon, ['assign', 'id' => (string) $model->id], [
                 'class' => 'btn btn-success btn-assign',
                 'data-target' => 'available',
-                'title' => Yii::t('site', 'Assign'),
+                'title' => Module::t( 'Assign'),
             ]); ?><br><br>
             <?= Html::a('&lt;&lt;' . $animateIcon, ['revoke', 'id' => (string) $model->id], [
                 'class' => 'btn btn-danger btn-assign',
                 'data-target' => 'assigned',
-                'title' => Yii::t('site', 'Remove'),
+                'title' => Module::t( 'Remove'),
             ]); ?>
         </div>
         <div class="col-sm-5">

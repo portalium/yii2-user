@@ -40,8 +40,8 @@ use portalium\theme\widgets\ActiveForm;
     <?php // echo $form->field($model, 'updated_at') ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('site', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('site', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+        <?= Html::submitButton(Module::t( 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton(Module::t( 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

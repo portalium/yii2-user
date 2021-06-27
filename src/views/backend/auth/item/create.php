@@ -9,8 +9,8 @@ use yii\helpers\Html;
 $context = $this->context;
 $labels = $context->labels();
 
-$this->title = Yii::t('site', 'Create ' . $labels['Item']);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('site', $labels['Items']), 'url' => ['index']];
+$this->title = Module::t( 'Create ' . $labels['Item']);
+$this->params['breadcrumbs'][] = ['label' => Module::t( $labels['Items']), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?=

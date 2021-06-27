@@ -2,7 +2,9 @@
 
 namespace portalium\user\controllers\backend\auth;
 
+use portalium\user\Module;
 use Yii;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\rbac\Item;
 use portalium\user\components\BaseAuthItemController;
@@ -62,6 +64,8 @@ class PermissionController extends BaseAuthItemController
      */
     public function getViewPath()
     {
+        if (!Yii::$app->user->can('setPermission'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Permission"));
         return '@portalium/' . $this->module->id . '/views/' . Yii::$app->id . '/auth/item';
     }
 }

@@ -8,10 +8,10 @@ use yii\helpers\Html;
 
 $context = $this->context;
 $labels = $context->labels();
-$this->title = Yii::t('site', 'Update ' . $labels['Item']) . ': ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('site', $labels['Items']), 'url' => ['index']];
+$this->title = Module::t( 'Update ' . $labels['Item']) . ': ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => Module::t( $labels['Items']), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->name]];
-$this->params['breadcrumbs'][] = Yii::t('site', 'Update');
+$this->params['breadcrumbs'][] = Module::t( 'Update');
 ?>
 <?=
 $this->render('_form', [

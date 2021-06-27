@@ -2,9 +2,11 @@
 
 namespace portalium\user\controllers\backend;
 
+use portalium\user\Module;
 use Yii;
 use portalium\site\models\Setting;
 use portalium\web\Controller as WebController;
+use yii\web\ForbiddenHttpException;
 use yii\web\UploadedFile;
 use portalium\user\models\ImportForm;
 
@@ -28,6 +30,8 @@ class ImportController extends WebController
 
     public function actionIndex()
     {
+        if (!Yii::$app->user->can('importUser'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to import User"));
         $model = new ImportForm();
         if ($model->load(Yii::$app->request->post())) {
             $model->file = UploadedFile::getInstance($model, 'file');

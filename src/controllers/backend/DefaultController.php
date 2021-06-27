@@ -81,6 +81,9 @@ class DefaultController extends WebController
      */
     public function actionCreate()
     {
+        if (!Yii::$app->user->can('createUser'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to create User"));
+
         $model = new UserForm();
 
         if ($this->request->isPost) {
@@ -104,6 +107,9 @@ class DefaultController extends WebController
      */
     public function actionUpdate($id)
     {
+        if (!Yii::$app->user->can('updateUser'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to Update User"));
+
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
@@ -124,6 +130,9 @@ class DefaultController extends WebController
      */
     public function actionDelete($id)
     {
+        if (!Yii::$app->user->can('deleteUser'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
