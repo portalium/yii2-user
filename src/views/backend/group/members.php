@@ -2,6 +2,7 @@
 
 use portalium\theme\helpers\Html;
 use portalium\theme\widgets\GridView;
+use portalium\theme\widgets\Panel;
 use portalium\user\Module;
 
 /* @var $this yii\web\View */
@@ -31,9 +32,11 @@ JS;
 $this->registerJs($script);
 
 ?>
+<?php Panel::begin([
+    'title' => Html::encode($this->title),
+]) ?>
 <div class="members-update">
     <?= Html::errorSummary($model) ?>
-    <h1><?= Html::encode($this->title) ?></h1>
     <div class="container">
         <div class="row">
             <div class="col-md-5">
@@ -69,7 +72,7 @@ $this->registerJs($script);
             </div>
 
 
-            <div class="col-md-1">
+            <div class="col-md-1" style="text-align: center;">
                 <br><br>
                 <?= Html::submitButton('&gt;&gt;', [
                     'class' => 'btn btn-success',
@@ -124,3 +127,4 @@ $this->registerJs($script);
         </div>
     </div>
 </div>
+<?php Panel::end() ?>

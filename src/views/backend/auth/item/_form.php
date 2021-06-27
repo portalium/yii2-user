@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use portalium\theme\widgets\Panel;
+use portalium\user\Module;
 
 /* @var $this yii\web\View */
 /* @var $model portalium\user\models\auth\AuthItem */
@@ -12,23 +14,24 @@ $context = $this->context;
 $labels = $context->labels();
 
 ?>
-
-<div class="auth-item-form">
-    <?php $form = ActiveForm::begin(['id' => 'item-form']); ?>
+<?php $form = ActiveForm::begin(['id' => 'item-form']); ?>
+<?php Panel::begin([
+    'title' => Html::encode($this->title),
+    'actions' => [
+        'header' => [
+            Html::submitButton($model->isNewRecord ?  Module::t( 'Create') : Module::t( 'Update'), [
+                'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+                'name' => 'submit-button'])
+        ]
+    ]
+]) ?>
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <?= $form->field($model, 'name')->textInput(['maxlength' => 64]) ?>
 
             <?= $form->field($model, 'description')->textarea(['rows' => 2]) ?>
         </div>
     </div>
-    <div class="form-group">
-        <?php
-        echo Html::submitButton($model->isNewRecord ? Yii::t('site', 'Create') : Yii::t('site', 'Update'), [
-            'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
-            'name' => 'submit-button'])
-        ?>
-    </div>
 
-    <?php ActiveForm::end(); ?>
-</div>
+<?php Panel::end() ?>
+<?php ActiveForm::end(); ?>

@@ -3,11 +3,13 @@
 namespace portalium\user\models\auth;
 
 use Yii;
+use yii\helpers\Url;
 use yii\base\Model;
 use yii\rbac\Item;
 
 use portalium\user\models\User;
-use yii\helpers\Url;
+use portalium\user\Module;
+
 
 /**
  * This is the model class for table "auth_item".
@@ -88,7 +90,7 @@ class AuthItem extends Model
     {
         $value = $this->name;
         if ($this->manager->getRole($value) !== null || $this->manager->getPermission($value) !== null) {
-            $message = Yii::t('yii', '{attribute} "{value}" has already been taken.');
+            $message = Module::t( '{attribute} "{value}" has already been taken.');
             $params = [
                 'attribute' => $this->getAttributeLabel('name'),
                 'value' => $value,
@@ -103,9 +105,9 @@ class AuthItem extends Model
     public function attributeLabels()
     {
         return [
-            'name' => Yii::t('site', 'Name'),
-            'type' => Yii::t('site', 'Type'),
-            'description' => Yii::t('site', 'Description'),
+            'name' => Module::t('Name'),
+            'type' => Module::t( 'Type'),
+            'description' => Module::t('Description'),
         ];
     }
 
@@ -268,7 +270,7 @@ class AuthItem extends Model
             ->asArray()->all();
 
         foreach ($users as &$row) {
-            $row['link'] = Url::to(['/user/user/view', 'id' => $row['id']]);
+            $row['link'] = Url::to(['/user/default/view', 'id' => $row['id']]);
         }
 
         $result['users'] = $users;

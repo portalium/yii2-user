@@ -1,7 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use portalium\theme\widgets\GridView;
+use portalium\theme\widgets\Panel;
+use portalium\user\Module;
 
 
 /* @var $this yii\web\View */
@@ -11,16 +13,17 @@ use yii\grid\GridView;
 
 $context = $this->context;
 $labels = $context->labels();
-$this->title = Yii::t('site', $labels['Items']);
+$this->title = Module::t($labels['Items']);
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="role-index">
-    <h1><?= Html::encode($this->title) ?></h1>
-    <p>
-        <?php if ($this->context->getType() !== 2) : ?>
-        <?= Html::a(Yii::t('site', 'Create ' . $labels['Item']), ['create'], ['class' => 'btn btn-success']);
-        endif; ?>
-    </p>
+<?php Panel::begin([
+    'title' => Html::encode($this->title),
+    'actions' => [
+        'header' => [
+            ($this->context->getType() === 2) ? "": Html::a(Module::t('Create ' . $labels['Item']), ['create'], ['class' => 'btn btn-success'])
+        ]
+    ]
+]) ?>
     <?php
     $buttonsKeyArray = [];
     if ($this->context->getType() === 2) {
@@ -36,17 +39,18 @@ $this->params['breadcrumbs'][] = $this->title;
     GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'layout' => '{items}{pager}{summary}',
         'columns' => [
             [
                 'class' => 'yii\grid\SerialColumn'
             ],
             [
                 'attribute' => 'name',
-                'label' => Yii::t('site', 'Name'),
+                'label' => Module::t( 'Name'),
             ],
             [
                 'attribute' => 'description',
-                'label' => Yii::t('site', 'Description'),
+                'label' => Module::t( 'Description'),
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
@@ -55,5 +59,4 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ])
     ?>
-
-</div>
+<?php Panel::end() ?>

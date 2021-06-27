@@ -10,7 +10,7 @@ use portalium\user\models\User;
  * This is the registration form model class for `\portalium\user\models\User` model.
  *
  */
-class UserRegistrationForm extends Model
+class UserForm extends Model
 {
     /**
      * @var string
@@ -36,6 +36,8 @@ class UserRegistrationForm extends Model
      * @var string
      */
     public $password;
+
+    public $isNewRecord = true;
 
     /**
      * {@inheritdoc}
@@ -89,5 +91,10 @@ class UserRegistrationForm extends Model
         $user->access_token = \Yii::$app->security->generateRandomString();
         $user->generateAuthKey();
         return $user->save() ? $user : null;
+    }
+
+    public function isNewRecord()
+    {
+        return $this->isNewRecord;
     }
 }

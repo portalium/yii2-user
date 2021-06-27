@@ -10,45 +10,38 @@ use kartik\file\FileInput;
 $this->title = Module::t('Index');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-signup">
-    <h1><?= Html::encode($this->title) ?></h1>
-    <div class="row">
-        <div class="col-lg-10">
-            <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
-            <?php Panel::begin([
-                'title' => Module::t('Create Users'),
-                'actions' => [
-                    'header' => [
-                        Html::submitButton(Module::t(''), ['class' => 'btn btn-success fa fa-save'])
-                    ]
-                ]
-            ]) ?>
+<?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+<?php Panel::begin([
+    'title' => Module::t('Import Users'),
+    'actions' => [
+        'header' => [
+            Html::submitButton(Module::t('Import Users'), ['class' => 'btn btn-success'])
+        ]
+    ]
+]) ?>
 
-
-            <div id="internal">
-                <?= FileInput::widget([
-                    'model' => $model,
-                    'attribute' => 'file',
-                    'options' => [
-                        'multiple' => false,
-                        'accept' => 'doc/*'
-                    ],
-                    'pluginOptions' => [
-                        'allowedFileExtensions' => ['csv'],
-                        'showPreview' => true,
-                        'showCaption' => true,
-                        'showRemove' => true,
-                        'showUpload' => false,
-                        'initialCaption' => Module::t('Select Files'),
-                        'initialPreviewAsData' => true,
-                        'initialPreview' => false,
-                        'overwriteInitial' => true,
-                        'maxFileCount' => 10
-                    ]
-                ]) ?>
-            </div>
-            <?php Panel::end() ?>
-            <?php ActiveForm::end(); ?>
-        </div>
-    </div>
+<div id="internal">
+    <?= FileInput::widget([
+        'model' => $model,
+        'attribute' => 'file',
+        'options' => [
+            'multiple' => false,
+            'accept' => 'doc/*'
+        ],
+        'pluginOptions' => [
+            'allowedFileExtensions' => ['csv'],
+            'showPreview' => true,
+            'showCaption' => true,
+            'showRemove' => true,
+            'showUpload' => false,
+            'initialCaption' => Module::t('Select Files'),
+            'initialPreviewAsData' => true,
+            'initialPreview' => false,
+            'overwriteInitial' => true,
+            'maxFileCount' => 10
+        ]
+    ]) ?>
 </div>
+<?php Panel::end() ?>
+<?php ActiveForm::end(); ?>
+
