@@ -7,6 +7,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use portalium\user\Module;
 
 class User extends ActiveRecord implements IdentityInterface
 {
