@@ -33,32 +33,42 @@ class ImportController extends WebController
         if (!Yii::$app->user->can('importUser'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to import User"));
         $model = new ImportForm();
+        $model->first_name = "first_name";
+        $model->last_name = "last_name";
+        $model->username = "username";
+        $model->email = "email";
+        $model->password = "password";
         if ($model->load(Yii::$app->request->post())) {
             $model->file = UploadedFile::getInstance($model, 'file');
             $fileName = $this->upload($model->file);
             $path = realpath(Yii::$app->basePath . '/../data');
             $users = array();
             if (Setting::findOne(['name' => 'page::signup'])->value) {
-                $fileHandler = fopen($path . '/' . $fileName, 'r');
-                if ($fileHandler) {
-                    while ($line = fgetcsv($fileHandler, 1000)) {
-                        $user = array();
-                        if (isset($line[0], $line[1], $line[2], $line[3], $line[4])) {
-                            array_push($user, $line[0]);
-                            array_push($user, $line[1]);
-                            array_push($user, $line[2]);
-                            array_push($user, $line[3]);
-                            array_push($user, Yii::$app->security->generateRandomString());
-                            array_push($user, Yii::$app->security->generatePasswordHash($line[4], 4));
-                            array_push($user, Yii::$app->security->generateRandomString() . '_' . time());
-                            array_push($user, Yii::$app->security->generateRandomString());
-                            array_push($user, 10);
-                            array_push($users, $user);
-                        }
+                $filePath = $path . '/' . $fileName;
+
+                $csv = array_map("str_getcsv", file($filePath, FILE_SKIP_EMPTY_LINES));
+                $keys = array_shift($csv);
+
+                foreach ($csv as $i => $row) {
+                    $csv[$i] = array_combine($keys, $row);
+                }
+
+                foreach ($csv as $line) {
+                    $user = array();
+                    if (isset($line[$model->username], $line[$model->email])) {
+                        array_push($user, ($model->first_name != null) ? $line[$model->first_name] : "");
+                        array_push($user, ($model->last_name != null) ? $line[$model->last_name] : "");
+                        array_push($user, $line[$model->username]);
+                        array_push($user, $line[$model->email]);
+                        array_push($user, Yii::$app->security->generateRandomString());
+                        array_push($user, Yii::$app->security->generatePasswordHash(($model->password != null) ? $line[$model->password] : Yii::$app->security->generateRandomKey(6), 4));
+                        array_push($user, Yii::$app->security->generateRandomString() . '_' . time());
+                        array_push($user, Yii::$app->security->generateRandomString());
+                        array_push($user, 10);
+                        array_push($users, $user);
                     }
                 }
             }
-
             Yii::$app->db->createCommand()->batchInsert("user",
                 ["first_name", "last_name", "username", "email", "auth_key", "password_hash", "password_reset_token", "access_token", "status"], $users)
                 ->execute();

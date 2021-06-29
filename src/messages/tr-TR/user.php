@@ -43,5 +43,14 @@ return [
     'Are you sure you want to delete this item?' => 'Bu öğeyi silmek istediğinizden emin misiniz?',
     'User does not belong to any group.' => 'Kullanıcı herhangi bir gruba ait değil.',
     'User groups: ' => 'Kullanıcı Grupları: ',
-    'Permissions' => 'İzinler'
+    'Permissions' => 'İzinler',
+    'Password' => 'Şifre',
+    'Import Users' => 'Kullanıcı Aktar',
+    'First column index starts from 0'=>'İlk kolonun indeks değeri 0\'dan başlar',
+    'First Name Column Name' => 'İsim Sütunu Adı',
+    'Lastname Name Column Name' => 'Soyisim Sütunu Adı',
+    'Username Column Name' => 'Kullanıcı Adı Sütunu Adı',
+    'Email Column Name' => 'E-posta Sütunu Adı',
+    'Password Column Name' => 'Şifre Sütunu Adı',
+
 ];
