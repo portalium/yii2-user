@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-
+use portalium\user\Module;
 /* @var $this yii\web\View */
 /* @var $context portalium\user\components\BaseAuthItemController */
 /* @var $model portalium\user\models\auth\AuthItem */
