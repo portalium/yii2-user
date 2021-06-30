@@ -2,7 +2,7 @@
 
 use portalium\theme\helpers\Html;
 use portalium\theme\widgets\ActiveForm;
-
+use portalium\user\Module;
 /* @var $this yii\web\View */
 /* @var $model portalium\user\models\GroupSearch */
 /* @var $form portalium\theme\widgets\ActiveForm */

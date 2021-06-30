@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\captcha\Captcha;
 use portalium\user\Module;
 use portalium\theme\widgets\Panel;
 use kartik\file\FileInput;

@@ -1,7 +1,5 @@
 <?php
 
-use portalium\theme\helpers\Html;
-use portalium\theme\widgets\ActiveForm;
 use portalium\user\Module;
 
 /* @var $this yii\web\View */
