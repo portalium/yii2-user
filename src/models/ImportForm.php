@@ -2,10 +2,8 @@
 
 namespace portalium\user\models;
 
-use yii\base\BaseObject;
 use yii\base\Model;
 use portalium\user\Module;
-use portalium\user\models\User;
 
 class ImportForm extends Model
 {

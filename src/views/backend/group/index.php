@@ -13,7 +13,7 @@ $this->title = Module::t('Groups');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php Panel::begin([
-    'title' => Module::t('Settings'),
+    'title' => Html::encode($this->title),
     'actions' => [
         'header' => [
             Html::a(Module::t('Create Group'), ['create'], ['class' => 'btn btn-success']),

@@ -20,7 +20,8 @@ $this->params['breadcrumbs'][] = $this->title;
         ]
     ]
 ]) ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); 
+    ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -41,7 +42,15 @@ $this->params['breadcrumbs'][] = $this->title;
             //'created_at',
             //'updated_at',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {update} {assignment} {delete}',
+                'buttons' => [
+                    'assignment' => function ($url, $model) {
+                        return Html::a(Html::tag('i', '', ['class' => 'fa fa-fw fa-lock']), ['/user/auth/assignment/view', 'id' => $model->id], ['title' => Module::t('Assignment')]);
+                    }
+                ]
+            ],
         ],
     ]); ?>
 <?php Panel::end() ?>

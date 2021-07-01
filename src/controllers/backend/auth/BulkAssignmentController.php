@@ -2,6 +2,7 @@
 
 namespace portalium\user\controllers\backend\auth;
 
+use portalium\user\components\BulkAuthAssignmentHelper;
 use portalium\user\Module;
 use Yii;
 use yii\web\ForbiddenHttpException;
@@ -9,12 +10,14 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use portalium\web\Controller as WebController;
 use portalium\user\models\auth\Assignment;
-use portalium\user\models\User;
+use portalium\user\models\auth\AuthItem;
+use portalium\user\models\GroupSearch;
+use portalium\user\models\UserSearch;
 
 /**
- * AssignmentController implements the CRUD actions for Assignment model.
+ * Bulk Assignment Controller
  */
-class AssignmentController extends WebController
+class BulkAssignmentController extends WebController
 {
     /**
      * @inheritdoc
@@ -33,24 +36,23 @@ class AssignmentController extends WebController
     }
 
     /**
-     * Displays a single Assignment model.
-     * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionIndex($id)
     {
         if (!Yii::$app->user->can('setAssignment'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
 
         $model = $this->findModel($id);
-
-        return $this->render('view', [
+        return $this->render('index', [
+            'groupDataProvider' => (new GroupSearch())->search($this->request->queryParams),
+            'userDataProvider' => (new UserSearch())->search($this->request->queryParams),
+            'assignedUsers' => BulkAuthAssignmentHelper::getAssignedUsers($id)->select(['id', 'username'])->all(),
             'model' => $model,
         ]);
     }
 
     /**
-     * Assign items
      * @param string $id
      * @return array
      */
@@ -59,15 +61,12 @@ class AssignmentController extends WebController
         if (!Yii::$app->user->can('setAssignment'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
 
-        $items = $this->request->post('items', []);
-        $model = new Assignment($id);
-        $success = $model->assign($items);
+        $success = BulkAuthAssignmentHelper::assignByMixed($id, $this->request->post('items', []));
         Yii::$app->getResponse()->format = 'json';
-        return array_merge($model->getItems(), ['success' => $success]);
+        return array_merge(['assignedUsers' => BulkAuthAssignmentHelper::getAssignedUsers($id)->select(['id', 'username'])->all()], ['success' => $success]);
     }
 
     /**
-     * Assign items
      * @param string $id
      * @return array
      */
@@ -76,15 +75,13 @@ class AssignmentController extends WebController
         if (!Yii::$app->user->can('setAssignment'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
 
-        $items = $this->request->post('items', []);
-        $model = new Assignment($id);
-        $success = $model->revoke($items);
+        $success = BulkAuthAssignmentHelper::revokeByMixed($id, $this->request->post('items', []));
         Yii::$app->getResponse()->format = 'json';
-        return array_merge($model->getItems(), ['success' => $success]);
+        return array_merge(['assignedUsers' => BulkAuthAssignmentHelper::getAssignedUsers($id)->select(['id', 'username'])->all()], ['success' => $success]);
     }
 
     /**
-     * Finds the Assignment model based on its primary key value.
+     * Finds the AuthItem model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param  integer $id
      * @return Assignment the loaded model
@@ -92,8 +89,8 @@ class AssignmentController extends WebController
      */
     protected function findModel($id)
     {
-        if (($user = User::findIdentity($id)) !== null) {
-            return new Assignment($id, $user);
+        if (($model = AuthItem::find($id)) !== null) {
+            return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

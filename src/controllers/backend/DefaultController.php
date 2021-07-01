@@ -4,8 +4,9 @@ namespace portalium\user\controllers\backend;
 
 use Yii;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 use yii\filters\VerbFilter;
-
+use portalium\user\Module;
 use portalium\user\models\User;
 use portalium\user\models\UserForm;
 use portalium\user\models\UserSearch;
@@ -70,7 +71,7 @@ class DefaultController extends WebController
         $model = $this->findModel($id);
         return $this->render('view', [
             'model' => $model,
-            'groupNames' => array_column($model->getGroups()->asArray()->all(), 'name')
+            'groupNames' => $model->getGroups()->select('name')->column()
         ]);
     }
 

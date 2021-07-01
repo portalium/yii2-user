@@ -70,7 +70,7 @@ class GroupController extends WebController
         $model = $this->findModel($id);
         return $this->render('view', [
             'model' => $model,
-            'userNames' => array_column($model->getUsers()->asArray()->all(), 'username')
+            'userNames' => $model->getUsers()->select('username')->column()
         ]);
     }
 

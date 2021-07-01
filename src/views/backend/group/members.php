@@ -46,7 +46,7 @@ $this->registerJs($script);
                         'dataProvider' => $dataProviderOutGroup,
                         'filterModel' => $searchModel,
                         'summary' => '',
-                        'caption' => Module::t('Available users'),
+                        'caption' => Module::t('Available Users'),
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
                             //'id',
@@ -98,7 +98,7 @@ $this->registerJs($script);
                     <?= GridView::widget([
                         'dataProvider' => $dataProviderInGroup,
                         'filterModel' => $searchModel,
-                        'caption' => Module::t('Group members'),
+                        'caption' => Module::t('Group Members'),
                         'summary' => '',
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],

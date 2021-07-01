@@ -13,7 +13,7 @@ $('.btn-assign').click(function () {
 
     if (items && items.length) {
         $this.children('i.glyphicon-refresh-animate').show();
-        $.post($this.attr('href'), {items: items}, function (r) {
+        $.post($this.attr('href'), { items: items }, function (r) {
             updateItems(r);
         }).always(function () {
             $this.children('i.glyphicon-refresh-animate').hide();
@@ -32,8 +32,8 @@ function search(target) {
     var q = $('.search[data-target="' + target + '"]').val();
 
     var groups = {
-        role: [$('<optgroup label="Roles">'), false],
-        permission: [$('<optgroup label="Permission">'), false],
+        role: [$('<optgroup label="' + optgroupLabels.roles + '">'), false],
+        permission: [$('<optgroup label="' + optgroupLabels.permissions + '">'), false],
     };
     $.each(_opts.items[target], function (name, group) {
         if (name.indexOf(q) >= 0) {

@@ -11,7 +11,7 @@ use portalium\user\Module;
 ?>
 <?php $form = ActiveForm::begin(); ?>
 <?php Panel::begin([
-    'title' => Module::t('User Details'),
+    'title' => Html::encode($this->title),
     'actions' => [
         'header' => [
             Html::submitButton(Module::t( 'Save'), ['class' => 'btn btn-success']),

@@ -9,25 +9,43 @@ use portalium\user\Module;
 
 /* @var $this yii\web\View */
 
-$userName = $model->username;
-$userName = Html::encode($userName);
 
-$this->title = Module::t('Assignment') . ' : ' . $userName;
-$this->params['breadcrumbs'][] = ['label' => Module::t('Users'), 'url' => ['/user']];
-$this->params['breadcrumbs'][] = $userName;
+$itemType = null;
+
+switch ($model->getItem()->type) {
+    case 1:
+        $itemType = Module::t('Roles');
+        $itemUrl = '/user/auth/role';
+        break;
+    case 2:
+        $itemType = Module::t('Permissions');
+        $itemUrl = '/user/auth/permission';
+        break;
+}
+
+$this->title = Module::t('Bulk Assignment') . ' : ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => $itemType, 'url' => [$itemUrl]];
+$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => [$itemUrl . '/view', 'id' => $model->name]];
+$this->params['breadcrumbs'][] = Module::t('Bulk Assignment');
 
 YiiAsset::register($this);
+
 $opts = Json::htmlEncode([
     'items' => $model->getItems(),
+    'users' => $userDataProvider->query->select(['id', 'username'])->all(),
+    'groups' => $groupDataProvider->query->select(['id', 'name'])->all(),
+    'assignedUsers' => $assignedUsers
 ]);
 
 $optgroupLabels = Json::htmlEncode([
-    'roles' => Module::t('Roles'),
-    'permissions' => Module::t('Permissions'),
+    'allUsers' => Module::t('All Users'),
+    'allGroups' => Module::t('All Groups'),
+    'assignedUsers' => Module::t('Assigned Users')
 ]);
 
 $this->registerJs("var _opts = {$opts};");
 $this->registerJs("var optgroupLabels = {$optgroupLabels};");
+
 $this->registerJs($this->render('_script.js'));
 $animateIcon = ' <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></i>';
 ?>
@@ -42,14 +60,12 @@ $animateIcon = ' <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate
     </div>
     <div class="col-sm-2" style="text-align: center">
         <br><br>
-        <?= Html::a('&gt;&gt;' . $animateIcon, ['assign', 'id' => (string) $model->id], [
+        <?= Html::a(Module::t('Assign') . $animateIcon, ['assign', 'id' => (string) $model->name], [
             'class' => 'btn btn-success btn-assign',
-            'data-target' => 'available',
             'title' => Module::t('Assign'),
         ]); ?><br><br>
-        <?= Html::a('&lt;&lt;' . $animateIcon, ['revoke', 'id' => (string) $model->id], [
+        <?= Html::a(Module::t('Remove') . $animateIcon, ['revoke', 'id' => (string) $model->name], [
             'class' => 'btn btn-danger btn-assign',
-            'data-target' => 'assigned',
             'title' => Module::t('Remove'),
         ]); ?>
     </div>

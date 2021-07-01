@@ -49,8 +49,8 @@ function search(target) {
     var q = $('.search[data-target="' + target + '"]').val();
 
     var groups = {
-        role: [$('<optgroup label="Roles">'), false],
-        permission: [$('<optgroup label="Permission">'), false],
+        role: [$('<optgroup label="' + optgroupLabels.roles + '">'), false],
+        permission: [$('<optgroup label="' + optgroupLabels.permissions + '">'), false],
     };
     $.each(_opts.items[target], function (name, group) {
         if (name.indexOf(q) >= 0) {

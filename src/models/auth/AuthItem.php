@@ -90,7 +90,7 @@ class AuthItem extends Model
     {
         $value = $this->name;
         if ($this->manager->getRole($value) !== null || $this->manager->getPermission($value) !== null) {
-            $message = Module::t( '{attribute} "{value}" has already been taken.');
+            $message = Module::t('{attribute} "{value}" has already been taken.');
             $params = [
                 'attribute' => $this->getAttributeLabel('name'),
                 'value' => $value,
@@ -106,7 +106,7 @@ class AuthItem extends Model
     {
         return [
             'name' => Module::t('Name'),
-            'type' => Module::t( 'Type'),
+            'type' => Module::t('Type'),
             'description' => Module::t('Description'),
         ];
     }
@@ -121,13 +121,15 @@ class AuthItem extends Model
     }
 
     /**
-     * Find role
+     * Find role or permission
      * @param string $id
      * @return null|\self
      */
     public static function find($id)
     {
         $item = Yii::$app->authManager->getRole($id);
+        $item = $item ?: Yii::$app->authManager->getPermission($id);
+
         if ($item !== null) {
             return new self($item);
         }
@@ -194,7 +196,7 @@ class AuthItem extends Model
     /**
      * Remove an item as a child of another item.
      * @param array $items
-     * @return int
+     * @return int 
      */
     public function removeChildren($items)
     {
