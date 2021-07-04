@@ -79,6 +79,7 @@ class ImportController extends WebController
             $usersDB = Yii::$app->db->createCommand()->batchInsert("user",
                     ["first_name", "last_name", "username", "email", "auth_key", "password_hash", "password_reset_token", "access_token", "status"], $users)
                     ->rawSql . ' RETURNING id';
+            $usersDB = 'INSERT IGNORE' . mb_substr( $usersDB, strlen( 'INSERT' ) );
             $userIds = Yii::$app->db->createCommand($usersDB)->queryColumn();
             $role = Yii::$app->authManager->getRole($model->role);
             $userGroups = [];
