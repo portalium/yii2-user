@@ -2,6 +2,8 @@
 
 namespace portalium\user\controllers\backend;
 
+use portalium\user\models\GroupSearch;
+use portalium\user\models\UserGroup;
 use portalium\user\Module;
 use Yii;
 use portalium\site\models\Setting;
@@ -32,6 +34,10 @@ class ImportController extends WebController
     {
         if (!Yii::$app->user->can('importUser'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to import User"));
+        $roles = [];
+        foreach (Yii::$app->authManager->getRoles() as $item) {
+            $roles[$item->name] = $item->name;
+        }
         $model = new ImportForm();
         $model->first_name = "first_name";
         $model->last_name = "last_name";
@@ -69,13 +75,29 @@ class ImportController extends WebController
                     }
                 }
             }
-            Yii::$app->db->createCommand()->batchInsert("user",
-                ["first_name", "last_name", "username", "email", "auth_key", "password_hash", "password_reset_token", "access_token", "status"], $users)
-                ->execute();
 
+            $usersDB = Yii::$app->db->createCommand()->batchInsert("user",
+                    ["first_name", "last_name", "username", "email", "auth_key", "password_hash", "password_reset_token", "access_token", "status"], $users)
+                    ->rawSql . ' RETURNING id';
+            $userIds = Yii::$app->db->createCommand($usersDB)->queryColumn();
+            $role = Yii::$app->authManager->getRole($model->role);
+            $userGroups = [];
+            foreach ($userIds as $id) {
+                ($model->role != null) ? Yii::$app->authManager->assign($role, $id) : null;
+                if ($model->group != null) {
+                    array_push($userGroups, [$id, $model->group, date('Y-m-d H:i:s')]);
+                }
+            }
+            if ($model->group != null) {
+                Yii::$app->db->createCommand()->batchInsert("user_group",
+                    ["user_id", "group_id", "created_at"], $userGroups)
+                    ->execute();
+            }
         }
+
         return $this->render('index', [
             'model' => $model,
+            'roles' => $roles,
         ]);
 
     }

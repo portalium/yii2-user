@@ -106,6 +106,17 @@ class Group extends \yii\db\ActiveRecord
         return $this->hasMany(UserGroup::class, ['group_id' => 'id']);
     }
 
+    public static function getGroups()
+    {
+        $groups = array();
+       // (\Yii::$app->user->can("statusCreated")) ? $statusLabel[self::STATUS['created']] = $labels['created'] : null;
+
+        foreach (Group::find()->all() as $item) {
+            $groups[$item['id']] = $item['name'];
+        }
+        return $groups;
+    }
+
     /**
      * Sets $userIds for merging
      * @return void
