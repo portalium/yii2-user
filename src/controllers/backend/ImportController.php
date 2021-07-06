@@ -39,8 +39,8 @@ class ImportController extends WebController
             $roles[$item->name] = $item->name;
         }
         $model = new ImportForm();
-        $model->first_name = "first_name";
-        $model->last_name = "last_name";
+        $model->first_name = "firstname";
+        $model->last_name = "lastname";
         $model->username = "username";
         $model->email = "email";
         $model->password = "password";
