@@ -52,12 +52,17 @@ class ImportController extends WebController
             if (Setting::findOne(['name' => 'page::signup'])->value) {
                 $filePath = $path . '/' . $fileName;
 
-                $csv = array_map("str_getcsv", file($filePath, FILE_SKIP_EMPTY_LINES));
+                $csv = array_map(function($v){return str_getcsv($v, ";");}, file($filePath, FILE_SKIP_EMPTY_LINES));
                 $keys = array_shift($csv);
 
                 foreach ($csv as $i => $row) {
                     $csv[$i] = array_combine($keys, $row);
                 }
+                $model->first_name = (array_search('firstname',$keys))? 'firstname' : null;
+                $model->last_name =  (array_search('lastname',$keys))? 'lastname' : null;
+                $model->username =  (array_search('username',$keys))? 'username' : null;
+                $model->email =  (array_search('email',$keys))? 'email' : null;
+                $model->password =  (array_search('password',$keys))? 'password' : null;
 
                 foreach ($csv as $line) {
                     $user = array();
