@@ -2,6 +2,7 @@
 
 namespace portalium\user\controllers\backend;
 
+use portalium\base\Exception;
 use portalium\user\models\GroupSearch;
 use portalium\user\models\UserGroup;
 use portalium\user\Module;
@@ -46,23 +47,33 @@ class ImportController extends WebController
         $model->password = "password";
         if ($model->load(Yii::$app->request->post())) {
             $model->file = UploadedFile::getInstance($model, 'file');
+            if ($model->file==null) {
+                Yii::$app->session->setFlash('error', Module::t('Please choose file.'));
+                return $this->redirect(['index']);
+            }
             $fileName = $this->upload($model->file);
             $path = realpath(Yii::$app->basePath . '/../data');
             $users = array();
             if (Setting::findOne(['name' => 'page::signup'])->value) {
                 $filePath = $path . '/' . $fileName;
 
-                $csv = array_map(function($v){return str_getcsv($v, ";");}, file($filePath, FILE_SKIP_EMPTY_LINES));
+                $csv = array_map(function ($v) {
+                    return str_getcsv($v, ";");
+                }, file($filePath, FILE_SKIP_EMPTY_LINES|FILE_IGNORE_NEW_LINES));
                 $keys = array_shift($csv);
 
                 foreach ($csv as $i => $row) {
-                    $csv[$i] = array_combine($keys, $row);
+                        $csv[$i] = array_combine($keys, $row);
                 }
-                $model->first_name = (array_search('firstname',$keys))? 'firstname' : null;
-                $model->last_name =  (array_search('lastname',$keys))? 'lastname' : null;
-                $model->username =  (array_search('username',$keys))? 'username' : null;
-                $model->email =  (array_search('email',$keys))? 'email' : null;
-                $model->password =  (array_search('password',$keys))? 'password' : null;
+                $model->first_name = (array_search($model->first_name, $keys)) ? $model->first_name : null;
+                $model->last_name = (array_search($model->last_name, $keys)) ? $model->last_name : null;
+                $model->username = (array_search($model->username, $keys)) ? $model->username : null;
+                $model->email = (array_search($model->email, $keys)) ? $model->email : null;
+                $model->password = (array_search($model->password, $keys)) ? $model->password : null;
+                if ($model->email==null || $model->username==null){
+                    Yii::$app->session->setFlash('error', Module::t('You entered the username or e-mail columns.'));
+                    return $this->redirect(['index']);
+                }
 
                 foreach ($csv as $line) {
                     $user = array();
@@ -84,7 +95,7 @@ class ImportController extends WebController
             $usersDB = Yii::$app->db->createCommand()->batchInsert("user",
                     ["first_name", "last_name", "username", "email", "auth_key", "password_hash", "password_reset_token", "access_token", "status"], $users)
                     ->rawSql . ' RETURNING id';
-            $usersDB = 'INSERT IGNORE' . mb_substr( $usersDB, strlen( 'INSERT' ) );
+            $usersDB = 'INSERT IGNORE' . mb_substr($usersDB, strlen('INSERT'));
             $userIds = Yii::$app->db->createCommand($usersDB)->queryColumn();
             $role = Yii::$app->authManager->getRole($model->role);
             $userGroups = [];
