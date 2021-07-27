@@ -58,5 +58,5 @@ return [
     'Username Column Name' => 'Kullanıcı Adı Sütunu Adı',
     'Email Column Name' => 'E-posta Sütunu Adı',
     'Password Column Name' => 'Şifre Sütunu Adı',
-
+    'The Signup Page feature must be activated in the Settings.' => 'Settings içerisinden Signup Page özelliğinin aktif edilmesi gerekiyor.'
 ];

@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use portalium\user\Module;
 use portalium\theme\widgets\Panel;
 use kartik\file\FileInput;
-
+use portalium\user\models\Group;
 $this->title = Module::t('Index');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 <?= $form->field($model, 'password')->textInput(['maxlength' => true]) ?>
-<?= $form->field($model, 'group')->dropDownList(\portalium\user\models\Group::getGroups(), ['prompt' => Module::t('Not Selected')]) ?>
+<?= $form->field($model, 'group')->dropDownList(Group::getGroups(), ['prompt' => Module::t('Not Selected')]) ?>
 <?= $form->field($model, 'role')->dropDownList($roles, ['prompt' => Module::t('Not Selected')]) ?>
 
 
