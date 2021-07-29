@@ -30,6 +30,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= $form->field($model, 'password')->textInput(['maxlength' => true]) ?>
 <?= $form->field($model, 'group')->dropDownList(Group::getGroups(), ['prompt' => Module::t('Not Selected')]) ?>
 <?= $form->field($model, 'role')->dropDownList($roles, ['prompt' => Module::t('Not Selected')]) ?>
+<?= $form->field($model, 'seperator')->dropDownList([';' => ';' , ',' => ','] , ['prompt' => Module::t('Not Selected')]) ?>
+
 
 
     <div id="internal">

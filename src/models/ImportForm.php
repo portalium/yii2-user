@@ -16,6 +16,7 @@ class ImportForm extends Model
     public $password;
     public $group;
     public $role;
+    public $seperator;
 
     /**
      * {@inheritdoc}
@@ -26,7 +27,7 @@ class ImportForm extends Model
             [['file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'csv'],
             [['username', 'email'], 'required'],
             ['email', 'required'],
-            [['username', 'group', 'role'], 'string', 'max' => 40],
+            [['username', 'group', 'role' , 'seperator'], 'string', 'max' => 40],
             ['password', 'string', 'max' => 40],
             ['first_name', 'string', 'max' => 40],
             ['last_name', 'string', 'max' => 40],

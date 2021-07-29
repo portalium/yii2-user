@@ -52,18 +52,19 @@ class ImportController extends WebController
                 return $this->redirect(['index']);
             }
             $fileName = $this->upload($model->file);
+
             $users = [];
             $filePath = realpath(Yii::$app->basePath . '/../data') . '/' . $fileName;
-            $csv = array_map(function ($v) {
-                return str_getcsv($v, ";");
-            }, file($filePath, FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES));
+            $GLOBALS['seperator'] = $model->seperator;
+            $csv = array_map(function ($v) { 
+                return str_getcsv($v, $GLOBALS['seperator']); }, file($filePath, FILE_SKIP_EMPTY_LINES|FILE_IGNORE_NEW_LINES));
             $keys = array_shift($csv);
 
             foreach ($csv as $i => $row) {
                 $csv[$i] = array_combine($keys, $row);
             }
             foreach ($model->attributes() as $attribute) {
-                if ($attribute != "file")
+                if ($attribute != "file" && $attribute != "seperator")
                     $model[$attribute] = (array_search($model[$attribute], $keys)) ? $model[$attribute] : null;
             }
 
