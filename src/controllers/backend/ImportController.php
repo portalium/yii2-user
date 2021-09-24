@@ -35,8 +35,6 @@ class ImportController extends WebController
     {
         if (!Yii::$app->user->can('importUser'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to import User"));
-        if (!Setting::findOne(['name' => 'page::signup'])->value)
-            throw new ForbiddenHttpException(Module::t("The Signup Page feature must be activated in the Settings."));
 
         $model = new ImportForm(["first_name" => "firstname", "last_name" => "lastname", "username" => "username", "password" => "password", "email" => "email"]);
 
