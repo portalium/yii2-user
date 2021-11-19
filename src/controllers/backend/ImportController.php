@@ -60,10 +60,13 @@ class ImportController extends WebController
 
             foreach ($csv as $i => $row) {
                 $csv[$i] = array_combine($keys, $row);
+
             }
+
             foreach ($model->attributes() as $attribute) {
-                if ($attribute != "file" && $attribute != "seperator")
+                if ($attribute != "file" && $attribute != "seperator" && $attribute != "group" && $attribute != "role") {
                     $model[$attribute] = (array_search($model[$attribute], $keys)) ? $model[$attribute] : null;
+                }
             }
 
             if ($model->email == null || $model->username == null) {
@@ -89,9 +92,15 @@ class ImportController extends WebController
 
             $usersDB = Yii::$app->db->createCommand()->batchInsert("user",
                     ["first_name", "last_name", "username", "email", "auth_key", "password_hash", "password_reset_token", "access_token", "status"], $users)
-                    ->rawSql . ' RETURNING id';
+                    ->rawSql;
             $usersDB = 'INSERT IGNORE' . mb_substr($usersDB, strlen('INSERT'));
-            $userIds = Yii::$app->db->createCommand($usersDB)->queryColumn();
+            Yii::$app->db->createCommand($usersDB)->queryColumn();
+            //get user id from username
+            $userNames = array();
+            foreach ($users as $user) {
+                array_push($userNames,$user[2]);
+            }
+            $userIds = Yii::$app->db->createCommand("SELECT id FROM user WHERE username IN ('".implode("','",$userNames)."')")->queryColumn();
 
             $role = Yii::$app->authManager->getRole($model->role);
             $userGroups = [];
