@@ -51,6 +51,9 @@ class DefaultController extends WebController
      */
     public function actionIndex()
     {
+        if (!Yii::$app->user->can('viewUser'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view User"));
+
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 

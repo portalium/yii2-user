@@ -97,8 +97,16 @@ class ImportController extends WebController
             //get user id from username
             $userNames = array();
             foreach ($users as $user) {
+                //if filter sql injection
+                if (preg_match('/[\'\/\\\^£$%&*()}{@#~?><>,|=_+¬-]/', $user[2])) {
+                    //create flash message error
+                    Yii::$app->session->setFlash('error', Module::t('Username contains invalid characters.'));
+                    continue;
+                }
                 array_push($userNames,$user[2]);
             }
+            
+
             $userIds = Yii::$app->db->createCommand("SELECT id FROM user WHERE username IN ('".implode("','",$userNames)."')")->queryColumn();
 
             $role = Yii::$app->authManager->getRole($model->role);
