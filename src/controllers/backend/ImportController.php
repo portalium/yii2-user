@@ -60,7 +60,6 @@ class ImportController extends WebController
 
             foreach ($csv as $i => $row) {
                 $csv[$i] = array_combine($keys, $row);
-
             }
 
             foreach ($model->attributes() as $attribute) {
