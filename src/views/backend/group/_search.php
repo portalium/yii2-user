@@ -2,7 +2,7 @@
 
 use portalium\theme\helpers\Html;
 use portalium\theme\widgets\ActiveForm;
-
+use portalium\user\Module;
 /* @var $this yii\web\View */
 /* @var $model portalium\user\models\GroupSearch */
 /* @var $form portalium\theme\widgets\ActiveForm */
@@ -22,8 +22,8 @@ use portalium\theme\widgets\ActiveForm;
     <?= $form->field($model, 'description') ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('site', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('site', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+        <?= Html::submitButton(Module::t( 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton(Module::t('Reset'), ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

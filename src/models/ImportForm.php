@@ -2,15 +2,21 @@
 
 namespace portalium\user\models;
 
-use yii\base\BaseObject;
 use yii\base\Model;
 use portalium\user\Module;
-use portalium\user\models\User;
 
 class ImportForm extends Model
 {
 
     public $file;
+    public $first_name;
+    public $last_name;
+    public $username;
+    public $email;
+    public $password;
+    public $group;
+    public $role;
+    public $seperator;
 
     /**
      * {@inheritdoc}
@@ -19,6 +25,13 @@ class ImportForm extends Model
     {
         return [
             [['file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'csv'],
+            [['username', 'email'], 'required'],
+            ['email', 'required'],
+            [['username', 'group', 'role' , 'seperator'], 'string', 'max' => 40],
+            ['password', 'string', 'max' => 40],
+            ['first_name', 'string', 'max' => 40],
+            ['last_name', 'string', 'max' => 40],
+
         ];
     }
 
@@ -28,9 +41,13 @@ class ImportForm extends Model
     public function attributeLabels()
     {
         return [
-            'file' => Module::t('File')
+            'file' => Module::t('File'),
+            'first_name' => Module::t('First Name Column Name'),
+            'last_name' => Module::t('Last Name Column Name'),
+            'username' => Module::t('Username Column Name'),
+            'email' => Module::t('Email Column Name'),
+            'password' => Module::t('Password Column Name')
         ];
     }
-
 
 }

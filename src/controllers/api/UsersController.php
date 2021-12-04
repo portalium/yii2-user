@@ -5,10 +5,11 @@ use Yii;
 use portalium\rest\ActiveController as RestActiveController;
 use portalium\site\Module;
 use portalium\site\models\SignupForm;
+use yii\web\ForbiddenHttpException;
 
 class UsersController extends RestActiveController
 {
-	public $modelClass = 'portalium\user\models\User';
+    public $modelClass = 'portalium\user\models\User';
 
     public function actions()
     {
@@ -20,6 +21,8 @@ class UsersController extends RestActiveController
 
     public function actionCreate()
     {
+        if (!Yii::$app->user->can('createUser'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to create User"));
         $model = new SignupForm();
 
         if($model->load(Yii::$app->getRequest()->getBodyParams(),'')) {

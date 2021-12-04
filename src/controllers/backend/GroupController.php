@@ -5,7 +5,8 @@ namespace portalium\user\controllers\backend;
 use portalium\user\models\Group;
 use portalium\user\models\GroupSearch;
 use portalium\user\models\UserSearch;
-use portalium\web\Controller;
+use portalium\web\Controller as WebController;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
@@ -14,7 +15,7 @@ use portalium\user\Module;
 /**
  * GroupController implements the CRUD actions for Group model.
  */
-class GroupController extends Controller
+class GroupController extends WebController
 {
     /**
      * @inheritdoc
@@ -49,6 +50,9 @@ class GroupController extends Controller
      */
     public function actionIndex()
     {
+        if (!Yii::$app->user->can('viewGroup'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view Group"));
+
         $searchModel = new GroupSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -69,7 +73,7 @@ class GroupController extends Controller
         $model = $this->findModel($id);
         return $this->render('view', [
             'model' => $model,
-            'userNames' => array_column($model->getUsers()->asArray()->all(), 'username')
+            'userNames' => $model->getUsers()->select('username')->column()
         ]);
     }
 
@@ -80,6 +84,9 @@ class GroupController extends Controller
      */
     public function actionCreate()
     {
+        if (!Yii::$app->user->can('createGroup'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to create Group"));
+
         $model = new Group();
 
         if ($this->request->isPost) {
@@ -104,6 +111,9 @@ class GroupController extends Controller
      */
     public function actionUpdate($id)
     {
+        if (!Yii::$app->user->can('updateGroup'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to update Group"));
+
         $model = $this->findModel($id);
 
         if ($this->request->isPost) {
@@ -130,6 +140,9 @@ class GroupController extends Controller
      */
     public function actionMembers($id)
     {
+        if (!Yii::$app->user->can('membersGroup'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to members Group"));
+
         $model = $this->findModel($id);
 
         if ($this->request->isPost) {
@@ -170,6 +183,9 @@ class GroupController extends Controller
      */
     public function actionDelete($id)
     {
+        if (!Yii::$app->user->can('deleteGroup'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete Group"));
+
         $this->findModel($id)->delete();
         return $this->redirect(['index']);
     }

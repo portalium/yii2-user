@@ -2,6 +2,7 @@
 
 use portalium\theme\helpers\Html;
 use portalium\theme\widgets\GridView;
+use portalium\theme\widgets\Panel;
 use portalium\user\Module;
 
 /* @var $this yii\web\View */
@@ -11,19 +12,19 @@ use portalium\user\Module;
 $this->title = Module::t('Groups');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="group-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a(Module::t('Create Group'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
+<?php Panel::begin([
+    'title' => Html::encode($this->title),
+    'actions' => [
+        'header' => [
+            Html::a(Module::t('Create Group'), ['create'], ['class' => 'btn btn-success']),
+        ]
+    ]
+]) ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'layout' => '{items}{pager}{summary}',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -42,6 +43,4 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-
-
-</div>
+<?php Panel::end() ?>
