@@ -2,6 +2,7 @@
 
 namespace portalium\user\models;
 
+use portalium\base\Event;
 use portalium\user\Module;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -226,6 +227,10 @@ class Group extends \yii\db\ActiveRecord
             }
             $numberAffectedRows = !empty($numberAffectedRows) ? $numberAffectedRows : 0;
             $isFailed = !($numberAffectedRows === count($userIds));
+
+            if (!$isFailed) {
+                \Yii::$app->trigger(Module::EVENT_USER_GROUP_ADD, new Event(['payload' => ['group' => $this,'users' => $userIds]]));
+            }
         }
 
         if ($isFailed) {
@@ -262,6 +267,10 @@ class Group extends \yii\db\ActiveRecord
             }
             $numberAffectedRows = !empty($numberAffectedRows) ? $numberAffectedRows : 0;
             $isFailed = !($numberAffectedRows === count($userIds));
+
+            if (!$isFailed) {
+                \Yii::$app->trigger(Module::EVENT_USER_GROUP_REMOVE, new Event(['payload' => ['group' => $this,'users' => $userIds]]));
+            }
         }
 
         if ($isFailed) {
