@@ -7,6 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use portalium\user\Module;
+use portalium\base\Event;
 
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -18,7 +19,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function tableName()
     {
-        return '{{user}}';
+        return '{{' . Module::$tablePrefix . 'user}}';
     }
 
     /**
@@ -34,6 +35,17 @@ class User extends ActiveRecord implements IdentityInterface
                 'value' => new \yii\db\Expression('NOW()'),
             ],
         ];
+    }
+
+    public function init()
+    {
+        $this->on(self::EVENT_AFTER_INSERT, function($event) {
+            \Yii::$app->trigger(Module::EVENT_USER_CREATE, new Event(['payload' => $event->data]));
+        }, $this);
+
+        $this->on(self::EVENT_AFTER_UPDATE, function($event) {
+            \Yii::$app->trigger(Module::EVENT_USER_UPDATE, new Event(['payload' => $event->data]));
+        }, $this);
     }
 
     /**

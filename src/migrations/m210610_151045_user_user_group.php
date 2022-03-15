@@ -9,7 +9,7 @@ use yii\db\Migration;
  * - `{{%user}}`
  * - `{{%group}}`
  */
-class m210610_151045_user_group extends Migration
+class m210610_151045_user_user_group extends Migration
 {
     /**
      * {@inheritdoc}
@@ -21,7 +21,7 @@ class m210610_151045_user_group extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%user_group}}', [
+        $this->createTable('{{%user_user_group}}', [
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
             'group_id' => $this->integer()->notNull(),
@@ -31,16 +31,16 @@ class m210610_151045_user_group extends Migration
         // creates index for column `user_id`
         $this->createIndex(
             '{{%idx-user_group-user_id}}',
-            '{{%user_group}}',
+            '{{%user_user_group}}',
             'user_id'
         );
 
         // add foreign key for table `{{%user}}`
         $this->addForeignKey(
             '{{%fk-user_group-user_id}}',
-            '{{%user_group}}',
+            '{{%user_user_group}}',
             'user_id',
-            '{{%user}}',
+            '{{%user_user}}',
             'id',
             'CASCADE'
         );
@@ -48,16 +48,16 @@ class m210610_151045_user_group extends Migration
         // creates index for column `group_id`
         $this->createIndex(
             '{{%idx-user_group-group_id}}',
-            '{{%user_group}}',
+            '{{%user_user_group}}',
             'group_id'
         );
 
         // add foreign key for table `{{%group}}`
         $this->addForeignKey(
             '{{%fk-user_group-group_id}}',
-            '{{%user_group}}',
+            '{{%user_user_group}}',
             'group_id',
-            '{{%group}}',
+            '{{%user_group}}',
             'id',
             'CASCADE'
         );
@@ -71,27 +71,27 @@ class m210610_151045_user_group extends Migration
         // drops foreign key for table `{{%user}}`
         $this->dropForeignKey(
             '{{%fk-user_group-user_id}}',
-            '{{%user_group}}'
+            '{{%user_user_group}}'
         );
 
         // drops index for column `user_id`
         $this->dropIndex(
             '{{%idx-user_group-user_id}}',
-            '{{%user_group}}'
+            '{{%user_user_group}}'
         );
 
         // drops foreign key for table `{{%group}}`
         $this->dropForeignKey(
             '{{%fk-user_group-group_id}}',
-            '{{%user_group}}'
+            '{{%user_user_group}}'
         );
 
         // drops index for column `group_id`
         $this->dropIndex(
             '{{%idx-user_group-group_id}}',
-            '{{%user_group}}'
+            '{{%user_user_group}}'
         );
 
-        $this->dropTable('{{%user_group}}');
+        $this->dropTable('{{%user_user_group}}');
     }
 }

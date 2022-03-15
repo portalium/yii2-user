@@ -4,6 +4,12 @@ namespace portalium\user;
 
 class Module extends \portalium\base\Module
 {
+    const EVENT_USER_CREATE = 'user-create';
+    const EVENT_USER_UPDATE = 'user-update';
+    const EVENT_USER_GROUP_ADD = 'user-group-add';
+    const EVENT_USER_GROUP_REMOVE = 'user-group-remove';
+
+
     public $apiRules = [
         [
             'class' => 'yii\rest\UrlRule',
@@ -12,6 +18,8 @@ class Module extends \portalium\base\Module
             ]
         ],
     ];
+
+    public static $tablePrefix = 'user_';
     
     public static function moduleInit()
     {

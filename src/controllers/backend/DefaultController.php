@@ -115,9 +115,26 @@ class DefaultController extends WebController
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to Update User"));
 
         $model = $this->findModel($id);
+        
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            if ($model->username != $model->oldAttributes['username']) {
+                $check = User::find()->where(['username' => $model->username])->one();
+                if ($check) {
+                    Yii::$app->session->setFlash('danger', Module::t('Username already exists'));
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
+            if ($model->email != $model->oldAttributes['email']) {
+                $check = User::find()->where(['email' => $model->email])->one();
+                if ($check) {
+                    Yii::$app->session->setFlash('danger', Module::t('Email already exists'));
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            if($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [
