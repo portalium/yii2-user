@@ -43,7 +43,7 @@ class Group extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{group}}';
+        return '{{' . Module::$tablePrefix . 'group}}';
     }
 
     /**

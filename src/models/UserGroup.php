@@ -4,6 +4,7 @@ namespace portalium\user\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use portalium\user\Module;
 
 /**
  * This is the model class for table "user_group".
@@ -23,7 +24,7 @@ class UserGroup extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{user_group}}';
+        return '{{' . Module::$tablePrefix . 'user_group}}';
     }
 
     /**

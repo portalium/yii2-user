@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Class m210610_145445_group
  */
-class m210610_145445_group extends Migration
+class m210610_145445_user_group extends Migration
 {
     /**
      * {@inheritdoc}
@@ -17,7 +17,7 @@ class m210610_145445_group extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('group', [
+        $this->createTable('user_group', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull()->unique(),
             'description' => $this->text(),
@@ -31,7 +31,7 @@ class m210610_145445_group extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('group');
+        $this->dropTable('user_group');
     }
 
     /*

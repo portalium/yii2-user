@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class m010101_010101_user extends Migration
+class m010101_010101_user_user extends Migration
 {
     public function up()
     {
@@ -11,7 +11,7 @@ class m010101_010101_user extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('user', [
+        $this->createTable('user_user', [
             'id' => $this->primaryKey(),
             'username' => $this->string()->notNull()->unique(),
             'first_name' => $this->string(),
@@ -29,6 +29,6 @@ class m010101_010101_user extends Migration
 
     public function down()
     {
-        $this->dropTable('user');
+        $this->dropTable('user_user');
     }
 }

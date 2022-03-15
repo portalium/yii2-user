@@ -18,6 +18,8 @@ class Module extends \portalium\base\Module
             ]
         ],
     ];
+
+    public static $tablePrefix = 'user_';
     
     public static function moduleInit()
     {
