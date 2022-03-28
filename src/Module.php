@@ -8,6 +8,7 @@ class Module extends \portalium\base\Module
     const EVENT_USER_UPDATE = 'user-update';
     const EVENT_USER_GROUP_ADD = 'user-group-add';
     const EVENT_USER_GROUP_REMOVE = 'user-group-remove';
+    const EVENT_USER_DELETE = 'user-delete';
 
 
     public $apiRules = [
