@@ -48,7 +48,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons' => [
                     'assignment' => function ($url, $model) {
                         return Html::a(Html::tag('i', '', ['class' => 'fa fa-fw fa-lock']), ['/user/auth/assignment/view', 'id' => $model->id], ['title' => Module::t('Assignment')]);
-                    }
+                    },
+                    'delete' => function ($url, $model) {
+                        return Html::a(Html::tag('i', '', ['class' => 'fa fa-fw fa-trash']), ['delete-manage', 'id' => $model->id], [
+                            'title' => Module::t('Delete'),
+                            'data-confirm' => Module::t('Are you sure you want to delete this item?')
+                        ]);
+                    },
                 ]
             ],
         ],
