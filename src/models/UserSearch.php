@@ -103,7 +103,7 @@ class UserSearch extends User
     public function inGroup()
     {
         if (!empty($this->_groupId)) {
-            $this->_query = User::find()->joinWith('groups')->where(['user_group.id' => $this->_groupId]);
+            $this->_query = User::find()->joinWith('groups')->where(['group.id' => $this->_groupId]);
             return $this;
         }
     }

@@ -1,7 +1,7 @@
 <?php
 use yii\db\Migration;
 
-class m010101_010102_user_rbac extends Migration
+class m010101_010104_user_rbac extends Migration
 {
     public function up()
     {
@@ -17,7 +17,9 @@ class m010101_010102_user_rbac extends Migration
         $viewGroup->description = 'View a Group';
         $auth->add($viewGroup);
 
-        $admin = $auth->getRole('admin');
+        $settings = yii\helpers\ArrayHelper::map(portalium\site\models\Setting::find()->asArray()->all(),'name','value');
+        $role = $settings['default::role'];
+        $admin = (isset($role) && $role != '') ? $auth->getRole($role) : $auth->getRole('admin');
 
         $auth->addChild($admin, $viewUser);
         $auth->addChild($admin, $viewGroup);
