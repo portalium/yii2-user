@@ -50,7 +50,7 @@ class GroupController extends WebController
      */
     public function actionIndex()
     {
-        if (!Yii::$app->user->can('viewGroup'))
+        if (!Yii::$app->user->can('userBackendGroupIndex'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view Group"));
 
         $searchModel = new GroupSearch();
@@ -70,6 +70,8 @@ class GroupController extends WebController
      */
     public function actionView($id)
     {
+        if (!Yii::$app->user->can('userBackendGroupView'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view Group"));
         $model = $this->findModel($id);
         return $this->render('view', [
             'model' => $model,
@@ -84,7 +86,7 @@ class GroupController extends WebController
      */
     public function actionCreate()
     {
-        if (!Yii::$app->user->can('createGroup'))
+        if (!Yii::$app->user->can('userBackendGroupCreate'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to create Group"));
 
         $model = new Group();
@@ -111,7 +113,7 @@ class GroupController extends WebController
      */
     public function actionUpdate($id)
     {
-        if (!Yii::$app->user->can('updateGroup'))
+        if (!Yii::$app->user->can('userBackendGroupUpdate'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to update Group"));
 
         $model = $this->findModel($id);
@@ -140,7 +142,7 @@ class GroupController extends WebController
      */
     public function actionMembers($id)
     {
-        if (!Yii::$app->user->can('membersGroup'))
+        if (!Yii::$app->user->can('userBackendGroupMembers'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to members Group"));
 
         $model = $this->findModel($id);
@@ -183,7 +185,7 @@ class GroupController extends WebController
      */
     public function actionDelete($id)
     {
-        if (!Yii::$app->user->can('deleteGroup'))
+        if (!Yii::$app->user->can('userBackendGroupDelete'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete Group"));
 
         $this->findModel($id)->delete();

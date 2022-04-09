@@ -11,7 +11,7 @@ use portalium\user\models\User;
 use portalium\user\models\UserForm;
 use portalium\user\models\UserSearch;
 use portalium\web\Controller as WebController;
-
+use yii\rbac\Item;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -51,7 +51,7 @@ class DefaultController extends WebController
      */
     public function actionIndex()
     {
-        if (!Yii::$app->user->can('viewUser'))
+        if (!Yii::$app->user->can('userBackendDefaultIndex'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view User"));
 
         $searchModel = new UserSearch();
@@ -71,6 +71,9 @@ class DefaultController extends WebController
      */
     public function actionView($id)
     {
+        if (!Yii::$app->user->can('userBackendDefaultView'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view User"));
+
         $model = $this->findModel($id);
         return $this->render('view', [
             'model' => $model,
@@ -85,7 +88,7 @@ class DefaultController extends WebController
      */
     public function actionCreate()
     {
-        if (!Yii::$app->user->can('createUser'))
+        if (!Yii::$app->user->can('userBackendDefaultCreate'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to create User"));
 
         $model = new UserForm();
@@ -111,7 +114,7 @@ class DefaultController extends WebController
      */
     public function actionUpdate($id)
     {
-        if (!Yii::$app->user->can('updateUser'))
+        if (!Yii::$app->user->can('userBackendDefaultUpdate'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to Update User"));
 
         $model = $this->findModel($id);
@@ -151,7 +154,7 @@ class DefaultController extends WebController
      */
     public function actionDelete($id)
     {
-        if (!Yii::$app->user->can('deleteUser'))
+        if (!Yii::$app->user->can('userBackendDefaultDelete'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
 
         $this->findModel($id)->delete();

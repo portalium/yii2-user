@@ -36,8 +36,8 @@ class RoleController extends BaseAuthItemController
 
     public function getViewPath()
     {
-        if (!Yii::$app->user->can('setRole'))
-            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Role"));
+        if (!Yii::$app->user->can('userBackendRoleViewPath'))
+            throw new ForbiddenHttpException('You are not allowed to perform this action.');
         return '@portalium/' . $this->module->id . '/views/' . Yii::$app->id . '/auth/item';
     }
 }

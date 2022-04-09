@@ -8,6 +8,7 @@ use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use portalium\user\Module;
 use portalium\base\Event;
+use portalium\site\models\Setting;
 
 class User extends ActiveRecord implements IdentityInterface
 {
