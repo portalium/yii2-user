@@ -22,7 +22,7 @@
 	],
 	"require": {
 		"kartik-v/yii2-widget-fileinput": "@dev",
-		"portalium/portalium-menu": "*"
+		"portalium/portalium-site": "*"
 	},
 	"autoload" : {
 		"psr-4" : {
