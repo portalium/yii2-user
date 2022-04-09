@@ -19,10 +19,39 @@ class UsersController extends RestActiveController
         return $actions;
     }
 
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+        switch ($action->id) {
+            case 'view':
+                if (!Yii::$app->user->can('userApiDefaultView')) 
+                    throw new \yii\web\ForbiddenHttpException(Module::t('You do not have permission to view this menu.'));
+                break;
+            case 'create':
+                if (!Yii::$app->user->can('userApiDefaultCreate')) 
+                    throw new \yii\web\ForbiddenHttpException(Module::t('You do not have permission to create this menu.'));
+                break;
+            case 'update':
+                if (!Yii::$app->user->can('userApiDefaultUpdate')) 
+                    throw new \yii\web\ForbiddenHttpException(Module::t('You do not have permission to update this menu.'));
+                break;
+            case 'delete':
+                if (!Yii::$app->user->can('userApiDefaultDelete'))
+                    throw new \yii\web\ForbiddenHttpException(Module::t('You do not have permission to delete this menu.'));
+                break;
+            default:
+                if (!Yii::$app->user->can('userApiDefaultIndex'))
+                    throw new \yii\web\ForbiddenHttpException(Module::t('You do not have permission to delete this menu.'));
+                break;
+        }
+        
+        return true;
+    }
+
     public function actionCreate()
     {
-        if (!Yii::$app->user->can('createUser'))
-            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to create User"));
         $model = new SignupForm();
 
         if($model->load(Yii::$app->getRequest()->getBodyParams(),'')) {

@@ -3,18 +3,15 @@
 namespace portalium\user\controllers\backend;
 
 use Yii;
-use portalium\base\Event;
-use portalium\user\Module;
-use yii\filters\VerbFilter;
-use yii\helpers\ArrayHelper;
-use portalium\user\models\User;
 use yii\web\NotFoundHttpException;
-use portalium\user\models\UserForm;
 use yii\web\ForbiddenHttpException;
-use portalium\user\models\ModuleForm;
+use yii\filters\VerbFilter;
+use portalium\user\Module;
+use portalium\user\models\User;
+use portalium\user\models\UserForm;
 use portalium\user\models\UserSearch;
-use portalium\user\Module as UserModule;
 use portalium\web\Controller as WebController;
+use yii\rbac\Item;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -54,7 +51,7 @@ class DefaultController extends WebController
      */
     public function actionIndex()
     {
-        if (!Yii::$app->user->can('viewUser'))
+        if (!Yii::$app->user->can('userBackendDefaultIndex'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view User"));
 
         $searchModel = new UserSearch();
@@ -74,6 +71,9 @@ class DefaultController extends WebController
      */
     public function actionView($id)
     {
+        if (!Yii::$app->user->can('userBackendDefaultView'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view User"));
+
         $model = $this->findModel($id);
         return $this->render('view', [
             'model' => $model,
@@ -88,7 +88,7 @@ class DefaultController extends WebController
      */
     public function actionCreate()
     {
-        if (!Yii::$app->user->can('createUser'))
+        if (!Yii::$app->user->can('userBackendDefaultCreate'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to create User"));
 
         $model = new UserForm();
@@ -114,12 +114,27 @@ class DefaultController extends WebController
      */
     public function actionUpdate($id)
     {
-        if (!Yii::$app->user->can('updateUser'))
+        if (!Yii::$app->user->can('userBackendDefaultUpdate'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to Update User"));
 
         $model = $this->findModel($id);
         
         if ($this->request->isPost && $model->load($this->request->post())) {
+            if ($model->username != $model->oldAttributes['username']) {
+                $check = User::find()->where(['username' => $model->username])->one();
+                if ($check) {
+                    Yii::$app->session->setFlash('danger', Module::t('Username already exists'));
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
+            if ($model->email != $model->oldAttributes['email']) {
+                $check = User::find()->where(['email' => $model->email])->one();
+                if ($check) {
+                    Yii::$app->session->setFlash('danger', Module::t('Email already exists'));
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
+
             if($model->save()){
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -139,50 +154,12 @@ class DefaultController extends WebController
      */
     public function actionDelete($id)
     {
-        if (!Yii::$app->user->can('deleteUser'))
+        if (!Yii::$app->user->can('userBackendDefaultDelete'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
 
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }
-
-    public function actionDeleteManage($id){
-        if (!Yii::$app->user->can('deleteUser'))
-            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
-        $model = new ModuleForm();
-        $modules = [];
-        if($this->request->isPost && $model->load($this->request->post())){
-            $modules = Yii::$app->getModules();
-            foreach($modules as $key => $value){
-                if(!empty($model->modules) && !in_array($key, $model->modules)){
-                    unset($modules[$key]);
-                }
-            }
-            if(empty($model->modules)){
-                $modules = [];
-            }
-            Event::trigger($modules, UserModule::EVENT_USER_DELETE_BEFORE, new Event(['payload' => ['id' => $id, 'action' => 'delete', 'default_user' => $model->default_user]]));
-            Event::trigger(Yii::$app->getModules(), UserModule::EVENT_USER_DELETE_BEFORE, new Event(['payload' => ['id' => $id, 'action' => 'transfer', 'default_user' => $model->default_user]]));
-            $this->actionDelete($id);
-        }
-        
-
-        foreach (Yii::$app->getModules() as $key => $module) {
-            if(Event::hasHandlers($module::className(), UserModule::EVENT_USER_DELETE_BEFORE))
-                {
-                    $modules[$key] = $key;
-                }
-        }
-        //get users array map for dropdown
-        $users = ArrayHelper::map(User::find()->all(), 'id', 'username');
-
-        return $this->render('delete-manage', [
-            'model' => $model,
-            'modules' => $modules,
-            'id_user' => $id,
-            'users' => $users,
-        ]);
     }
 
     /**

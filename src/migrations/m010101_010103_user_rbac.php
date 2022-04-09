@@ -1,7 +1,7 @@
 <?php
 use yii\db\Migration;
 
-class m010101_010101_user_rbac extends Migration
+class m010101_010103_user_rbac extends Migration
 {
     public function up()
     {
@@ -77,6 +77,8 @@ class m010101_010101_user_rbac extends Migration
         $auth->addChild($admin, $setPermission);
         $auth->assign($admin, 1);
 
+        $user = $auth->createRole('user');
+        $auth->add($user);
     }
 
     public function down()

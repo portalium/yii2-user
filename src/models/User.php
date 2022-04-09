@@ -8,6 +8,7 @@ use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use portalium\user\Module;
 use portalium\base\Event;
+use portalium\site\models\Setting;
 
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -46,10 +47,6 @@ class User extends ActiveRecord implements IdentityInterface
         $this->on(self::EVENT_AFTER_UPDATE, function($event) {
             \Yii::$app->trigger(Module::EVENT_USER_UPDATE, new Event(['payload' => $event->data]));
         }, $this);
-
-        $this->on(self::EVENT_AFTER_DELETE, function($event) {
-            \Yii::$app->trigger(Module::EVENT_USER_DELETE, new Event(['payload' => $event->data]));
-        }, $this);
     }
 
     /**
@@ -61,9 +58,6 @@ class User extends ActiveRecord implements IdentityInterface
             [['first_name', 'last_name', 'username', 'email'], 'safe'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-            ['username', 'unique', 'targetClass' => self::class, 'message' => 'This username has already been taken.'],
-            ['email', 'unique', 'targetClass' => self::class, 'message' => 'This email address has already been taken.'],
-            ['email', 'email'],
         ];
     }
 

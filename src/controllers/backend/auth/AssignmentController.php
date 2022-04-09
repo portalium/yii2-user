@@ -39,7 +39,7 @@ class AssignmentController extends WebController
      */
     public function actionView($id)
     {
-        if (!Yii::$app->user->can('setAssignment'))
+        if (!Yii::$app->user->can('userBackendAssignmentView'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
 
         $model = $this->findModel($id);
@@ -56,7 +56,7 @@ class AssignmentController extends WebController
      */
     public function actionAssign($id)
     {
-        if (!Yii::$app->user->can('setAssignment'))
+        if (!Yii::$app->user->can('userBackendAssignmentAssign'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
 
         $items = $this->request->post('items', []);
@@ -73,7 +73,7 @@ class AssignmentController extends WebController
      */
     public function actionRevoke($id)
     {
-        if (!Yii::$app->user->can('setAssignment'))
+        if (!Yii::$app->user->can('userBackendAssignmentRevoke'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
 
         $items = $this->request->post('items', []);

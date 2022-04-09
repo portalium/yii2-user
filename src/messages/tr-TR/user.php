@@ -60,8 +60,5 @@ return [
     'Password Column Name' => 'Şifre Sütunu Adı',
     'The Signup Page feature must be activated in the Settings.' => 'Settings içerisinden Signup Page özelliğinin aktif edilmesi gerekiyor.',
     'Username already exists' => 'Kullanıcı adı zaten var',
-    'Email already exists' => 'E-posta zaten var',
-    'User Management Module' => 'Kullanıcı Yönetim Modülü',
-    'Warning: When the user is deleted, his records in the marked modules will also be deleted. Tick the records you want to be deleted.' => 'Uyarı: Kullanıcı silindiğinde, işaretli modüllerdeki kayıtları silinir. Silmek istediğiniz kayıtları işaretleyin.',
-    'Note: Unchecked Records will be assigned to the default user.' => 'Not: İşaretlenmeyen modüllerdeki kayıtlar varsayılan kullanıcıya atanacaktır.',
+    'Email already exists' => 'E-posta zaten var'
 ];
