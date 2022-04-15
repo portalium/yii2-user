@@ -2,8 +2,6 @@
 
 namespace portalium\user;
 
-use portalium\site\widgets\LoginButton;
-
 class Module extends \portalium\base\Module
 {
     const EVENT_USER_CREATE = 'user-create';
@@ -28,15 +26,21 @@ class Module extends \portalium\base\Module
         $menuItems = [
             [
                 [
-                    'type' => 'model',
-                    'class' => 'portalium\user\models\User',
-                    'route' => '/user/default/view',
-                    'field' => [ 'id' => 'id', 'name' => 'username' ],
+                    'type' => 'action',
+                    'route' => '/user/auth/role',
                 ],
                 [
                     'type' => 'action',
-                    'route' => '/user/default/index',
+                    'route' => '/user/auth/permission',
                 ],
+                [
+                    'type' => 'action',
+                    'route' => '/user/default',
+                ],
+                [
+                    'type' => 'action',
+                    'route' => '/user/group',
+                ]
             ],
         ];
         return $menuItems;
