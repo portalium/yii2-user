@@ -5,6 +5,7 @@ namespace portalium\user\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use portalium\user\models\User;
+use portalium\user\Module;
 use Yii;
 
 /**
@@ -103,7 +104,7 @@ class UserSearch extends User
     public function inGroup()
     {
         if (!empty($this->_groupId)) {
-            $this->_query = User::find()->joinWith('groups')->where(['group.id' => $this->_groupId]);
+            $this->_query = User::find()->joinWith('groups')->where([Module::$tablePrefix.'group.id' => $this->_groupId]);
             return $this;
         }
     }
