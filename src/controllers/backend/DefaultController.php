@@ -177,4 +177,17 @@ class DefaultController extends WebController
 
         throw new NotFoundHttpException(Yii::t('site', 'The requested page does not exist.'));
     }
+
+    public function actionMultipleDelete()
+    {
+        if (Yii::$app->request->isAjax) {
+            $data = Yii::$app->request->post();
+            $selectedItems = $data['id'];
+            foreach($selectedItems as $item)
+            {
+                $this->findModel($item)->delete();
+            }
+            return $this->redirect(['index']);
+          }
+    }
 }

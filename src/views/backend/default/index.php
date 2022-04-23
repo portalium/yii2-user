@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     'title' => Module::t('Users'),
     'actions' => [
         'header' => [
+            Html::submitButton(Module::t('Delete Selected User'), ['class' => 'btn btn-success', 'id' => 'delete-select']),
             Html::a(Module::t('Create User'), ['create'], ['class' => 'btn btn-success']),
         ]
     ]
@@ -28,7 +29,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'layout' => '{items}{pager}{summary}',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
+            [
+                'class' => 'yii\grid\CheckboxColumn'
+            ],
             'id',
             'username',
             'first_name',
@@ -54,3 +57,20 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 <?php Panel::end() ?>
+
+<?php
+$script = <<< JS
+    $("#delete-select").on("click", function(e){
+       e.preventDefault()
+       var keys = $("#w1").yiiGridView("getSelectedRows");
+       $.ajax({
+         url: "/admin/user/default/multiple-delete",
+         type: "POST",
+         data: {id: keys},
+       })
+   });
+JS;
+$this->registerJs($script, yii\web\View::POS_READY);
+
+
+?>
