@@ -20,7 +20,7 @@ Panel::begin([
     'title' => Module::t('Users'),
     'actions' => [
         'header' => [
-            Html::submitButton(Module::t('Delete Selected Items'), [
+            Html::submitButton(Module::t('Delete Selected Users'), [
                 'class' => 'btn btn-danger', 'id' => 'delete-select',
                 'data' => [
                     'confirm' => Module::t('If you continue, all your data will be reset. Do you want to continue?'),
@@ -46,7 +46,6 @@ Panel::begin([
             [
                 'class' => 'yii\grid\CheckboxColumn'
             ],
-            'id',
             'username',
             'first_name',
             'last_name',

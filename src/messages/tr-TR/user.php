@@ -64,4 +64,5 @@ return [
     'User Management Module' => 'Kullanıcı Yönetim Modülü',
     'Warning: When the user is deleted, his records in the marked modules will also be deleted. Tick the records you want to be deleted.' => 'Uyarı: Kullanıcı silindiğinde, işaretli modüllerdeki kayıtları silinir. Silmek istediğiniz kayıtları işaretleyin.',
     'Note: Unchecked Records will be assigned to the default user.' => 'Not: İşaretlenmeyen modüllerdeki kayıtlar varsayılan kullanıcıya atanacaktır.',
+    'Delete Selected Users' => 'Seçilen Kullanıcıları Sil',
 ];

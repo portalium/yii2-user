@@ -8,7 +8,7 @@ class m010101_010105_user_rbac extends Migration
         $auth = Yii::$app->authManager;
         
         $settings = yii\helpers\ArrayHelper::map(portalium\site\models\Setting::find()->asArray()->all(),'name','value');
-        $role = $settings['default::role'];
+        $role = 'admin';
         $admin = (isset($role) && $role != '') ? $auth->getRole($role) : $auth->getRole('admin');
 
         $auth->remove($auth->getPermission("createUser"));
