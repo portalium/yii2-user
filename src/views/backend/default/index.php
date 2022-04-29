@@ -3,6 +3,7 @@
 use portalium\theme\helpers\Html;
 use portalium\theme\widgets\GridView;
 use portalium\theme\widgets\Panel;
+use portalium\user\models\User;
 use portalium\user\Module;
 
 /* @var $this yii\web\View */
@@ -16,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     'title' => Module::t('Users'),
     'actions' => [
         'header' => [
-            Html::a(Module::t('Create User'), ['create'], ['class' => 'btn btn-success']),
+            Html::a(Module::t(''), ['create'], ['class' => 'fa fa-plus btn btn-success']),
         ]
     ]
 ]) ?>
@@ -28,17 +29,26 @@ $this->params['breadcrumbs'][] = $this->title;
         'layout' => '{items}{pager}{summary}',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+            [
+                'attribute' => 'first_name',
+                'value' => function ($model) {
+                    return $model->first_name . ' ' . $model->last_name;
+                },
 
-            'id',
+            ],
             'username',
-            'first_name',
-            'last_name',
             //'auth_key',
             //'password_hash',
             //'password_reset_token',
             'email:email',
             //'access_token',
-            //'status',
+            [
+                'attribute' => 'status',
+                'label' => Module::t('Status'),
+                'value' => function ($model) {
+                    return $model->status == 10 ? Module::t('Active') : Module::t('Passive');
+                },
+            ],
             //'created_at',
             //'updated_at',
 

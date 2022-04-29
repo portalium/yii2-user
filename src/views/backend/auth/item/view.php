@@ -40,10 +40,10 @@ $animateIcon = ' <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate
     'title' => Html::encode($this->title),
     'actions' => [
         'header' => [
-            ($this->context->getType() === 2) ? "" :
-                Html::a(Module::t('Update'), ['update', 'id' => $model->name], ['class' => 'btn btn-primary']),
-            Html::a(Module::t('Delete'), ['delete', 'id' => $model->name], [
-                'class' => 'btn btn-danger',
+            ($this->context->getType() === 2) ? "" : 
+                Html::a(Module::t(''), ['update', 'id' => $model->name], ['class' => 'fa fa-pencil btn btn-primary']),
+            ($this->context->getType() === 2) ? "" : Html::a(Module::t(''), ['delete', 'id' => $model->name], [
+                'class' => 'fa fa-trash btn btn-danger',
                 'data-confirm' => Module::t('Are you sure to delete this item?'),
                 'data-method' => 'post',
             ])

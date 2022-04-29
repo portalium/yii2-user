@@ -20,9 +20,9 @@ $this->params['breadcrumbs'][] = $this->title;
     'actions' => [
         'header' => [
             ($this->context->getType() === 2) ? "" : Html::a(
-                Module::t('Create ' . $labels['Item']),
+                Module::t(''),
                 ['create'],
-                ['class' => 'btn btn-success']
+                ['class' => 'fa fa-plus btn btn-success']
             )
         ]
     ]

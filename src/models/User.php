@@ -71,7 +71,8 @@ class User extends ActiveRecord implements IdentityInterface
             'last_name' => Module::t('Last Name'),
             'username' => Module::t('Username'),
             'email' => Module::t('Email'),
-            'password' => Module::t('Password')
+            'password' => Module::t('Password'),
+            'status' => Module::t('Status'),
         ];
     }
     
