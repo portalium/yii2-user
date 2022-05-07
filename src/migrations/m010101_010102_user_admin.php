@@ -7,7 +7,7 @@ class m010101_010102_user_admin extends Migration
     public function up()
     {
         $this->insert('user_user', [
-            'id' => '1',
+            'id_user' => '1',
             'username' => 'admin',
             'first_name' => NULL,
             'last_name' => NULL,
@@ -24,6 +24,6 @@ class m010101_010102_user_admin extends Migration
 
     public function down()
     {
-        $this->delete('user_user', ['id' => '1']);
+        $this->delete('user_user', ['id_user' => '1']);
     }
 }

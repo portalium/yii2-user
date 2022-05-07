@@ -9,7 +9,7 @@ use portalium\user\Module;
 /**
  * This is the model class for table "user_group".
  *
- * @property int $id
+ * @property int $id_user
  * @property int $user_id
  * @property int $group_id
  * @property int $created_at
@@ -47,10 +47,10 @@ class UserGroup extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'group_id'], 'required'],
-            [['user_id', 'group_id'], 'integer'],
-            [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::class, 'targetAttribute' => ['group_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['id_user', 'id_group'], 'required'],
+            [['id_user', 'id_group'], 'integer'],
+            [['id_group'], 'exist', 'skipOnError' => true, 'targetClass' => Group::class, 'targetAttribute' => ['id_group' => 'id_group']],
+            [['id_user'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['id_user' => 'id_group']],
         ];
     }
 
@@ -60,9 +60,9 @@ class UserGroup extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'user_id' => 'User ID',
-            'group_id' => 'Group ID',
+            'id_user' => 'ID',
+            'id_user' => 'User ID',
+            'id_group' => 'Group ID',
             'created_at' => 'Created At',
         ];
     }
@@ -74,7 +74,7 @@ class UserGroup extends \yii\db\ActiveRecord
      */
     public function getGroup()
     {
-        return $this->hasOne(Group::class, ['id' => 'group_id']);
+        return $this->hasOne(Group::class, ['id_group' => 'id_group']);
     }
 
     /**
@@ -84,6 +84,6 @@ class UserGroup extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::class, ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id_user' => 'id_user']);
     }
 }

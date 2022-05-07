@@ -64,7 +64,7 @@ class GroupController extends WebController
 
     /**
      * Displays a single Group model.
-     * @param integer $id
+     * @param integer $id_group
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -93,7 +93,7 @@ class GroupController extends WebController
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['view', 'id_group' => $model->id_group]);
             }
         } else {
             $model->loadDefaultValues();
@@ -107,7 +107,7 @@ class GroupController extends WebController
     /**
      * Updates an existing Group model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * @param integer $id_group
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -121,7 +121,7 @@ class GroupController extends WebController
         if ($this->request->isPost) {
             $model->load($this->request->post());
             $model->save();
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id_group' => $model->id_group]);
         }
 
         $searchModel = new UserSearch();
@@ -136,7 +136,7 @@ class GroupController extends WebController
     /**
      * Manages members for an existing Group model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * @param integer $id_group
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -158,7 +158,7 @@ class GroupController extends WebController
             }
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', Module::t('Settings saved.'));
-                return $this->redirect(['members', 'id' => $model->id]);
+                return $this->redirect(['members', 'id_group' => $model->id_group]);
             } else {
                 Yii::$app->session->setFlash('error', Module::t('There was an error. Settings not saved successfully.'));
             }
@@ -166,7 +166,7 @@ class GroupController extends WebController
 
         $searchModel = new UserSearch();
 
-        $searchModel->setGroupId($model->id);
+        $searchModel->setGroupId($model->id_group);
 
         return $this->render('members', [
             'model' => $model,
@@ -179,7 +179,7 @@ class GroupController extends WebController
     /**
      * Deletes an existing Group model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param integer $id_group
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -195,7 +195,7 @@ class GroupController extends WebController
     /**
      * Finds the Group model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
+     * @param integer $id_group
      * @return Group the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

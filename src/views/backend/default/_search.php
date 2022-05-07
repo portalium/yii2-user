@@ -15,7 +15,7 @@ use portalium\user\Module;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?= $form->field($model, 'id_user') ?>
 
     <?= $form->field($model, 'username') ?>
 

@@ -32,8 +32,8 @@ YiiAsset::register($this);
 
 $opts = Json::htmlEncode([
     'items' => $model->getItems(),
-    'users' => $userDataProvider->query->select(['id', 'username'])->all(),
-    'groups' => $groupDataProvider->query->select(['id', 'name'])->all(),
+    'users' => $userDataProvider->query->select(['id_user', 'username'])->all(),
+    'groups' => $groupDataProvider->query->select(['id_group', 'name'])->all(),
     'assignedUsers' => $assignedUsers
 ]);
 

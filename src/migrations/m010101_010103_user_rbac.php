@@ -12,7 +12,6 @@ class m010101_010103_user_rbac extends Migration
         $createUser->description = 'Create a User';
         $auth->add($createUser);
 
-        // add "updateNews" permission
         $updateUser = $auth->createPermission('updateUser');
         $updateUser->description = 'Update User';
         $auth->add($updateUser);
@@ -37,7 +36,6 @@ class m010101_010103_user_rbac extends Migration
         $createGroup->description = 'Create a Group';
         $auth->add($createGroup);
 
-        // add "updateNews" permission
         $updateGroup = $auth->createPermission('updateGroup');
         $updateGroup->description = 'Update Group';
         $auth->add($updateGroup);

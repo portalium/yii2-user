@@ -12,6 +12,7 @@ class Module extends \portalium\base\Module
     const EVENT_USER_DELETE_BEFORE = 'user-delete-before';
 
     public static $description = 'User Management Module';
+    public static $name = 'User';
     public $apiRules = [
         [
             'class' => 'yii\rest\UrlRule',
