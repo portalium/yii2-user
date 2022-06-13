@@ -22,9 +22,9 @@ class m210610_151045_user_user_group extends Migration
         }
 
         $this->createTable('{{%user_user_group}}', [
-            'id' => $this->primaryKey(),
-            'user_id' => $this->integer()->notNull(),
-            'group_id' => $this->integer()->notNull(),
+            'id_group' => $this->primaryKey(),
+            'id_user' => $this->integer()->notNull(),
+            'id_group' => $this->integer()->notNull(),
             'created_at' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
         ], $tableOptions);
 
@@ -32,16 +32,16 @@ class m210610_151045_user_user_group extends Migration
         $this->createIndex(
             '{{%idx-user_group-user_id}}',
             '{{%user_user_group}}',
-            'user_id'
+            'id_user'
         );
 
         // add foreign key for table `{{%user}}`
         $this->addForeignKey(
             '{{%fk-user_group-user_id}}',
             '{{%user_user_group}}',
-            'user_id',
+            'id_user',
             '{{%user_user}}',
-            'id',
+            'id_user',
             'CASCADE'
         );
 
@@ -49,16 +49,16 @@ class m210610_151045_user_user_group extends Migration
         $this->createIndex(
             '{{%idx-user_group-group_id}}',
             '{{%user_user_group}}',
-            'group_id'
+            'id_group'
         );
 
         // add foreign key for table `{{%group}}`
         $this->addForeignKey(
             '{{%fk-user_group-group_id}}',
             '{{%user_user_group}}',
-            'group_id',
+            'id_group',
             '{{%user_group}}',
-            'id',
+            'id_group',
             'CASCADE'
         );
     }

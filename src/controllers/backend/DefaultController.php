@@ -53,7 +53,9 @@ class DefaultController extends WebController
     {
         if (!Yii::$app->user->can('userBackendDefaultIndex'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view User"));
-
+        if ($this->request->isPost) {
+            $this->actionMultipleDelete($this->request->post('selection'));
+        }
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -96,7 +98,7 @@ class DefaultController extends WebController
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
                 if ($user = $model->createUser()) {
-                    return $this->redirect(['view', 'id' => $user->id]);
+                    return $this->redirect(['view', 'id' => $user->id_user]);
                 }
             }
         }
@@ -118,25 +120,25 @@ class DefaultController extends WebController
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to Update User"));
 
         $model = $this->findModel($id);
-        
+
         if ($this->request->isPost && $model->load($this->request->post())) {
             if ($model->username != $model->oldAttributes['username']) {
                 $check = User::find()->where(['username' => $model->username])->one();
                 if ($check) {
                     Yii::$app->session->setFlash('danger', Module::t('Username already exists'));
-                    return $this->redirect(['view', 'id' => $model->id]);
+                    return $this->redirect(['view', 'id' => $model->id_user]);
                 }
             }
             if ($model->email != $model->oldAttributes['email']) {
                 $check = User::find()->where(['email' => $model->email])->one();
                 if ($check) {
                     Yii::$app->session->setFlash('danger', Module::t('Email already exists'));
-                    return $this->redirect(['view', 'id' => $model->id]);
+                    return $this->redirect(['view', 'id' => $model->id_user]);
                 }
             }
 
             if($model->save()){
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['view', 'id' => $model->id_user]);
             }
         }
 
@@ -176,5 +178,13 @@ class DefaultController extends WebController
         }
 
         throw new NotFoundHttpException(Yii::t('site', 'The requested page does not exist.'));
+    }
+
+    protected function actionMultipleDelete($selectedItems)
+    {
+        foreach ($selectedItems as $key => $id) {
+            $this->findModel($id)->delete();
+        }
+        return $this->redirect(['index']);
     }
 }

@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     'title' => Html::encode($this->title),
     'actions' => [
         'header' => [
-            Html::a(Module::t('Create Group'), ['create'], ['class' => 'btn btn-success']),
+            Html::a(Module::t(''), ['create'], ['class' => 'fa fa-plus btn btn-success']),
         ]
     ]
 ]) ?>
@@ -28,7 +28,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
             'name',
             'description:ntext',
 

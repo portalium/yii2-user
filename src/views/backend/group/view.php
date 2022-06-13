@@ -16,10 +16,10 @@ $this->params['breadcrumbs'][] = $this->title;
     'title' => Html::encode($this->title),
     'actions' => [
         'header' => [
-            Html::a(Module::t('Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']),
-            Html::a(Module::t('Manage Members'), ['members', 'id' => $model->id], ['class' => 'btn btn-warning']),
-            Html::a(Module::t('Delete'), ['delete', 'id' => $model->id], [
-                'class' => 'btn btn-danger',
+            Html::a(Module::t(''), ['update', 'id' => $model->id_group], ['class' => 'fa fa-pencil btn btn-success']),
+            Html::a(Module::t(''), ['members', 'id' => $model->id_group], ['class' => 'fa fa-user btn btn-primary']),
+            Html::a(Module::t(''), ['delete', 'id' => $model->id_group], [
+                'class' => 'fa fa-trash btn btn-danger',
                 'data' => [
                     'confirm' => Module::t('Are you sure you want to delete this item?'),
                     'method' => 'post',
@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            'id_group',
             'name',
             'description:ntext',
             'created_at',

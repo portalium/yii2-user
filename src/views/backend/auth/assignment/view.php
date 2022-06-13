@@ -10,9 +10,13 @@ use portalium\user\Module;
 /* @var $this yii\web\View */
 
 $userName = $model->username;
+$firstName = $model->first_name;
+$lastName = $model->last_name;
+
 $userName = Html::encode($userName);
 
-$this->title = Module::t('Assignment') . ' : ' . $userName;
+$this->title = Module::t('Assignment') . ' : ' . $model->first_name . ' ' . $model->last_name;
+
 $this->params['breadcrumbs'][] = ['label' => Module::t('Users'), 'url' => ['/user']];
 $this->params['breadcrumbs'][] = $userName;
 

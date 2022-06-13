@@ -16,9 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
     'title' => Module::t('Import Users'),
     'actions' => [
         'header' => [
-            Html::submitButton(Module::t('Save'), ['class' => 'btn btn-success'])
+        ],
+        'footer' => [
+            Html::submitButton(Module::t('Save'), ['class' => 'btn btn-success']),
         ]
-    ]
+    ],
 ]) ?>
 
 

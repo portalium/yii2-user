@@ -267,12 +267,12 @@ class AuthItem extends Model
         ]);
 
         $users = User::find()
-            ->select(['id', 'username'])
-            ->where(['id' => $provider->getModels()])
+            ->select(['id_user', 'username'])
+            ->where(['id_user' => $provider->getModels()])
             ->asArray()->all();
 
         foreach ($users as &$row) {
-            $row['link'] = Url::to(['/user/default/view', 'id' => $row['id']]);
+            $row['link'] = Url::to(['/user/default/view', 'id' => $row['id_user']]);
         }
 
         $result['users'] = $users;
