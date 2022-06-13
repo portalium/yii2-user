@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <?php Panel::begin([
-    'title' => Html::encode($this->title),
+    'title' => $model->first_name.' '.$model->last_name.' - '.$model->username,
     'actions' => [
         'header' => [
             Html::a(Module::t( 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']),
@@ -35,11 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'username',
             'first_name',
             'last_name',
-            'auth_key',
-            'password_hash',
-            'password_reset_token',
             'email:email',
-            'access_token',
             'status',
             'created_at',
             'updated_at',
