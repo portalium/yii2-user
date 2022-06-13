@@ -30,7 +30,7 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'status'], 'integer'],
+            [['id_user', 'status'], 'integer'],
             [['username', 'first_name', 'last_name', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'access_token'], 'safe'],
         ];
     }
@@ -79,7 +79,7 @@ class UserSearch extends User
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
+            'id_user' => $this->id_user,
             'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
@@ -104,7 +104,7 @@ class UserSearch extends User
     public function inGroup()
     {
         if (!empty($this->_groupId)) {
-            $this->_query = User::find()->joinWith('groups')->where([Module::$tablePrefix.'group.id' => $this->_groupId]);
+            $this->_query = User::find()->joinWith('groups')->where([Module::$tablePrefix.'group.id_group' => $this->_groupId]);
             return $this;
         }
     }
@@ -118,8 +118,8 @@ class UserSearch extends User
     {
         if (!empty($this->_groupId)) {
             $this->_query = User::find()->where([
-                'not in', 'id',
-                UserGroup::find()->select('user_id')->where(['group_id' => $this->_groupId])->asArray()->column()
+                'not in', 'id_user',
+                UserGroup::find()->select('id_user')->where(['id_group' => $this->_groupId])->asArray()->column()
             ]);
             return $this;
         }

@@ -71,7 +71,8 @@ class User extends ActiveRecord implements IdentityInterface
             'last_name' => Module::t('Last Name'),
             'username' => Module::t('Username'),
             'email' => Module::t('Email'),
-            'password' => Module::t('Password')
+            'password' => Module::t('Password'),
+            'status' => Module::t('Status'),
         ];
     }
     
@@ -81,13 +82,13 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getGroups()
     {
-        return $this->hasMany(Group::class, ['id' => 'group_id'])
-            ->viaTable(UserGroup::getTableSchema()->fullName, ['user_id' => 'id']);
+        return $this->hasMany(Group::class, ['id_group' => 'id_group'])
+            ->viaTable(UserGroup::getTableSchema()->fullName, ['id_user' => 'id_user']);
     }
 
-    public static function findIdentity($id)
+    public static function findIdentity($id_user)
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['id_user' => $id_user, 'status' => self::STATUS_ACTIVE]);
     }
 
     public static function findIdentityByAccessToken($token, $type = null)

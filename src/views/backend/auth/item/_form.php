@@ -19,7 +19,10 @@ $labels = $context->labels();
     'title' => Html::encode($this->title),
     'actions' => [
         'header' => [
-            Html::submitButton($model->isNewRecord ?  Module::t( 'Create') : Module::t( 'Update'), [
+
+        ],
+        'footer' => [
+            Html::submitButton($model->isNewRecord ? Module::t('Save') : Module::t('Update'), [
                 'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                 'name' => 'submit-button'])
         ]

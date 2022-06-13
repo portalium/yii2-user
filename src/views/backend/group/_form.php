@@ -14,9 +14,11 @@ use portalium\user\Module;
     'title' => Html::encode($this->title),
     'actions' => [
         'header' => [
+        ],
+        'footer' => [
             Html::submitButton(Module::t( 'Save'), ['class' => 'btn btn-success']),
         ]
-    ]
+    ],
 ]) ?>
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>

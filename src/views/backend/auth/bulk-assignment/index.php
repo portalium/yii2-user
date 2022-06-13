@@ -32,8 +32,8 @@ YiiAsset::register($this);
 
 $opts = Json::htmlEncode([
     'items' => $model->getItems(),
-    'users' => $userDataProvider->query->select(['id', 'username'])->all(),
-    'groups' => $groupDataProvider->query->select(['id', 'name'])->all(),
+    'users' => $userDataProvider->query->select(['id_user', 'username'])->all(),
+    'groups' => $groupDataProvider->query->select(['id_group', 'name'])->all(),
     'assignedUsers' => $assignedUsers
 ]);
 
@@ -60,11 +60,11 @@ $animateIcon = ' <i class="glyphicon glyphicon-refresh glyphicon-refresh-animate
     </div>
     <div class="col-sm-2" style="text-align: center">
         <br><br>
-        <?= Html::a(Module::t('Assign') . $animateIcon, ['assign', 'id' => (string) $model->name], [
+        <?= Html::a('&gt;&gt;' . $animateIcon, ['assign', 'id' => (string) $model->name], [
             'class' => 'btn btn-success btn-assign',
             'title' => Module::t('Assign'),
         ]); ?><br><br>
-        <?= Html::a(Module::t('Remove') . $animateIcon, ['revoke', 'id' => (string) $model->name], [
+        <?= Html::a('&lt;&lt;' . $animateIcon, ['revoke', 'id' => (string) $model->name], [
             'class' => 'btn btn-danger btn-assign',
             'title' => Module::t('Remove'),
         ]); ?>

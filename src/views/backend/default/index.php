@@ -4,6 +4,7 @@ use portalium\site\helpers\ActiveForm as HelpersActiveForm;
 use portalium\theme\helpers\Html;
 use portalium\theme\widgets\GridView;
 use portalium\theme\widgets\Panel;
+use portalium\user\models\User;
 use portalium\user\Module;
 use portalium\theme\widgets\ActiveForm;
 

@@ -10,7 +10,7 @@ use yii\behaviors\TimestampBehavior;
 /**
  * This is the model class for table "group".
  *
- * @property int $id
+ * @property int $id_group
  * @property string $name
  * @property string|null $description
  * @property `\yii\db\Expression('NOW()')` $created_at
@@ -91,7 +91,7 @@ class Group extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id_group' => 'ID',
             'name' => Module::t('Group Name'),
             'description' => Module::t('Group Description'),
         ];
@@ -104,7 +104,7 @@ class Group extends \yii\db\ActiveRecord
      */
     public function getUserGroups()
     {
-        return $this->hasMany(UserGroup::class, ['group_id' => 'id']);
+        return $this->hasMany(UserGroup::class, ['id_group' => 'id_group']);
     }
 
     public static function getGroups()
@@ -113,7 +113,7 @@ class Group extends \yii\db\ActiveRecord
        // (\Yii::$app->user->can("statusCreated")) ? $statusLabel[self::STATUS['created']] = $labels['created'] : null;
 
         foreach (Group::find()->all() as $item) {
-            $groups[$item['id']] = $item['name'];
+            $groups[$item['id_group']] = $item['name'];
         }
         return $groups;
     }
@@ -218,7 +218,7 @@ class Group extends \yii\db\ActiveRecord
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 $numberAffectedRows = Yii::$app->db->createCommand()
-                    ->batchInsert(UserGroup::getTableSchema()->fullName, ['user_id', 'group_id'], $rows)
+                    ->batchInsert(UserGroup::getTableSchema()->fullName, ['id_user', 'id_group'], $rows)
                     ->execute();
                 $transaction->commit();
             } catch (\Exception $e) {
@@ -287,7 +287,7 @@ class Group extends \yii\db\ActiveRecord
      */
     public function getUsers()
     {
-        return $this->hasMany(User::class, ['id' => 'user_id'])
-            ->viaTable(UserGroup::getTableSchema()->fullName, ['group_id' => 'id']);
+        return $this->hasMany(User::class, ['id_user' => 'id_user'])
+            ->viaTable(UserGroup::getTableSchema()->fullName, ['id_group' => 'id_group']);
     }
 }
