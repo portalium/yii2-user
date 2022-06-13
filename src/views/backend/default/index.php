@@ -1,10 +1,12 @@
 <?php
 
+use portalium\site\helpers\ActiveForm as HelpersActiveForm;
 use portalium\theme\helpers\Html;
 use portalium\theme\widgets\GridView;
 use portalium\theme\widgets\Panel;
 use portalium\user\models\User;
 use portalium\user\Module;
+use portalium\theme\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $searchModel portalium\user\models\UserSearch */
@@ -13,15 +15,28 @@ use portalium\user\Module;
 $this->title = Module::t('Users');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<?php Panel::begin([
+<?php
+$form = ActiveForm::begin();
+Panel::begin([
     'title' => Module::t('Users'),
     'actions' => [
         'header' => [
-            Html::a(Module::t(''), ['create'], ['class' => 'fa fa-plus btn btn-success']),
+            Html::submitButton(Module::t('Delete Selected Users'), [
+                'class' => 'btn btn-danger', 'id' => 'delete-select',
+                'data' => [
+                    'confirm' => Module::t('If you continue, all your data will be reset. Do you want to continue?'),
+                    'method' => 'post'
+
+                ]
+            ]),
+            Html::a(Module::t('Create User'), ['create'], ['class' => 'btn btn-success']),
         ]
     ]
 ]) ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); 
+
+
+
     ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -30,28 +45,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
-                'attribute' => 'first_name',
-                'value' => function ($model) {
-                    return $model->first_name . ' ' . $model->last_name;
-                },
-
+                'class' => 'yii\grid\CheckboxColumn'
             ],
             'username',
-            //'auth_key',
-            //'password_hash',
-            //'password_reset_token',
+            'first_name',
+            'last_name',
             'email:email',
-            //'access_token',
-            [
-                'attribute' => 'status',
-                'label' => Module::t('Status'),
-                'value' => function ($model) {
-                    return $model->status == 10 ? Module::t('Active') : Module::t('Passive');
-                },
-            ],
-            //'created_at',
-            //'updated_at',
-
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{view} {update} {assignment} {delete}',
@@ -63,4 +62,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-<?php Panel::end() ?>
+<?php Panel::end();
+ActiveForm::end();
+?>

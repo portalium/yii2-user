@@ -67,4 +67,5 @@ return [
     'Active' => 'Aktif',
     'Passive' => 'Pasif',
     'Status' => 'Durum',
+    'Delete Selected Users' => 'Seçilen Kullanıcıları Sil',
 ];

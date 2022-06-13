@@ -53,7 +53,9 @@ class DefaultController extends WebController
     {
         if (!Yii::$app->user->can('userBackendDefaultIndex'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view User"));
-
+        if ($this->request->isPost) {
+            $this->actionMultipleDelete($this->request->post('selection'));
+        }
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -118,7 +120,7 @@ class DefaultController extends WebController
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to Update User"));
 
         $model = $this->findModel($id);
-        
+
         if ($this->request->isPost && $model->load($this->request->post())) {
             if ($model->username != $model->oldAttributes['username']) {
                 $check = User::find()->where(['username' => $model->username])->one();
@@ -176,5 +178,13 @@ class DefaultController extends WebController
         }
 
         throw new NotFoundHttpException(Yii::t('site', 'The requested page does not exist.'));
+    }
+
+    protected function actionMultipleDelete($selectedItems)
+    {
+        foreach ($selectedItems as $key => $id) {
+            $this->findModel($id)->delete();
+        }
+        return $this->redirect(['index']);
     }
 }
