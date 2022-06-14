@@ -256,7 +256,7 @@ class Group extends \yii\db\ActiveRecord
                 $transaction = Yii::$app->db->beginTransaction();
                 $numberAffectedRows = Yii::$app->db->createCommand('DELETE FROM '
                     . UserGroup::getTableSchema()->fullName
-                    . ' WHERE group_id=:group_id AND user_id IN ('
+                    . ' WHERE group_id=:group_id AND id_user IN ('
                     . implode(', ', $userIds) . ')')
                     ->bindValue(':group_id', $this->id)
                     ->execute();

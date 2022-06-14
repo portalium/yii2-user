@@ -28,16 +28,16 @@ class m210610_151045_user_user_group extends Migration
             'created_at' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
         ], $tableOptions);
 
-        // creates index for column `user_id`
+        // creates index for column `id_user`
         $this->createIndex(
-            '{{%idx-user_group-user_id}}',
+            '{{%idx-user_group-id_user}}',
             '{{%user_user_group}}',
             'id_user'
         );
 
         // add foreign key for table `{{%user}}`
         $this->addForeignKey(
-            '{{%fk-user_group-user_id}}',
+            '{{%fk-user_group-id_user}}',
             '{{%user_user_group}}',
             'id_user',
             '{{%user_user}}',
@@ -70,13 +70,13 @@ class m210610_151045_user_user_group extends Migration
     {
         // drops foreign key for table `{{%user}}`
         $this->dropForeignKey(
-            '{{%fk-user_group-user_id}}',
+            '{{%fk-user_group-id_user}}',
             '{{%user_user_group}}'
         );
 
-        // drops index for column `user_id`
+        // drops index for column `id_user`
         $this->dropIndex(
-            '{{%idx-user_group-user_id}}',
+            '{{%idx-user_group-id_user}}',
             '{{%user_user_group}}'
         );
 
