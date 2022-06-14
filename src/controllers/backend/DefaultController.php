@@ -184,13 +184,8 @@ class DefaultController extends WebController
     {
         if (!Yii::$app->user->can('userBackendDefaultDelete'))
         throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
-        
-        $ids = [];
-        foreach ($selectedItems as $key => $id) {
-            $ids[] = $id;
-        }
 
-        User::deleteAll(['id_user' => $ids]);
+        User::deleteAll(['id_user' => $selectedItems]);
 
         return $this->redirect(['index']);
     }
