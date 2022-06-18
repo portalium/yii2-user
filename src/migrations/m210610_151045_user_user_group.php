@@ -45,13 +45,6 @@ class m210610_151045_user_user_group extends Migration
             'CASCADE'
         );
 
-        // creates index for column `group_id`
-        $this->createIndex(
-            '{{%idx-user_group-group_id}}',
-            '{{%user_user_group}}',
-            'id_group'
-        );
-
         // add foreign key for table `{{%group}}`
         $this->addForeignKey(
             '{{%fk-user_group-group_id}}',
@@ -83,12 +76,6 @@ class m210610_151045_user_user_group extends Migration
         // drops foreign key for table `{{%group}}`
         $this->dropForeignKey(
             '{{%fk-user_group-group_id}}',
-            '{{%user_user_group}}'
-        );
-
-        // drops index for column `group_id`
-        $this->dropIndex(
-            '{{%idx-user_group-group_id}}',
             '{{%user_user_group}}'
         );
 
