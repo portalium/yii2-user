@@ -151,7 +151,7 @@ class BulkAuthAssignmentHelper
             'allModels' => $ids,
         ]);
         $users = User::find()
-            ->where(['id' => $provider->getModels()]);
+            ->where(['id_user' => $provider->getModels()]);
         return $users;
     }
 }
