@@ -53,7 +53,7 @@ function search(target) {
 
         $.each(_opts.assignedUsers, function (index, user) {
             if (user.username.indexOf(q) >= 0) {
-                $('<option>').text(user.username).val(user.id).appendTo(optgroups['users'][0]);
+                $('<option>').text(user.username).val(user.id_user).appendTo(optgroups['users'][0]);
                 optgroups['users'][1] = true;
             }
         });
@@ -65,14 +65,14 @@ function search(target) {
 
         $.each(_opts.groups, function (index, group) {
             if (group.name.indexOf(q) >= 0) {
-                $('<option>').text(group.name).val(group.id).appendTo(optgroups['groups'][0]);
+                $('<option>').text(group.name).val(group.id_group).appendTo(optgroups['groups'][0]);
                 optgroups['groups'][1] = true;
             }
         });
 
         $.each(_opts.users, function (index, user) {
             if (user.username.indexOf(q) >= 0) {
-                $('<option>').text(user.username).val(user.id).appendTo(optgroups['users'][0]);
+                $('<option>').text(user.username).val(user.id_user).appendTo(optgroups['users'][0]);
                 optgroups['users'][1] = true;
             }
         });

@@ -47,7 +47,7 @@ class BulkAssignmentController extends WebController
         return $this->render('index', [
             'groupDataProvider' => (new GroupSearch())->search($this->request->queryParams),
             'userDataProvider' => (new UserSearch())->search($this->request->queryParams),
-            'assignedUsers' => BulkAuthAssignmentHelper::getAssignedUsers($id)->select(['id', 'username'])->all(),
+            'assignedUsers' => BulkAuthAssignmentHelper::getAssignedUsers($id)->select(['id_user', 'username'])->all(),
             'model' => $model,
         ]);
     }
@@ -60,10 +60,9 @@ class BulkAssignmentController extends WebController
     {
         if (!Yii::$app->user->can('userBackendBulkAssignmentAssign'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
-
         $success = BulkAuthAssignmentHelper::assignByMixed($id, $this->request->post('items', []));
         Yii::$app->getResponse()->format = 'json';
-        return array_merge(['assignedUsers' => BulkAuthAssignmentHelper::getAssignedUsers($id)->select(['id', 'username'])->all()], ['success' => $success]);
+        return array_merge(['assignedUsers' => BulkAuthAssignmentHelper::getAssignedUsers($id)->select(['id_user', 'username'])->all()], ['success' => $success]);
     }
 
     /**
@@ -74,10 +73,9 @@ class BulkAssignmentController extends WebController
     {
         if (!Yii::$app->user->can('userBackendBulkAssignmentRevoke'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
-
         $success = BulkAuthAssignmentHelper::revokeByMixed($id, $this->request->post('items', []));
         Yii::$app->getResponse()->format = 'json';
-        return array_merge(['assignedUsers' => BulkAuthAssignmentHelper::getAssignedUsers($id)->select(['id', 'username'])->all()], ['success' => $success]);
+        return array_merge(['assignedUsers' => BulkAuthAssignmentHelper::getAssignedUsers($id)->select(['id_user', 'username'])->all()], ['success' => $success]);
     }
 
     /**
