@@ -1,6 +1,6 @@
 <?php
 
-namespace portalium\user\controllers\backend\auth;
+namespace portalium\user\controllers\web\auth;
 
 use portalium\user\Module;
 use Yii;

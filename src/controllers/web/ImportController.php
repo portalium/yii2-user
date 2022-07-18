@@ -1,6 +1,6 @@
 <?php
 
-namespace portalium\user\controllers\backend;
+namespace portalium\user\controllers\web;
 
 use portalium\base\Exception;
 use portalium\user\models\GroupSearch;

@@ -1,6 +1,6 @@
 <?php
 
-namespace portalium\user\controllers\backend\auth;
+namespace portalium\user\controllers\web\auth;
 
 use portalium\user\components\BulkAuthAssignmentHelper;
 use portalium\user\Module;
@@ -60,6 +60,7 @@ class BulkAssignmentController extends WebController
     {
         if (!Yii::$app->user->can('userBackendBulkAssignmentAssign'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
+
         $success = BulkAuthAssignmentHelper::assignByMixed($id, $this->request->post('items', []));
         Yii::$app->getResponse()->format = 'json';
         return array_merge(['assignedUsers' => BulkAuthAssignmentHelper::getAssignedUsers($id)->select(['id_user', 'username'])->all()], ['success' => $success]);
@@ -73,6 +74,7 @@ class BulkAssignmentController extends WebController
     {
         if (!Yii::$app->user->can('userBackendBulkAssignmentRevoke'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
+
         $success = BulkAuthAssignmentHelper::revokeByMixed($id, $this->request->post('items', []));
         Yii::$app->getResponse()->format = 'json';
         return array_merge(['assignedUsers' => BulkAuthAssignmentHelper::getAssignedUsers($id)->select(['id_user', 'username'])->all()], ['success' => $success]);
