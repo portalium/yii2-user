@@ -4,7 +4,6 @@ namespace portalium\user\components;
 
 use portalium\user\models\User;
 use portalium\user\models\Group;
-use Yii;
 
 /**
  * Helper component for bulk assignment operations.
@@ -67,8 +66,8 @@ class BulkAuthAssignmentHelper
      */
     public static function assignByGroupId($itemName, $groupId)
     {
-        $userIds = Group::findOne(['id_group' => $groupId])->getUsers()->select('id_user')->column();
-        return !empty($userIds) ? static::assignByUserIds($itemName, $userIds) : 0;
+        $userIds = Group::findOne(['id' => $groupId])->getUsers()->select('id')->column();
+        return static::assignByUserIds($itemName, $userIds);
     }
 
     /**
@@ -81,8 +80,8 @@ class BulkAuthAssignmentHelper
     public static function revokeByGroupId($itemName, $groupId)
     {
         $ids = \Yii::$app->authManager->getUserIdsByRole($itemName);
-        $groupUsers = Group::findOne(['id_group' => $groupId])->getUsers();
-        $userIds = $groupUsers->where(['id_user' => $ids])->select('id_user')->column();
+        $groupUsers = Group::findOne(['id' => $groupId])->getUsers();
+        $userIds = $groupUsers->where(['id' => $ids])->select('id')->column();
         return static::revokeByUserIds($itemName, $userIds);
     }
 

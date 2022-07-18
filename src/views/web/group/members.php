@@ -12,7 +12,7 @@ $this->title = Module::t('Manage Members for Group: {name}', [
     'name' => $model->name,
 ]);
 $this->params['breadcrumbs'][] = ['label' => Module::t('Groups'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id_group]];
+$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id_group' => $model->id_group]];
 $this->params['breadcrumbs'][] = Module::t('Manage Members');
 
 $script = <<< JS

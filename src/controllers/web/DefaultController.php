@@ -1,6 +1,6 @@
 <?php
 
-namespace portalium\user\controllers\backend;
+namespace portalium\user\controllers\web;
 
 use Yii;
 use yii\web\NotFoundHttpException;
@@ -51,7 +51,7 @@ class DefaultController extends WebController
      */
     public function actionIndex()
     {
-        if (!Yii::$app->user->can('userBackendDefaultIndex'))
+        if (!Yii::$app->user->can('userWebDefaultIndex'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view User"));
         if ($this->request->isPost) {
             $this->actionMultipleDelete($this->request->post('selection'));
@@ -73,7 +73,7 @@ class DefaultController extends WebController
      */
     public function actionView($id)
     {
-        if (!Yii::$app->user->can('userBackendDefaultView'))
+        if (!Yii::$app->user->can('userWebDefaultView'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view User"));
 
         $model = $this->findModel($id);
@@ -90,7 +90,7 @@ class DefaultController extends WebController
      */
     public function actionCreate()
     {
-        if (!Yii::$app->user->can('userBackendDefaultCreate'))
+        if (!Yii::$app->user->can('userWebDefaultCreate'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to create User"));
 
         $model = new UserForm();
@@ -116,7 +116,7 @@ class DefaultController extends WebController
      */
     public function actionUpdate($id)
     {
-        if (!Yii::$app->user->can('userBackendDefaultUpdate'))
+        if (!Yii::$app->user->can('userWebDefaultUpdate'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to Update User"));
 
         $model = $this->findModel($id);
@@ -156,7 +156,7 @@ class DefaultController extends WebController
      */
     public function actionDelete($id)
     {
-        if (!Yii::$app->user->can('userBackendDefaultDelete'))
+        if (!Yii::$app->user->can('userWebDefaultDelete'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
 
         $this->findModel($id)->delete();
@@ -182,7 +182,7 @@ class DefaultController extends WebController
 
     protected function actionMultipleDelete($selectedItems)
     {
-        if (!Yii::$app->user->can('userBackendDefaultDelete'))
+        if (!Yii::$app->user->can('userWebDefaultDelete'))
         throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
 
         User::deleteAll(['id_user' => $selectedItems]);

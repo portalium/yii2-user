@@ -213,7 +213,7 @@ class Group extends \yii\db\ActiveRecord
         if (count($userIds) > 0) {
             $rows = [];
             foreach ($userIds as $userId) {
-                $rows[] = [$userId, $this->id_group];
+                $rows[] = [$userId, $this->id];
             }
             $transaction = Yii::$app->db->beginTransaction();
             try {
@@ -256,9 +256,9 @@ class Group extends \yii\db\ActiveRecord
                 $transaction = Yii::$app->db->beginTransaction();
                 $numberAffectedRows = Yii::$app->db->createCommand('DELETE FROM '
                     . UserGroup::getTableSchema()->fullName
-                    . ' WHERE id_group=:id_group AND id_user IN ('
+                    . ' WHERE group_id=:group_id AND id_user IN ('
                     . implode(', ', $userIds) . ')')
-                    ->bindValue(':id_group', $this->id_group)
+                    ->bindValue(':group_id', $this->id)
                     ->execute();
                 $transaction->commit();
             } catch (\Exception $e) {

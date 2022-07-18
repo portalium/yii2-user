@@ -1,6 +1,6 @@
 <?php
 
-namespace portalium\user\controllers\backend\auth;
+namespace portalium\user\controllers\web\auth;
 
 use portalium\user\Module;
 use Yii;
@@ -64,7 +64,7 @@ class PermissionController extends BaseAuthItemController
      */
     public function getViewPath()
     {
-        if (!Yii::$app->user->can('userBackendPermissionViewPath'))
+        if (!Yii::$app->user->can('userWebPermissionViewPath'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Permission"));
         return '@portalium/' . $this->module->id . '/views/' . Yii::$app->id . '/auth/item';
     }

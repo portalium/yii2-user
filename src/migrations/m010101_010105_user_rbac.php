@@ -50,106 +50,106 @@ class m010101_010105_user_rbac extends Migration
         $auth->add($userApiDefaultIndex);
         $auth->addChild($admin, $userApiDefaultIndex);
 
-        $userBackendAssignmentView = $auth->createPermission('userBackendAssignmentView');
-        $userBackendAssignmentView->description = 'View user assignment';
-        $auth->add($userBackendAssignmentView);
-        $auth->addChild($admin, $userBackendAssignmentView);
+        $userWebAssignmentView = $auth->createPermission('userWebAssignmentView');
+        $userWebAssignmentView->description = 'View user assignment';
+        $auth->add($userWebAssignmentView);
+        $auth->addChild($admin, $userWebAssignmentView);
 
-        $userBackendAssignmentAssign = $auth->createPermission('userBackendAssignmentAssign');
-        $userBackendAssignmentAssign->description = 'Assign user assignment';
-        $auth->add($userBackendAssignmentAssign);
-        $auth->addChild($admin, $userBackendAssignmentAssign);
+        $userWebAssignmentAssign = $auth->createPermission('userWebAssignmentAssign');
+        $userWebAssignmentAssign->description = 'Assign user assignment';
+        $auth->add($userWebAssignmentAssign);
+        $auth->addChild($admin, $userWebAssignmentAssign);
 
-        $userBackendAssignmentRevoke = $auth->createPermission('userBackendAssignmentRevoke');
-        $userBackendAssignmentRevoke->description = 'Revoke user assignment';
-        $auth->add($userBackendAssignmentRevoke);
-        $auth->addChild($admin, $userBackendAssignmentRevoke);
+        $userWebAssignmentRevoke = $auth->createPermission('userWebAssignmentRevoke');
+        $userWebAssignmentRevoke->description = 'Revoke user assignment';
+        $auth->add($userWebAssignmentRevoke);
+        $auth->addChild($admin, $userWebAssignmentRevoke);
 
-        $userBackendBulkAssignmentIndex = $auth->createPermission('userBackendBulkAssignmentIndex');
-        $userBackendBulkAssignmentIndex->description = 'View bulk assignment';
-        $auth->add($userBackendBulkAssignmentIndex);
-        $auth->addChild($admin, $userBackendBulkAssignmentIndex);
+        $userWebBulkAssignmentIndex = $auth->createPermission('userWebBulkAssignmentIndex');
+        $userWebBulkAssignmentIndex->description = 'View bulk assignment';
+        $auth->add($userWebBulkAssignmentIndex);
+        $auth->addChild($admin, $userWebBulkAssignmentIndex);
 
-        $userBackendBulkAssignmentAssign = $auth->createPermission('userBackendBulkAssignmentAssign');
-        $userBackendBulkAssignmentAssign->description = 'Assign bulk assignment';
-        $auth->add($userBackendBulkAssignmentAssign);
-        $auth->addChild($admin, $userBackendBulkAssignmentAssign);
+        $userWebBulkAssignmentAssign = $auth->createPermission('userWebBulkAssignmentAssign');
+        $userWebBulkAssignmentAssign->description = 'Assign bulk assignment';
+        $auth->add($userWebBulkAssignmentAssign);
+        $auth->addChild($admin, $userWebBulkAssignmentAssign);
 
-        $userBackendBulkAssignmentRevoke = $auth->createPermission('userBackendBulkAssignmentRevoke');
-        $userBackendBulkAssignmentRevoke->description = 'Revoke bulk assignment';
-        $auth->add($userBackendBulkAssignmentRevoke);
-        $auth->addChild($admin, $userBackendBulkAssignmentRevoke);
+        $userWebBulkAssignmentRevoke = $auth->createPermission('userWebBulkAssignmentRevoke');
+        $userWebBulkAssignmentRevoke->description = 'Revoke bulk assignment';
+        $auth->add($userWebBulkAssignmentRevoke);
+        $auth->addChild($admin, $userWebBulkAssignmentRevoke);
 
-        $userBackendPermissionViewPath = $auth->createPermission('userBackendPermissionViewPath');
-        $userBackendPermissionViewPath->description = 'View permission path';
-        $auth->add($userBackendPermissionViewPath);
-        $auth->addChild($admin, $userBackendPermissionViewPath);
+        $userWebPermissionViewPath = $auth->createPermission('userWebPermissionViewPath');
+        $userWebPermissionViewPath->description = 'View permission path';
+        $auth->add($userWebPermissionViewPath);
+        $auth->addChild($admin, $userWebPermissionViewPath);
 
-        $userBackendDefaultIndex = $auth->createPermission('userBackendDefaultIndex');
-        $userBackendDefaultIndex->description = 'View user';
-        $auth->add($userBackendDefaultIndex);
-        $auth->addChild($admin, $userBackendDefaultIndex);
+        $userWebDefaultIndex = $auth->createPermission('userWebDefaultIndex');
+        $userWebDefaultIndex->description = 'View user';
+        $auth->add($userWebDefaultIndex);
+        $auth->addChild($admin, $userWebDefaultIndex);
 
-        $userBackendDefaultCreate = $auth->createPermission('userBackendDefaultCreate');
-        $userBackendDefaultCreate->description = 'Create user';
-        $auth->add($userBackendDefaultCreate);
-        $auth->addChild($admin, $userBackendDefaultCreate);
+        $userWebDefaultCreate = $auth->createPermission('userWebDefaultCreate');
+        $userWebDefaultCreate->description = 'Create user';
+        $auth->add($userWebDefaultCreate);
+        $auth->addChild($admin, $userWebDefaultCreate);
 
-        $userBackendDefaultUpdate = $auth->createPermission('userBackendDefaultUpdate');
-        $userBackendDefaultUpdate->description = 'Update user';
-        $auth->add($userBackendDefaultUpdate);
-        $auth->addChild($admin, $userBackendDefaultUpdate);
+        $userWebDefaultUpdate = $auth->createPermission('userWebDefaultUpdate');
+        $userWebDefaultUpdate->description = 'Update user';
+        $auth->add($userWebDefaultUpdate);
+        $auth->addChild($admin, $userWebDefaultUpdate);
 
-        $userBackendDefaultDelete = $auth->createPermission('userBackendDefaultDelete');
-        $userBackendDefaultDelete->description = 'Delete user';
-        $auth->add($userBackendDefaultDelete);
-        $auth->addChild($admin, $userBackendDefaultDelete);
+        $userWebDefaultDelete = $auth->createPermission('userWebDefaultDelete');
+        $userWebDefaultDelete->description = 'Delete user';
+        $auth->add($userWebDefaultDelete);
+        $auth->addChild($admin, $userWebDefaultDelete);
 
-        $userBackendDefaultView = $auth->createPermission('userBackendDefaultView');
-        $userBackendDefaultView->description = 'View user';
-        $auth->add($userBackendDefaultView);
-        $auth->addChild($admin, $userBackendDefaultView);
+        $userWebDefaultView = $auth->createPermission('userWebDefaultView');
+        $userWebDefaultView->description = 'View user';
+        $auth->add($userWebDefaultView);
+        $auth->addChild($admin, $userWebDefaultView);
 
-        $userBackendGroupIndex = $auth->createPermission('userBackendGroupIndex');
-        $userBackendGroupIndex->description = 'View group';
-        $auth->add($userBackendGroupIndex);
-        $auth->addChild($admin, $userBackendGroupIndex);
+        $userWebGroupIndex = $auth->createPermission('userWebGroupIndex');
+        $userWebGroupIndex->description = 'View group';
+        $auth->add($userWebGroupIndex);
+        $auth->addChild($admin, $userWebGroupIndex);
 
-        $userBackendGroupView = $auth->createPermission('userBackendGroupView');
-        $userBackendGroupView->description = 'View group';
-        $auth->add($userBackendGroupView);
-        $auth->addChild($admin, $userBackendGroupView);
+        $userWebGroupView = $auth->createPermission('userWebGroupView');
+        $userWebGroupView->description = 'View group';
+        $auth->add($userWebGroupView);
+        $auth->addChild($admin, $userWebGroupView);
 
-        $userBackendGroupCreate = $auth->createPermission('userBackendGroupCreate');
-        $userBackendGroupCreate->description = 'Create group';
-        $auth->add($userBackendGroupCreate);
-        $auth->addChild($admin, $userBackendGroupCreate);
+        $userWebGroupCreate = $auth->createPermission('userWebGroupCreate');
+        $userWebGroupCreate->description = 'Create group';
+        $auth->add($userWebGroupCreate);
+        $auth->addChild($admin, $userWebGroupCreate);
 
-        $userBackendGroupUpdate = $auth->createPermission('userBackendGroupUpdate');
-        $userBackendGroupUpdate->description = 'Update group';
-        $auth->add($userBackendGroupUpdate);
-        $auth->addChild($admin, $userBackendGroupUpdate);
+        $userWebGroupUpdate = $auth->createPermission('userWebGroupUpdate');
+        $userWebGroupUpdate->description = 'Update group';
+        $auth->add($userWebGroupUpdate);
+        $auth->addChild($admin, $userWebGroupUpdate);
 
-        $userBackendGroupMembers = $auth->createPermission('userBackendGroupMembers');
-        $userBackendGroupMembers->description = 'View group members';
-        $auth->add($userBackendGroupMembers);
-        $auth->addChild($admin, $userBackendGroupMembers);
+        $userWebGroupMembers = $auth->createPermission('userWebGroupMembers');
+        $userWebGroupMembers->description = 'View group members';
+        $auth->add($userWebGroupMembers);
+        $auth->addChild($admin, $userWebGroupMembers);
 
-        $userBackendGroupDelete = $auth->createPermission('userBackendGroupDelete');
-        $userBackendGroupDelete->description = 'Delete group';
-        $auth->add($userBackendGroupDelete);
-        $auth->addChild($admin, $userBackendGroupDelete);
+        $userWebGroupDelete = $auth->createPermission('userWebGroupDelete');
+        $userWebGroupDelete->description = 'Delete group';
+        $auth->add($userWebGroupDelete);
+        $auth->addChild($admin, $userWebGroupDelete);
 
-        $userBackendImportIndex = $auth->createPermission('userBackendImportIndex');
-        $userBackendImportIndex->description = 'View import';
-        $auth->add($userBackendImportIndex);
-        $auth->addChild($admin, $userBackendImportIndex);
+        $userWebImportIndex = $auth->createPermission('userWebImportIndex');
+        $userWebImportIndex->description = 'View import';
+        $auth->add($userWebImportIndex);
+        $auth->addChild($admin, $userWebImportIndex);
 
-        //userBackendRoleViewPath
-        $userBackendRoleViewPath = $auth->createPermission('userBackendRoleViewPath');
-        $userBackendRoleViewPath->description = 'View role path';
-        $auth->add($userBackendRoleViewPath);
-        $auth->addChild($admin, $userBackendRoleViewPath);
+        //userWebRoleViewPath
+        $userWebRoleViewPath = $auth->createPermission('userWebRoleViewPath');
+        $userWebRoleViewPath->description = 'View role path';
+        $auth->add($userWebRoleViewPath);
+        $auth->addChild($admin, $userWebRoleViewPath);
     }
 
     public function down()
@@ -168,18 +168,18 @@ class m010101_010105_user_rbac extends Migration
         $auth->remove($auth->getPermission('userApiBulkAssignmentAssign'));
         $auth->remove($auth->getPermission('userApiBulkAssignmentRevoke'));
         $auth->remove($auth->getPermission('userApiPermissionViewPath'));
-        $auth->remove($auth->getPermission('userBackendDefaultIndex'));
-        $auth->remove($auth->getPermission('userBackendDefaultCreate'));
-        $auth->remove($auth->getPermission('userBackendDefaultUpdate'));
-        $auth->remove($auth->getPermission('userBackendDefaultDelete'));
-        $auth->remove($auth->getPermission('userBackendDefaultView'));
-        $auth->remove($auth->getPermission('userBackendGroupIndex'));
-        $auth->remove($auth->getPermission('userBackendGroupView'));
-        $auth->remove($auth->getPermission('userBackendGroupCreate'));
-        $auth->remove($auth->getPermission('userBackendGroupUpdate'));
-        $auth->remove($auth->getPermission('userBackendGroupMembers'));
-        $auth->remove($auth->getPermission('userBackendGroupDelete'));
-        $auth->remove($auth->getPermission('userBackendImportIndex'));
+        $auth->remove($auth->getPermission('userWebDefaultIndex'));
+        $auth->remove($auth->getPermission('userWebDefaultCreate'));
+        $auth->remove($auth->getPermission('userWebDefaultUpdate'));
+        $auth->remove($auth->getPermission('userWebDefaultDelete'));
+        $auth->remove($auth->getPermission('userWebDefaultView'));
+        $auth->remove($auth->getPermission('userWebGroupIndex'));
+        $auth->remove($auth->getPermission('userWebGroupView'));
+        $auth->remove($auth->getPermission('userWebGroupCreate'));
+        $auth->remove($auth->getPermission('userWebGroupUpdate'));
+        $auth->remove($auth->getPermission('userWebGroupMembers'));
+        $auth->remove($auth->getPermission('userWebGroupDelete'));
+        $auth->remove($auth->getPermission('userWebImportIndex'));
 
     }
 }

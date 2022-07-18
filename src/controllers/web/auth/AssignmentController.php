@@ -1,6 +1,6 @@
 <?php
 
-namespace portalium\user\controllers\backend\auth;
+namespace portalium\user\controllers\web\auth;
 
 use portalium\user\Module;
 use Yii;
@@ -39,7 +39,7 @@ class AssignmentController extends WebController
      */
     public function actionView($id)
     {
-        if (!Yii::$app->user->can('userBackendAssignmentView'))
+        if (!Yii::$app->user->can('userWebAssignmentView'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
 
         $model = $this->findModel($id);
@@ -56,7 +56,7 @@ class AssignmentController extends WebController
      */
     public function actionAssign($id)
     {
-        if (!Yii::$app->user->can('userBackendAssignmentAssign'))
+        if (!Yii::$app->user->can('userWebAssignmentAssign'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
 
         $items = $this->request->post('items', []);
@@ -73,7 +73,7 @@ class AssignmentController extends WebController
      */
     public function actionRevoke($id)
     {
-        if (!Yii::$app->user->can('userBackendAssignmentRevoke'))
+        if (!Yii::$app->user->can('userWebAssignmentRevoke'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
 
         $items = $this->request->post('items', []);
