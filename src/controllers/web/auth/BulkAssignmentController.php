@@ -40,7 +40,7 @@ class BulkAssignmentController extends WebController
      */
     public function actionIndex($id)
     {
-        if (!Yii::$app->user->can('userBackendBulkAssignmentIndex'))
+        if (!Yii::$app->user->can('userWebBulkAssignmentIndex'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
 
         $model = $this->findModel($id);
@@ -58,7 +58,7 @@ class BulkAssignmentController extends WebController
      */
     public function actionAssign($id)
     {
-        if (!Yii::$app->user->can('userBackendBulkAssignmentAssign'))
+        if (!Yii::$app->user->can('userWebBulkAssignmentAssign'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
 
         $success = BulkAuthAssignmentHelper::assignByMixed($id, $this->request->post('items', []));
@@ -72,7 +72,7 @@ class BulkAssignmentController extends WebController
      */
     public function actionRevoke($id)
     {
-        if (!Yii::$app->user->can('userBackendBulkAssignmentRevoke'))
+        if (!Yii::$app->user->can('userWebBulkAssignmentRevoke'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
 
         $success = BulkAuthAssignmentHelper::revokeByMixed($id, $this->request->post('items', []));

@@ -33,7 +33,7 @@ class ImportController extends WebController
 
     public function actionIndex()
     {
-        if (!Yii::$app->user->can('userBackendImportIndex'))
+        if (!Yii::$app->user->can('userWebImportIndex'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to import User"));
 
         $model = new ImportForm(["first_name" => "firstname", "last_name" => "lastname", "username" => "username", "password" => "password", "email" => "email"]);
