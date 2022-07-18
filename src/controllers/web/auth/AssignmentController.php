@@ -1,8 +1,7 @@
 <?php
 
-namespace portalium\user\controllers\backend\auth;
+namespace portalium\user\controllers\web\auth;
 
-use portalium\user\components\BulkAuthAssignmentHelper;
 use portalium\user\Module;
 use Yii;
 use yii\web\ForbiddenHttpException;
@@ -10,14 +9,12 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use portalium\web\Controller as WebController;
 use portalium\user\models\auth\Assignment;
-use portalium\user\models\auth\AuthItem;
-use portalium\user\models\GroupSearch;
-use portalium\user\models\UserSearch;
+use portalium\user\models\User;
 
 /**
- * Bulk Assignment Controller
+ * AssignmentController implements the CRUD actions for Assignment model.
  */
-class BulkAssignmentController extends WebController
+class AssignmentController extends WebController
 {
     /**
      * @inheritdoc
@@ -36,52 +33,58 @@ class BulkAssignmentController extends WebController
     }
 
     /**
+     * Displays a single Assignment model.
+     * @param integer $id
      * @return mixed
      */
-    public function actionIndex($id)
+    public function actionView($id)
     {
-        if (!Yii::$app->user->can('userBackendBulkAssignmentIndex'))
+        if (!Yii::$app->user->can('userWebAssignmentView'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
 
         $model = $this->findModel($id);
-        return $this->render('index', [
-            'groupDataProvider' => (new GroupSearch())->search($this->request->queryParams),
-            'userDataProvider' => (new UserSearch())->search($this->request->queryParams),
-            'assignedUsers' => BulkAuthAssignmentHelper::getAssignedUsers($id)->select(['id_user', 'username'])->all(),
+
+        return $this->render('view', [
             'model' => $model,
         ]);
     }
 
     /**
+     * Assign items
      * @param string $id
      * @return array
      */
     public function actionAssign($id)
     {
-        if (!Yii::$app->user->can('userBackendBulkAssignmentAssign'))
+        if (!Yii::$app->user->can('userWebAssignmentAssign'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
 
-        $success = BulkAuthAssignmentHelper::assignByMixed($id, $this->request->post('items', []));
+        $items = $this->request->post('items', []);
+        $model = new Assignment($id);
+        $success = $model->assign($items);
         Yii::$app->getResponse()->format = 'json';
-        return array_merge(['assignedUsers' => BulkAuthAssignmentHelper::getAssignedUsers($id)->select(['id_user', 'username'])->all()], ['success' => $success]);
+        return array_merge($model->getItems(), ['success' => $success]);
     }
 
     /**
+     * Assign items
      * @param string $id
      * @return array
      */
     public function actionRevoke($id)
     {
-        if (!Yii::$app->user->can('userBackendBulkAssignmentRevoke'))
+        if (!Yii::$app->user->can('userWebAssignmentRevoke'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to set Assignment"));
 
-        $success = BulkAuthAssignmentHelper::revokeByMixed($id, $this->request->post('items', []));
+        $items = $this->request->post('items', []);
+        $model = new Assignment($id);
+        $success = $model->revoke($items);
         Yii::$app->getResponse()->format = 'json';
-        return array_merge(['assignedUsers' => BulkAuthAssignmentHelper::getAssignedUsers($id)->select(['id_user', 'username'])->all()], ['success' => $success]);
+        return array_merge($model->getItems(), ['success' => $success]);
     }
 
     /**
-     * Finds the AuthItem model based on its primary key value.
+     * Finds the Assignment model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param  integer $id
      * @return Assignment the loaded model
@@ -89,8 +92,8 @@ class BulkAssignmentController extends WebController
      */
     protected function findModel($id)
     {
-        if (($model = AuthItem::find($id)) !== null) {
-            return $model;
+        if (($user = User::findIdentity($id)) !== null) {
+            return new Assignment($id, $user);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
