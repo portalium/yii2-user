@@ -61,6 +61,7 @@ class m010101_010103_user_rbac extends Migration
         $auth->add($setPermission);
 
         $admin = $auth->createRole('admin');
+        $admin->description = 'Admin';
         $auth->add($admin);
         $auth->addChild($admin, $createUser);
         $auth->addChild($admin, $updateUser);
@@ -76,6 +77,7 @@ class m010101_010103_user_rbac extends Migration
         $auth->assign($admin, 1);
 
         $user = $auth->createRole('user');
+        $user->description = 'User';
         $auth->add($user);
     }
 
