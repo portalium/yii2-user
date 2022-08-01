@@ -51,7 +51,7 @@ return [
     'User groups: ' => 'Kullanıcı Grupları: ',
     'Permissions' => 'İzinler',
     'Password' => 'Şifre',
-    'Import Users' => 'Kullanıcı Aktar',
+    'Import User' => 'Kullanıcı Aktar',
     'First column index starts from 0'=>'İlk kolonun indeks değeri 0\'dan başlar',
     'First Name Column Name' => 'İsim Sütunu Adı',
     'Lastname Name Column Name' => 'Soyisim Sütunu Adı',

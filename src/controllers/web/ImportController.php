@@ -53,9 +53,10 @@ class ImportController extends WebController
 
             $users = [];
             $filePath = realpath(Yii::$app->basePath . '/../data') . '/' . $fileName;
-            $GLOBALS['seperator'] = $model->seperator;
-            $csv = array_map(function ($v) { 
-                return str_getcsv($v, $GLOBALS['seperator']); }, file($filePath, FILE_SKIP_EMPTY_LINES|FILE_IGNORE_NEW_LINES));
+            $GLOBALS['filepath'] = $filePath;
+            $csv = array_map(function ($v) {
+                return str_getcsv($v, $this->detectDelimiter($GLOBALS['filepath']));
+            }, file($filePath, FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES));
             $keys = array_shift($csv);
 
             foreach ($csv as $i => $row) {
@@ -63,7 +64,7 @@ class ImportController extends WebController
             }
 
             foreach ($model->attributes() as $attribute) {
-                if ($attribute != "file" && $attribute != "seperator" && $attribute != "group" && $attribute != "role") {
+                if ($attribute != "file") {
                     $model[$attribute] = (array_search($model[$attribute], $keys)) ? $model[$attribute] : null;
                 }
             }
@@ -89,9 +90,12 @@ class ImportController extends WebController
                 }
             }
 
-            $usersDB = Yii::$app->db->createCommand()->batchInsert("user",
-                    ["first_name", "last_name", "username", "email", "auth_key", "password_hash", "password_reset_token", "access_token", "status"], $users)
-                    ->rawSql;
+            $usersDB = Yii::$app->db->createCommand()->batchInsert(
+                "user",
+                ["first_name", "last_name", "username", "email", "auth_key", "password_hash", "password_reset_token", "access_token", "status"],
+                $users
+            )
+                ->rawSql;
             $usersDB = 'INSERT IGNORE' . mb_substr($usersDB, strlen('INSERT'));
             Yii::$app->db->createCommand($usersDB)->queryColumn();
             //get user id from username
@@ -103,11 +107,11 @@ class ImportController extends WebController
                     Yii::$app->session->setFlash('error', Module::t('Username contains invalid characters.'));
                     continue;
                 }
-                array_push($userNames,$user[2]);
+                array_push($userNames, $user[2]);
             }
-            
 
-            $userIds = Yii::$app->db->createCommand("SELECT id FROM user WHERE username IN ('".implode("','",$userNames)."')")->queryColumn();
+
+            $userIds = Yii::$app->db->createCommand("SELECT id FROM user WHERE username IN ('" . implode("','", $userNames) . "')")->queryColumn();
 
             $role = Yii::$app->authManager->getRole($model->role);
             $userGroups = [];
@@ -119,8 +123,11 @@ class ImportController extends WebController
                 }
             }
             if ($model->group != null) {
-                Yii::$app->db->createCommand()->batchInsert("user_group",
-                    ["id_user", "group_id", "created_at"], $userGroups)
+                Yii::$app->db->createCommand()->batchInsert(
+                    "user_group",
+                    ["id_user", "group_id", "created_at"],
+                    $userGroups
+                )
                     ->execute();
             }
         }
@@ -129,7 +136,6 @@ class ImportController extends WebController
             'model' => $model,
             'roles' => $roles,
         ]);
-
     }
 
 
@@ -145,7 +151,4 @@ class ImportController extends WebController
 
         return false;
     }
-
-
 }
-
