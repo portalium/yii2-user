@@ -7,14 +7,14 @@ use portalium\theme\widgets\Panel;
 use kartik\file\FileInput;
 use portalium\user\models\Group;
 
-$this->title = Module::t('Import Users');
+$this->title = Module::t('Import User');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 
 <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 <?php Panel::begin([
-    'title' => Module::t('Import Users'),
+    'title' => Module::t('Import User'),
     'actions' => [
         'header' => [],
         'footer' => [
@@ -32,8 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= $form->field($model, 'password')->textInput(['maxlength' => true]) ?>
 <?= $form->field($model, 'group')->dropDownList(Group::getGroups(), ['prompt' => Module::t('Not Selected')]) ?>
 <?= $form->field($model, 'role')->dropDownList($roles, ['prompt' => Module::t('Not Selected')]) ?>
-<?= $form->field($model, 'seperator')->dropDownList([';' => ';', ',' => ','], ['prompt' => Module::t('Not Selected')]) ?>
-
 
 
 <div id="internal">

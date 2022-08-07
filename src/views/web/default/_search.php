@@ -16,11 +16,8 @@ use portalium\user\Module;
     ]); ?>
 
     <?= $form->field($model, 'id_user') ?>
-
     <?= $form->field($model, 'username') ?>
-
     <?= $form->field($model, 'first_name') ?>
-
     <?= $form->field($model, 'last_name') ?>
 
     <?php // echo $form->field($model, 'auth_key') ?>

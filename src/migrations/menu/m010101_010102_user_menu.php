@@ -34,7 +34,6 @@ class m010101_010102_user_menu extends Migration
             [NULL, 'Roles', 'users-roles', '2', '{"icon":"","color":"","iconSize":""}', '{"type":"2","data":{"module":"user","routeType":"action","route":"\\/user\\/auth\\/role","model":null,"menuRoute":null,"menuType":"web"}}', '4', $idParent, $id_menu, 'userWebRoleViewPath', '2022-06-13 15:32:26', '2022-06-13 15:32:26'],
             [NULL, 'Groups', 'users-groups', '2', '{"icon":"","color":"","iconSize":""}', '{"type":"2","data":{"module":"user","routeType":"action","route":"\\/user\\/group","model":null,"menuRoute":null,"menuType":"web"}}', '5', $idParent, $id_menu, 'userWebGroupIndex', '2022-06-13 15:32:26', '2022-06-13 15:32:26'],
             [NULL, 'Users', 'users-users', '2', '{"icon":"","color":"","iconSize":""}', '{"type":"2","data":{"module":"user","routeType":"action","route":"\\/user\\/default\\/index","model":null,"menuRoute":null,"menuType":"web"}}', '6', $idParent, $id_menu, 'userWebDefaultIndex', '2022-06-13 15:32:26', '2022-06-13 15:32:26'],
-            [NULL, 'Import User', 'users-import', '2', '{"icon":"","color":"","iconSize":""}', '{"type":"2","data":{"module":"user","routeType":"action","route":"\\/user\\/import\\/index,"model":null,"menuRoute":null,"menuType":"web"}}', '11', $idParent, $id_menu, 'userWebImportIndex', '2022-07-22 15:32:26', '2022-07-22 15:32:26'],
         ]);
     }
 
