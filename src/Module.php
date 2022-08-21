@@ -13,6 +13,7 @@ class Module extends \portalium\base\Module
 
     public static $description = 'User Management Module';
     public static $name = 'User';
+
     public $apiRules = [
         [
             'class' => 'yii\rest\UrlRule',

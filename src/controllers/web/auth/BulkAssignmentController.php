@@ -2,17 +2,18 @@
 
 namespace portalium\user\controllers\web\auth;
 
-use portalium\user\components\BulkAuthAssignmentHelper;
-use portalium\user\Module;
 use Yii;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use portalium\web\Controller as WebController;
+use portalium\user\Module;
 use portalium\user\models\auth\Assignment;
 use portalium\user\models\auth\AuthItem;
 use portalium\user\models\GroupSearch;
 use portalium\user\models\UserSearch;
+use portalium\user\components\BulkAuthAssignmentHelper;
+
 
 /**
  * Bulk Assignment Controller
