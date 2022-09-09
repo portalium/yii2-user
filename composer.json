@@ -1,0 +1,22 @@
+{
+	"name" : "portalium/portalium-template",
+	"description" : "Module Template for Portalium",
+	"type" : "yii2-extension",
+	"license": "MIT",
+	"homepage" : "https://portalium.dev",
+	"authors" : [
+		{
+			"name" : "Uğur YILDIZ",
+			"email" : "yildiz@diginova.com.tr",
+			"homepage" : "https://uguryildiz.net"
+		}
+	],
+	"support" : {
+		"issues" : "https://github.com/portalium/portalium-template/issues"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"portalium\\template\\" : "src/"
+		}
+	}
+}
