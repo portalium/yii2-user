@@ -1,22 +1,32 @@
 {
-	"name" : "portalium/portalium-template",
-	"description" : "Module Template for Portalium",
-	"type" : "yii2-extension",
+	"name" : "portalium/portalium-user",
+	"description" : "Portalium User Module",
+	"type" : "portalium-core",
 	"license": "MIT",
 	"homepage" : "https://portalium.dev",
 	"authors" : [
 		{
 			"name" : "Uğur YILDIZ",
-			"email" : "yildiz@diginova.com.tr",
+			"email" : "ugur.yildiz@diginova.com.tr",
 			"homepage" : "https://uguryildiz.net"
 		}
 	],
 	"support" : {
-		"issues" : "https://github.com/portalium/portalium-template/issues"
+		"issues" : "https://github.com/portalium/portalium-user/issues"
+	},
+	"repositories": [
+		{
+			"type": "composer",
+			"url": "https://asset-packagist.org"
+		}
+	],
+	"require": {
+		"kartik-v/yii2-widget-fileinput": "@dev",
+		"portalium/portalium-site": "*"
 	},
 	"autoload" : {
 		"psr-4" : {
-			"portalium\\template\\" : "src/"
+			"portalium\\user\\" : "src/"
 		}
 	}
 }
