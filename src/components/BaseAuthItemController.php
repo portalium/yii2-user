@@ -8,8 +8,8 @@ use Yii;
 use yii\web\NotFoundHttpException;
 use yii\base\NotSupportedException;
 use yii\filters\VerbFilter;
-use portalium\web\Controller as WebController;
 use yii\rbac\Item;
+use portalium\web\Controller as WebController;
 use portalium\user\models\auth\AuthItem;
 use portalium\user\models\auth\search\AuthItemSearch;
 

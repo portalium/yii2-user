@@ -6,12 +6,12 @@ use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\filters\VerbFilter;
+use yii\rbac\Item;
 use portalium\user\Module;
 use portalium\user\models\User;
 use portalium\user\models\UserForm;
 use portalium\user\models\UserSearch;
 use portalium\web\Controller as WebController;
-use yii\rbac\Item;
 
 /**
  * UserController implements the CRUD actions for User model.

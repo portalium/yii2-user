@@ -1,8 +1,8 @@
 <?php
 
+use yii\db\Migration;
 use portalium\menu\models\Menu;
 use portalium\menu\models\MenuItem;
-use yii\db\Migration;
 use portalium\site\models\Form;
 
 class m010101_010102_user_menu extends Migration
