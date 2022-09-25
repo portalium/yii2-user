@@ -30,16 +30,6 @@ class Module extends \portalium\base\Module
                 [
                     'menu' => 'web',
                     'type' => 'action',
-                    'route' => '/user/auth/role',
-                ],
-                [
-                    'menu' => 'web',
-                    'type' => 'action',
-                    'route' => '/user/auth/permission',
-                ],
-                [
-                    'menu' => 'web',
-                    'type' => 'action',
                     'route' => '/user/default',
                 ],
                 [
