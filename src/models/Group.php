@@ -2,10 +2,10 @@
 
 namespace portalium\user\models;
 
-use portalium\base\Event;
-use portalium\user\Module;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use portalium\base\Event;
+use portalium\user\Module;
 
 /**
  * This is the model class for table "group".

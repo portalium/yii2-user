@@ -1,11 +1,12 @@
 <?php
 
 namespace portalium\user\controllers\api;
+
 use Yii;
+use yii\web\ForbiddenHttpException;
 use portalium\rest\ActiveController as RestActiveController;
 use portalium\site\Module;
 use portalium\site\models\SignupForm;
-use yii\web\ForbiddenHttpException;
 
 class UsersController extends RestActiveController
 {

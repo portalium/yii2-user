@@ -2,15 +2,15 @@
 
 namespace portalium\user\controllers\web;
 
-use portalium\user\models\Group;
-use portalium\user\models\GroupSearch;
-use portalium\user\models\UserSearch;
-use portalium\web\Controller as WebController;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
 use portalium\user\Module;
+use portalium\user\models\Group;
+use portalium\user\models\GroupSearch;
+use portalium\user\models\UserSearch;
+use portalium\web\Controller as WebController;
 
 /**
  * GroupController implements the CRUD actions for Group model.
