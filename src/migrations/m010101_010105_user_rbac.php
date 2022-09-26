@@ -10,6 +10,7 @@ class m010101_010105_user_rbac extends Migration
         $admin = $auth->createRole('admin');
         $admin->description = 'Admin';
         $auth->add($admin);
+        $auth->assign($admin, 1);
 
         $user = $auth->createRole('user');
         $user->description = 'User';
