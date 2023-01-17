@@ -56,7 +56,7 @@ Panel::begin([
                 'template' => '{view} {update} {assignment} {delete}',
                 'buttons' => [
                     'assignment' => function ($url, $model) {
-                        return Html::a(Html::tag('i', '', ['class' => 'fa fa-fw fa-lock']), ['/user/auth/assignment/view', 'id' => $model->id], ['title' => Module::t('Assignment')]);
+                        return Html::a(Html::tag('i', '', ['class' => 'fa fa-fw fa-lock']), ['/rbac/assignment/view', 'id' => $model->id], ['title' => Module::t('Assignment')]);
                     }
                 ]
             ],
