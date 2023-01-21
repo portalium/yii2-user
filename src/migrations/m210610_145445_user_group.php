@@ -1,6 +1,7 @@
 <?php
 
 use yii\db\Migration;
+use portalium\user\Module;
 
 /**
  * Class m210610_145445_group
@@ -12,7 +13,7 @@ class m210610_145445_user_group extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('user_group', [
+        $this->createTable(Module::$tablePrefix . 'group', [
             'id_group' => $this->primaryKey(),
             'name' => $this->string()->notNull()->unique(),
             'description' => $this->text(),
@@ -26,7 +27,7 @@ class m210610_145445_user_group extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('user_group');
+        $this->dropTable(Module::$tablePrefix . 'group');
     }
 
     /*
