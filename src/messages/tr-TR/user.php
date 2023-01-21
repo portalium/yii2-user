@@ -69,4 +69,6 @@ return [
     'Status' => 'Durum',
     'Delete Selected Users' => 'Seçilen Kullanıcıları Sil',
     'If you continue, all your data will be reset. Do you want to continue?' => 'Devam ederseniz, kullanıcıların tüm verileri sıfırlanacaktır. Devam etmek istiyor musunuz?',
+    'Created At' => 'Oluşturulma Tarihi',
+    'Updated At' => 'Güncellenme Tarihi',
 ];
