@@ -10,7 +10,7 @@ use portalium\user\Module;
  * - `{{%user}}`
  * - `{{%group}}`
  */
-class m210610_151045_useruser_group extends Migration
+class m210610_151045_user_user_group extends Migration
 {
     /**
      * {@inheritdoc}
@@ -41,7 +41,7 @@ class m210610_151045_useruser_group extends Migration
             '{{%fk-user_group-id_user}}',
             '{{%' . Module::$tablePrefix . 'user_group}}',
             'id_user',
-            '{{%' . Module::$tablePrefix . '_user}}',
+            '{{%' . Module::$tablePrefix . 'user}}',
             'id_user',
             'CASCADE'
         );
@@ -51,7 +51,7 @@ class m210610_151045_useruser_group extends Migration
             '{{%fk-user_group-id_group}}',
             '{{%' . Module::$tablePrefix . 'user_group}}',
             'id_group',
-            '{{%' . Module::$tablePrefix . '_group}}',
+            '{{%' . Module::$tablePrefix . 'group}}',
             'id_group',
             'CASCADE'
         );
