@@ -11,7 +11,7 @@ use portalium\user\Module;
  *
  * @property int $id_user
  * @property int $id_user
- * @property int $group_id
+ * @property int $id_group
  * @property int $created_at
  *
  * @property Group $group

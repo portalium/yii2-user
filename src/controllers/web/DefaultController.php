@@ -51,14 +51,19 @@ class DefaultController extends WebController
      */
     public function actionIndex()
     {
-        if (!Yii::$app->user->can('userWebDefaultIndex'))
-            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view User"));
+        if (!\Yii::$app->user->can('userWebDefaultIndex') && !\Yii::$app->user->can('userWebDefaultIndexOwn')) {
+            throw new \yii\web\ForbiddenHttpException(Module::t('You are not allowed to access this page.'));
+        }
+        
         if ($this->request->isPost) {
             $this->actionMultipleDelete($this->request->post('selection'));
         }
+
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
+        if(!\Yii::$app->user->can('userWebDefaultIndex'))
+            $dataProvider->query->andWhere(['id_user'=>\Yii::$app->user->id]);
+        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -73,7 +78,7 @@ class DefaultController extends WebController
      */
     public function actionView($id)
     {
-        if (!Yii::$app->user->can('userWebDefaultView'))
+        if (!Yii::$app->user->can('userWebDefaultView', ['model' => $this->findModel($id)]))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view User"));
 
         $model = $this->findModel($id);
@@ -116,7 +121,7 @@ class DefaultController extends WebController
      */
     public function actionUpdate($id)
     {
-        if (!Yii::$app->user->can('userWebDefaultUpdate'))
+        if (!Yii::$app->user->can('userWebDefaultUpdate', ['model' => $this->findModel($id)]))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to Update User"));
 
         $model = $this->findModel($id);
@@ -156,7 +161,7 @@ class DefaultController extends WebController
      */
     public function actionDelete($id)
     {
-        if (!Yii::$app->user->can('userWebDefaultDelete'))
+        if (!Yii::$app->user->can('userWebDefaultDelete', ['model' => $this->findModel($id)]))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
 
         $this->findModel($id)->delete();

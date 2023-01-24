@@ -1,6 +1,7 @@
 <?php
 
 use yii\db\Migration;
+use portalium\user\Module;
 
 /**
  * Handles the creation of table `{{%user_group}}`.
@@ -9,7 +10,7 @@ use yii\db\Migration;
  * - `{{%user}}`
  * - `{{%group}}`
  */
-class m210610_151045_user_user_group extends Migration
+class m210610_151045_useruser_group extends Migration
 {
     /**
      * {@inheritdoc}
@@ -21,7 +22,7 @@ class m210610_151045_user_user_group extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%user_user_group}}', [
+        $this->createTable('{{%' . Module::$tablePrefix . 'user_group}}', [
             'id_group' => $this->primaryKey(),
             'id_user' => $this->integer()->notNull(),
             'id_group' => $this->integer()->notNull(),
@@ -31,26 +32,26 @@ class m210610_151045_user_user_group extends Migration
         // creates index for column `id_user`
         $this->createIndex(
             '{{%idx-user_group-id_user}}',
-            '{{%user_user_group}}',
+            '{{%' . Module::$tablePrefix . 'user_group}}',
             'id_user'
         );
 
         // add foreign key for table `{{%user}}`
         $this->addForeignKey(
             '{{%fk-user_group-id_user}}',
-            '{{%user_user_group}}',
+            '{{%' . Module::$tablePrefix . 'user_group}}',
             'id_user',
-            '{{%user_user}}',
+            '{{%' . Module::$tablePrefix . '_user}}',
             'id_user',
             'CASCADE'
         );
 
         // add foreign key for table `{{%group}}`
         $this->addForeignKey(
-            '{{%fk-user_group-group_id}}',
-            '{{%user_user_group}}',
+            '{{%fk-user_group-id_group}}',
+            '{{%' . Module::$tablePrefix . 'user_group}}',
             'id_group',
-            '{{%user_group}}',
+            '{{%' . Module::$tablePrefix . '_group}}',
             'id_group',
             'CASCADE'
         );
@@ -64,21 +65,21 @@ class m210610_151045_user_user_group extends Migration
         // drops foreign key for table `{{%user}}`
         $this->dropForeignKey(
             '{{%fk-user_group-id_user}}',
-            '{{%user_user_group}}'
+            '{{%' . Module::$tablePrefix . 'user_group}}'
         );
 
         // drops index for column `id_user`
         $this->dropIndex(
             '{{%idx-user_group-id_user}}',
-            '{{%user_user_group}}'
+            '{{%' . Module::$tablePrefix . 'user_group}}'
         );
 
         // drops foreign key for table `{{%group}}`
         $this->dropForeignKey(
-            '{{%fk-user_group-group_id}}',
-            '{{%user_user_group}}'
+            '{{%fk-user_group-id_group}}',
+            '{{%' . Module::$tablePrefix . 'user_group}}'
         );
 
-        $this->dropTable('{{%user_user_group}}');
+        $this->dropTable('{{%' . Module::$tablePrefix . 'user_group}}');
     }
 }
