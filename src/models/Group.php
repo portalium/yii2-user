@@ -94,6 +94,8 @@ class Group extends \yii\db\ActiveRecord
             'id_group' => 'ID',
             'name' => Module::t('Group Name'),
             'description' => Module::t('Group Description'),
+            'created_at' => Module::t('Created At'),
+            'updated_at' => Module::t('Updated At'),
         ];
     }
 
@@ -213,7 +215,7 @@ class Group extends \yii\db\ActiveRecord
         if (count($userIds) > 0) {
             $rows = [];
             foreach ($userIds as $userId) {
-                $rows[] = [$userId, $this->id];
+                $rows[] = [$userId, $this->id_group];
             }
             $transaction = Yii::$app->db->beginTransaction();
             try {
@@ -256,9 +258,9 @@ class Group extends \yii\db\ActiveRecord
                 $transaction = Yii::$app->db->beginTransaction();
                 $numberAffectedRows = Yii::$app->db->createCommand('DELETE FROM '
                     . UserGroup::getTableSchema()->fullName
-                    . ' WHERE group_id=:group_id AND id_user IN ('
+                    . ' WHERE id_group=:id_group AND id_user IN ('
                     . implode(', ', $userIds) . ')')
-                    ->bindValue(':group_id', $this->id)
+                    ->bindValue(':id_group', $this->id_group)
                     ->execute();
                 $transaction->commit();
             } catch (\Exception $e) {

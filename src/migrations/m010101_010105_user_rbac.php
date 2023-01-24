@@ -7,8 +7,7 @@ class m010101_010105_user_rbac extends Migration
     public function up()
     {
         $auth = Yii::$app->authManager;
-        $settings = yii\helpers\ArrayHelper::map(portalium\site\models\Setting::find()->asArray()->all(),'name','value');
-        $role = 'admin';
+        $role = Yii::$app->settings->getValue('default::role');
         $admin = (isset($role) && $role != '') ? $auth->getRole($role) : $auth->getRole('admin');
         $auth->assign($admin, 1);
 
@@ -17,87 +16,87 @@ class m010101_010105_user_rbac extends Migration
         $auth->add($user);
 
         $userApiDefaultView = $auth->createPermission('userApiDefaultView');
-        $userApiDefaultView->description = 'View user';
+        $userApiDefaultView->description = 'User Api Default View';
         $auth->add($userApiDefaultView);
         $auth->addChild($admin, $userApiDefaultView);
 
         $userApiDefaultCreate = $auth->createPermission('userApiDefaultCreate');
-        $userApiDefaultCreate->description = 'Create user';
+        $userApiDefaultCreate->description = 'User Api Default Create';
         $auth->add($userApiDefaultCreate);
         $auth->addChild($admin, $userApiDefaultCreate);
 
         $userApiDefaultUpdate = $auth->createPermission('userApiDefaultUpdate');
-        $userApiDefaultUpdate->description = 'Update user';
+        $userApiDefaultUpdate->description = 'User Api Default Update';
         $auth->add($userApiDefaultUpdate);
         $auth->addChild($admin, $userApiDefaultUpdate);
 
         $userApiDefaultDelete = $auth->createPermission('userApiDefaultDelete');
-        $userApiDefaultDelete->description = 'Delete user';
+        $userApiDefaultDelete->description = 'User Api Default Delete';
         $auth->add($userApiDefaultDelete);
         $auth->addChild($admin, $userApiDefaultDelete);
 
         $userApiDefaultIndex = $auth->createPermission('userApiDefaultIndex');
-        $userApiDefaultIndex->description = 'View user';
+        $userApiDefaultIndex->description = 'User Api Default Index';
         $auth->add($userApiDefaultIndex);
         $auth->addChild($admin, $userApiDefaultIndex);
 
         $userWebDefaultIndex = $auth->createPermission('userWebDefaultIndex');
-        $userWebDefaultIndex->description = 'View user';
+        $userWebDefaultIndex->description = 'User Web Default Index';
         $auth->add($userWebDefaultIndex);
         $auth->addChild($admin, $userWebDefaultIndex);
 
         $userWebDefaultCreate = $auth->createPermission('userWebDefaultCreate');
-        $userWebDefaultCreate->description = 'Create user';
+        $userWebDefaultCreate->description = 'User Web Default Create';
         $auth->add($userWebDefaultCreate);
         $auth->addChild($admin, $userWebDefaultCreate);
 
         $userWebDefaultUpdate = $auth->createPermission('userWebDefaultUpdate');
-        $userWebDefaultUpdate->description = 'Update user';
+        $userWebDefaultUpdate->description = 'User Web Default Update';
         $auth->add($userWebDefaultUpdate);
         $auth->addChild($admin, $userWebDefaultUpdate);
 
         $userWebDefaultDelete = $auth->createPermission('userWebDefaultDelete');
-        $userWebDefaultDelete->description = 'Delete user';
+        $userWebDefaultDelete->description = 'User Web Default Delete';
         $auth->add($userWebDefaultDelete);
         $auth->addChild($admin, $userWebDefaultDelete);
 
         $userWebDefaultView = $auth->createPermission('userWebDefaultView');
-        $userWebDefaultView->description = 'View user';
+        $userWebDefaultView->description = 'User Web Default View';
         $auth->add($userWebDefaultView);
         $auth->addChild($admin, $userWebDefaultView);
 
         $userWebGroupIndex = $auth->createPermission('userWebGroupIndex');
-        $userWebGroupIndex->description = 'View group';
+        $userWebGroupIndex->description = 'User Web Group Index';
         $auth->add($userWebGroupIndex);
         $auth->addChild($admin, $userWebGroupIndex);
 
         $userWebGroupView = $auth->createPermission('userWebGroupView');
-        $userWebGroupView->description = 'View group';
+        $userWebGroupView->description = 'User Web Group View';
         $auth->add($userWebGroupView);
         $auth->addChild($admin, $userWebGroupView);
 
         $userWebGroupCreate = $auth->createPermission('userWebGroupCreate');
-        $userWebGroupCreate->description = 'Create group';
+        $userWebGroupCreate->description = 'User Web Group Create';
         $auth->add($userWebGroupCreate);
         $auth->addChild($admin, $userWebGroupCreate);
 
         $userWebGroupUpdate = $auth->createPermission('userWebGroupUpdate');
-        $userWebGroupUpdate->description = 'Update group';
+        $userWebGroupUpdate->description = 'User Web Group Update';
         $auth->add($userWebGroupUpdate);
         $auth->addChild($admin, $userWebGroupUpdate);
 
         $userWebGroupMembers = $auth->createPermission('userWebGroupMembers');
-        $userWebGroupMembers->description = 'View group members';
+        $userWebGroupMembers->description = 'User Web Group Members members';
         $auth->add($userWebGroupMembers);
         $auth->addChild($admin, $userWebGroupMembers);
 
         $userWebGroupDelete = $auth->createPermission('userWebGroupDelete');
-        $userWebGroupDelete->description = 'Delete group';
+        $userWebGroupDelete->description = 'User Web Group Delete';
         $auth->add($userWebGroupDelete);
         $auth->addChild($admin, $userWebGroupDelete);
 
         $userWebImportIndex = $auth->createPermission('userWebImportIndex');
-        $userWebImportIndex->description = 'View import';
+        $userWebImportIndex->description = 'User Web Import Index';
         $auth->add($userWebImportIndex);
         $auth->addChild($admin, $userWebImportIndex);
     }

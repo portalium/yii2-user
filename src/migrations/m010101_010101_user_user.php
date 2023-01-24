@@ -1,13 +1,14 @@
 <?php
 
 use yii\db\Migration;
+use portalium\user\Module;
 
 class m010101_010101_user_user extends Migration
 {
     public function up()
     {
 
-        $this->createTable('user_user', [
+        $this->createTable(Module::$tablePrefix . 'user', [
             'id_user' => $this->primaryKey(),
             'username' => $this->string()->notNull()->unique(),
             'first_name' => $this->string(),
@@ -25,6 +26,6 @@ class m010101_010101_user_user extends Migration
 
     public function down()
     {
-        $this->dropTable('user_user');
+        $this->dropTable(Module::$tablePrefix . 'user');
     }
 }

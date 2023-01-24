@@ -50,12 +50,13 @@ class GroupController extends WebController
      */
     public function actionIndex()
     {
-        if (!Yii::$app->user->can('userWebGroupIndex'))
-            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view Group"));
+        if (!\Yii::$app->user->can('userWebGroupIndex') && !\Yii::$app->user->can('userWebGroupIndexOwn')) {
+            throw new \yii\web\ForbiddenHttpException(Module::t('You are not allowed to access this page.'));
+        }
 
         $searchModel = new GroupSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
+        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -93,7 +94,7 @@ class GroupController extends WebController
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id_group' => $model->id_group]);
+                return $this->redirect(['view', 'id' => $model->id_group]);
             }
         } else {
             $model->loadDefaultValues();
@@ -121,7 +122,7 @@ class GroupController extends WebController
         if ($this->request->isPost) {
             $model->load($this->request->post());
             $model->save();
-            return $this->redirect(['view', 'id_group' => $model->id_group]);
+            return $this->redirect(['view', 'id' => $model->id_group]);
         }
 
         $searchModel = new UserSearch();
@@ -158,7 +159,7 @@ class GroupController extends WebController
             }
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', Module::t('Settings saved.'));
-                return $this->redirect(['members', 'id_group' => $model->id_group]);
+                return $this->redirect(['members', 'id' => $model->id_group]);
             } else {
                 Yii::$app->session->setFlash('error', Module::t('There was an error. Settings not saved successfully.'));
             }
