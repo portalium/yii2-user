@@ -50,12 +50,13 @@ class GroupController extends WebController
      */
     public function actionIndex()
     {
-        if (!Yii::$app->user->can('userWebGroupIndex'))
-            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view Group"));
+        if (!\Yii::$app->user->can('userWebGroupIndex') && !\Yii::$app->user->can('userWebGroupIndexOwn')) {
+            throw new \yii\web\ForbiddenHttpException(Module::t('You are not allowed to access this page.'));
+        }
 
         $searchModel = new GroupSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
+        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

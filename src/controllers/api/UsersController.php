@@ -7,6 +7,7 @@ use yii\web\ForbiddenHttpException;
 use portalium\rest\ActiveController as RestActiveController;
 use portalium\site\Module;
 use portalium\site\models\SignupForm;
+use portalium\user\models\UserSearch;
 
 class UsersController extends RestActiveController
 {
@@ -16,7 +17,14 @@ class UsersController extends RestActiveController
     {
         $actions = parent::actions();
         unset($actions[ 'create' ]);
-
+        $actions['index']['prepareDataProvider'] = function ($action) {
+            $searchModel = new UserSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            if(!Yii::$app->user->can('userApiDefaultIndex')){
+                $dataProvider->query->andWhere(['id_user'=>Yii::$app->user->id]);
+            }
+            return $dataProvider;
+        };  
         return $actions;
     }
 
@@ -43,7 +51,7 @@ class UsersController extends RestActiveController
                     throw new \yii\web\ForbiddenHttpException(Module::t('You do not have permission to delete this menu.'));
                 break;
             default:
-                if (!Yii::$app->user->can('userApiDefaultIndex'))
+                if (!Yii::$app->user->can('userApiDefaultIndex') && !Yii::$app->user->can('userApiDefaultIndexOwn'))
                     throw new \yii\web\ForbiddenHttpException(Module::t('You do not have permission to delete this menu.'));
                 break;
         }
