@@ -7,7 +7,7 @@ class m010101_010105_user_rbac extends Migration
     public function up()
     {
         $auth = Yii::$app->authManager;
-        $role = Yii::$app->settings->getValue('default::role');
+        $role = Yii::$app->setting->getValue('default::role');
         $admin = (isset($role) && $role != '') ? $auth->getRole($role) : $auth->getRole('admin');
         $auth->assign($admin, 1);
 

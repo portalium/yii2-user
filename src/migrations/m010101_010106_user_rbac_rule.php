@@ -10,7 +10,7 @@ class m010101_010106_user_rbac_rule extends Migration
         $auth = Yii::$app->authManager;
         $rule = new OwnRule();
         $auth->add($rule);
-        $role = Yii::$app->settings->getValue('default::role');
+        $role = Yii::$app->setting->getValue('default::role');
         $admin = (isset($role) && $role != '') ? $auth->getRole($role) : $auth->getRole('admin');
 
         $permissionsName = [
