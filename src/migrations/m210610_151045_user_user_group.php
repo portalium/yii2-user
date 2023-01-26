@@ -43,7 +43,7 @@ class m210610_151045_user_user_group extends Migration
             'id_user',
             '{{%' . Module::$tablePrefix . 'user}}',
             'id_user',
-            'CASCADE'
+            'RESTRICT'
         );
 
         // add foreign key for table `{{%group}}`
@@ -53,7 +53,7 @@ class m210610_151045_user_user_group extends Migration
             'id_group',
             '{{%' . Module::$tablePrefix . 'group}}',
             'id_group',
-            'CASCADE'
+            'RESTRICT'
         );
     }
 
