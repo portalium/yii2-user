@@ -1,6 +1,6 @@
 <?php
 
-use yii\db\Migration;
+use portalium\db\Migration;
 use portalium\user\Module;
 
 /**

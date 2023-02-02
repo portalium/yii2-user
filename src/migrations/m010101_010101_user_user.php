@@ -1,6 +1,6 @@
 <?php
 
-use yii\db\Migration;
+use portalium\db\Migration;
 use portalium\user\Module;
 
 class m010101_010101_user_user extends Migration
