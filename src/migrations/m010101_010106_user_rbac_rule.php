@@ -1,6 +1,6 @@
 <?php
 
-use yii\db\Migration;
+use portalium\db\Migration;
 use portalium\user\rbac\OwnRule;
 
 class m010101_010106_user_rbac_rule extends Migration
