@@ -26,7 +26,7 @@ class m210610_151045_user_user_group extends Migration
             'id_group' => $this->primaryKey(),
             'id_user' => $this->integer()->notNull(),
             'id_group' => $this->integer()->notNull(),
-            'created_at' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
+            'date_create' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
         ], $tableOptions);
 
         // creates index for column `id_user`

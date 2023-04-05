@@ -59,8 +59,8 @@ class GroupSearch extends Group
         // grid filtering conditions
         $query->andFilterWhere([
             'id_group' => $this->id_group,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'date_create' => $this->date_create,
+            'date_update' => $this->date_update,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
