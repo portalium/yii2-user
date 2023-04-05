@@ -13,8 +13,8 @@ use portalium\user\Module;
  * @property int $id_group
  * @property string $name
  * @property string|null $description
- * @property `\yii\db\Expression('NOW()')` $created_at
- * @property `\yii\db\Expression('NOW()')` $updated_at
+ * @property `\yii\db\Expression('NOW()')` $date_create
+ * @property `\yii\db\Expression('NOW()')` $date_update
  * 
  * @property array $_userIds Virtual Attribute
  * @property bool $_isUserGroupModified
@@ -54,8 +54,8 @@ class Group extends \yii\db\ActiveRecord
         return [
             [
                 'class' => TimestampBehavior::class,
-                'createdAtAttribute' => 'created_at',
-                'updatedAtAttribute' => 'updated_at',
+                'createdAtAttribute' => 'date_create',
+                'updatedAtAttribute' => 'date_update',
                 'value' => new \yii\db\Expression('NOW()'),
             ],
         ];
@@ -94,8 +94,8 @@ class Group extends \yii\db\ActiveRecord
             'id_group' => 'ID',
             'name' => Module::t('Group Name'),
             'description' => Module::t('Group Description'),
-            'created_at' => Module::t('Created At'),
-            'updated_at' => Module::t('Updated At'),
+            'date_create' => Module::t('Created At'),
+            'date_update' => Module::t('Updated At'),
         ];
     }
 
@@ -158,7 +158,7 @@ class Group extends \yii\db\ActiveRecord
         }
         if (!$insert) {
             if ($this->getScenario() !== self::SCENARIO_DEFAULT && $this->mergeUserGroup() && $this->_isUserGroupModified) {
-                $this->touch('updated_at');
+                $this->touch('date_update');
             }
         }
         if ($this->hasErrors()) {

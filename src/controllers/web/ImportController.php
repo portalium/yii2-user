@@ -125,7 +125,7 @@ class ImportController extends WebController
             if ($model->group != null) {
                 Yii::$app->db->createCommand()->batchInsert(
                     "user_group",
-                    ["id_user", "id_group", "created_at"],
+                    ["id_user", "id_group", "date_create"],
                     $userGroups
                 )
                     ->execute();

@@ -58,8 +58,8 @@ $this->registerJs($script);
                             //'password_reset_token',
                             //'access_token',
                             //'status',
-                            //'created_at',
-                            //'updated_at',
+                            //'date_create',
+                            //'date_update',
                             [
                                 'class' => 'yii\grid\CheckboxColumn', 'name' => 'addUserIds', 'checkboxOptions' => function ($userModel) use ($model) {
                                     return ['value' => $userModel->id];
@@ -111,8 +111,8 @@ $this->registerJs($script);
                             //'password_reset_token',
                             //'access_token',
                             //'status',
-                            //'created_at',
-                            //'updated_at',
+                            //'date_create',
+                            //'date_update',
                             [
                                 'class' => 'yii\grid\CheckboxColumn', 'name' => 'removeUserIds', 'checkboxOptions' => function ($userModel) use ($model) {
                                     return ['value' => $userModel->id];
