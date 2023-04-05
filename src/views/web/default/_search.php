@@ -32,9 +32,9 @@ use portalium\user\Module;
 
     <?php // echo $form->field($model, 'status') ?>
 
-    <?php // echo $form->field($model, 'created_at') ?>
+    <?php // echo $form->field($model, 'date_create') ?>
 
-    <?php // echo $form->field($model, 'updated_at') ?>
+    <?php // echo $form->field($model, 'date_update') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Module::t( 'Search'), ['class' => 'btn btn-primary']) ?>

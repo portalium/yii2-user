@@ -12,7 +12,7 @@ use portalium\user\Module;
  * @property int $id_user
  * @property int $id_user
  * @property int $id_group
- * @property int $created_at
+ * @property int $date_create
  *
  * @property Group $group
  * @property User $user
@@ -35,7 +35,7 @@ class UserGroup extends \yii\db\ActiveRecord
         return [
             [
                 'class' => TimestampBehavior::class,
-                'createdAtAttribute' => 'created_at',
+                'createdAtAttribute' => 'date_create',
                 'value' => new \yii\db\Expression('NOW()'),
             ],
         ];
@@ -63,7 +63,7 @@ class UserGroup extends \yii\db\ActiveRecord
             'id_user' => 'ID',
             'id_user' => 'User ID',
             'id_group' => 'Group ID',
-            'created_at' => 'Created At',
+            'date_create' => 'Created At',
         ];
     }
 

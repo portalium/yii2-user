@@ -17,8 +17,8 @@ class m010101_010102_user_admin extends Migration
             'email' => 'admin@mail.com',
             'access_token' => 'k40SygDWcgPaS3vtij3d8cRRsz8uQyhf',
             'status' => '10',
-            'created_at' => '2022-04-01 08:40:53',
-            'updated_at' => '2022-04-01 08:40:53',
+            'date_create' => '2022-04-01 08:40:53',
+            'date_update' => '2022-04-01 08:40:53',
         ]);
     }
 

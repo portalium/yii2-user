@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'name',
             'description:ntext',
-            'created_at',
+            'date_create',
         ],
     ]) ?>
 
