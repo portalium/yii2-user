@@ -1,9 +1,11 @@
 <?php
 
-use portalium\theme\helpers\Html;
-use portalium\theme\widgets\GridView;
-use portalium\theme\widgets\Panel;
+use yii\helpers\Url;
 use portalium\user\Module;
+use portalium\theme\helpers\Html;
+use portalium\theme\widgets\Panel;
+use portalium\theme\widgets\GridView;
+use portalium\theme\widgets\ActionColumn;
 
 /* @var $this yii\web\View */
 /* @var $searchModel portalium\user\models\GroupSearch */
@@ -32,11 +34,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'description:ntext',
 
             [
-                'class' => 'yii\grid\ActionColumn',
+                'class' => ActionColumn::class,
                 'template' => '{view} {update} {members} {delete}',
                 'buttons' => [
                     'members' => function ($url, $model) {
-                        return Html::a(Html::tag('i', '', ['class' => 'fa fa-fw fa-user']), $url, ['title' => Module::t('Manage Members')]);
+                        return Html::a(
+                            Html::tag('i', '', ['class' => 'fa fa-fw fa-user']), 
+                            Url::toRoute([$url]),
+                            ['class' => 'btn btn-primary btn-xs', 'style' => 'padding: 2px 9px 2px 9px;'] 
+                        );
                     }
                 ],
             ],

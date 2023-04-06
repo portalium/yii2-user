@@ -1,12 +1,14 @@
 <?php
 
-use portalium\site\helpers\ActiveForm as HelpersActiveForm;
-use portalium\theme\helpers\Html;
-use portalium\theme\widgets\GridView;
-use portalium\theme\widgets\Panel;
-use portalium\user\models\User;
+use yii\helpers\Url;
 use portalium\user\Module;
+use portalium\user\models\User;
+use portalium\theme\helpers\Html;
+use portalium\theme\widgets\Panel;
+use portalium\theme\widgets\GridView;
 use portalium\theme\widgets\ActiveForm;
+use portalium\theme\widgets\ActionColumn;
+use portalium\site\helpers\ActiveForm as HelpersActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $searchModel portalium\user\models\UserSearch */
@@ -51,11 +53,15 @@ Panel::begin([
             'last_name',
             'email:email',
             [
-                'class' => 'yii\grid\ActionColumn',
+                'class' => ActionColumn::class,
                 'template' => '{view} {update} {assignment} {delete}',
                 'buttons' => [
                     'assignment' => function ($url, $model) {
-                        return Html::a(Html::tag('i', '', ['class' => 'fa fa-fw fa-lock']), ['/rbac/assignment/view', 'id' => $model->id], ['title' => Module::t('Assignment')]);
+                        return Html::a(
+                            Html::tag('i', '', ['class' => 'fa fa-fw fa-lock']), 
+                            Url::toRoute(['/rbac/assignment/view', 'id' => $model->id]),
+                            ['class' => 'btn btn-primary btn-xs', 'style' => 'padding: 2px 9px 2px 9px;'] 
+                        );
                     }
                 ]
             ],
