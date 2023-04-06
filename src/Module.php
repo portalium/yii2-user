@@ -30,12 +30,12 @@ class Module extends \portalium\base\Module
                 [
                     'menu' => 'web',
                     'type' => 'action',
-                    'route' => '/user/default',
+                    'route' => '/user/default/index',
                 ],
                 [
                     'menu' => 'web',
                     'type' => 'action',
-                    'route' => '/user/group',
+                    'route' => '/user/group/index',
                 ]
             ],
         ];
