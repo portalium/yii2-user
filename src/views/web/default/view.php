@@ -3,6 +3,7 @@
 use portalium\theme\helpers\Html;
 use portalium\theme\widgets\DetailView;
 use portalium\theme\widgets\Panel;
+use portalium\user\models\User;
 use portalium\user\Module;
 
 /* @var $this yii\web\View */
@@ -35,9 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'first_name',
             'last_name',
             'email:email',
-            'status',
             'date_create',
-            'date_update',
         ],
     ]) ?>
 
