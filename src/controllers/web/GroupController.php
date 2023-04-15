@@ -158,10 +158,10 @@ class GroupController extends WebController
                 $model->setUserIds($this->request->post('addUserIds'));
             }
             if ($model->save()) {
-                Yii::$app->session->setFlash('success', Module::t('Settings saved.'));
+                Yii::$app->session->addFlash('success', Module::t('Settings saved.'));
                 return $this->redirect(['members', 'id' => $model->id_group]);
             } else {
-                Yii::$app->session->setFlash('error', Module::t('There was an error. Settings not saved successfully.'));
+                Yii::$app->session->addFlash('error', Module::t('There was an error. Settings not saved successfully.'));
             }
         }
 
