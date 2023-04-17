@@ -62,8 +62,8 @@ $this->registerJs($script);
                             //'date_update',
                             [
                                 'class' => 'yii\grid\CheckboxColumn', 'name' => 'addUserIds', 'checkboxOptions' => function ($userModel) use ($model) {
-                                    return ['value' => $userModel->id];
-                                },
+                                return ['value' => $userModel->id];
+                            },
                             ],
                         ],
                     ]); ?>
@@ -73,23 +73,26 @@ $this->registerJs($script);
 
 
             <div class="col-md-1" style="text-align: center;">
-                <br><br>
-                <?= Html::submitButton('&gt;&gt;', [
-                    'class' => 'btn btn-success',
-                    'name' => 'addToGroup',
-                    'value' => 1,
-                    'title' => Module::t('Add to Group'),
-                    'data-formid' => "availableUsersForm"
-                ]);
-                ?><br><br>
-                <?= Html::submitButton('&lt;&lt;', [
-                    'class' => 'btn btn-danger',
-                    'name' => 'removeFromGroup',
-                    'value' => 1,
-                    'title' => Module::t('Remove from Group'),
-                    'data-formid' => "groupMembersForm"
-                ]);
-                ?>
+                <div class="text-center" style="position: relative; top: 50%;">
+                    <div class="btn-group-vertical" style="transform: translateY(-50%);">
+                        <?= Html::submitButton(Html::tag('i', '', ['class' => 'fa fa-arrow-right']), [
+                            'class' => 'btn btn-success',
+                            'name' => 'addToGroup',
+                            'value' => 1,
+                            'title' => Module::t('Add to Group'),
+                            'data-formid' => "availableUsersForm"
+                        ]);
+                        ?>
+                        <?= Html::submitButton(Html::tag('i', '', ['class' => 'fa fa-arrow-left']), [
+                            'class' => 'btn btn-danger',
+                            'name' => 'removeFromGroup',
+                            'value' => 1,
+                            'title' => Module::t('Remove from Group'),
+                            'data-formid' => "groupMembersForm"
+                        ]);
+                        ?>
+                    </div>
+                </div>
             </div>
 
             <div class="col-md-5">
@@ -115,8 +118,8 @@ $this->registerJs($script);
                             //'date_update',
                             [
                                 'class' => 'yii\grid\CheckboxColumn', 'name' => 'removeUserIds', 'checkboxOptions' => function ($userModel) use ($model) {
-                                    return ['value' => $userModel->id];
-                                },
+                                return ['value' => $userModel->id];
+                            },
                             ],
                         ],
                     ]); ?>
