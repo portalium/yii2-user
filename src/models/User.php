@@ -75,6 +75,14 @@ class User extends ActiveRecord implements IdentityInterface
             'status' => Module::t('Status'),
         ];
     }
+
+    public static function getStatus()
+    {
+        return [
+            self::STATUS_ACTIVE => Module::t('Active'),
+            self::STATUS_DELETED => Module::t('Deleted'),
+        ];
+    }
     
     /**
      * Returns relational groups data.
@@ -163,4 +171,5 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
 }
