@@ -46,7 +46,7 @@ class ImportController extends WebController
         if ($model->load(Yii::$app->request->post())) {
             $model->file = UploadedFile::getInstance($model, 'file');
             if ($model->file == null) {
-                Yii::$app->session->setFlash('error', Module::t('Please choose file.'));
+                Yii::$app->session->addFlash('error', Module::t('Please choose file.'));
                 return $this->redirect(['index']);
             }
             $fileName = $this->upload($model->file);
@@ -70,7 +70,7 @@ class ImportController extends WebController
             }
 
             if ($model->email == null || $model->username == null) {
-                Yii::$app->session->setFlash('error', Module::t('You entered the username or e-mail columns.'));
+                Yii::$app->session->addFlash('error', Module::t('You entered the username or e-mail columns.'));
                 return $this->redirect(['index']);
             }
 
@@ -104,7 +104,7 @@ class ImportController extends WebController
                 //if filter sql injection
                 if (preg_match('/[\'\/\\\^£$%&*()}{@#~?><>,|=_+¬-]/', $user[2])) {
                     //create flash message error
-                    Yii::$app->session->setFlash('error', Module::t('Username contains invalid characters.'));
+                    Yii::$app->session->addFlash('error', Module::t('Username contains invalid characters.'));
                     continue;
                 }
                 array_push($userNames, $user[2]);
