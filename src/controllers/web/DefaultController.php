@@ -130,14 +130,14 @@ class DefaultController extends WebController
             if ($model->username != $model->oldAttributes['username']) {
                 $check = User::find()->where(['username' => $model->username])->one();
                 if ($check) {
-                    Yii::$app->session->setFlash('danger', Module::t('Username already exists'));
+                    Yii::$app->session->addFlash('danger', Module::t('Username already exists'));
                     return $this->redirect(['view', 'id' => $model->id_user]);
                 }
             }
             if ($model->email != $model->oldAttributes['email']) {
                 $check = User::find()->where(['email' => $model->email])->one();
                 if ($check) {
-                    Yii::$app->session->setFlash('danger', Module::t('Email already exists'));
+                    Yii::$app->session->addFlash('danger', Module::t('Email already exists'));
                     return $this->redirect(['view', 'id' => $model->id_user]);
                 }
             }
