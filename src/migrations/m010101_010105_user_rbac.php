@@ -14,6 +14,7 @@ class m010101_010105_user_rbac extends Migration
         $user = $auth->createRole('user');
         $user->description = 'User';
         $auth->add($user);
+        $auth->addChild($admin, $user);
 
         $userApiDefaultView = $auth->createPermission('userApiDefaultView');
         $userApiDefaultView->description = 'User Api Default View';
