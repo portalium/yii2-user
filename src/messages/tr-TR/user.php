@@ -71,4 +71,7 @@ return [
     'If you continue, all your data will be reset. Do you want to continue?' => 'Devam ederseniz, kullanıcıların tüm verileri sıfırlanacaktır. Devam etmek istiyor musunuz?',
     'Created At' => 'Oluşturulma Tarihi',
     'Updated At' => 'Güncellenme Tarihi',
+    'User has been deleted' => 'Kullanıcı silindi',
+    'User has been updated' => 'Kullanıcı güncellendi',
+    'User has been created' => 'Kullanıcı oluşturuldu',
 ];

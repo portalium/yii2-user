@@ -103,6 +103,7 @@ class DefaultController extends WebController
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
                 if ($user = $model->createUser()) {
+                    Yii::$app->session->addFlash('success', Module::t('User has been created'));
                     return $this->redirect(['view', 'id' => $user->id_user]);
                 }
             }
@@ -143,6 +144,7 @@ class DefaultController extends WebController
             }
 
             if($model->save()){
+                Yii::$app->session->addFlash('success', Module::t('User has been updated'));
                 return $this->redirect(['view', 'id' => $model->id_user]);
             }
         }
@@ -164,7 +166,9 @@ class DefaultController extends WebController
         if (!Yii::$app->user->can('userWebDefaultDelete', ['model' => $this->findModel($id)]))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
 
-        $this->findModel($id)->delete();
+        if($this->findModel($id)->delete()){
+            Yii::$app->session->addFlash('info', Module::t('User has been deleted'));
+        }
 
         return $this->redirect(['index']);
     }
