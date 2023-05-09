@@ -42,6 +42,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->on(self::EVENT_AFTER_INSERT, function($event) {
             \Yii::$app->trigger(Module::EVENT_USER_CREATE, new Event(['payload' => $event->data]));
+            Event::trigger(Yii::$app->getModules(), Module::EVENT_USER_CREATE, new Event(['payload' => $event->data]));
         }, $this);
 
         $this->on(self::EVENT_AFTER_UPDATE, function($event) {
