@@ -1,18 +1,18 @@
 {
-	"name" : "portalium/portalium-user",
-	"description" : "Portalium User Module",
+	"name" : "portalium/yii2-user",
+	"description" : "User Module for Portalium (Yii2)",
 	"type" : "portalium-core",
 	"license": "MIT",
 	"homepage" : "https://portalium.dev",
 	"authors" : [
 		{
 			"name" : "Uğur YILDIZ",
-			"email" : "yildiz@diginova.com.tr",
+			"email" : "ugur.yildiz@diginova.com.tr",
 			"homepage" : "https://uguryildiz.net"
 		}
 	],
 	"support" : {
-		"issues" : "https://github.com/portalium/portalium-user/issues"
+		"issues" : "https://github.com/portalium/yii2-user/issues"
 	},
 	"repositories": [
 		{
@@ -22,7 +22,7 @@
 	],
 	"require": {
 		"kartik-v/yii2-widget-fileinput": "@dev",
-		"portalium/portalium-site": "*"
+		"portalium/yii2-site": "*"
 	},
 	"autoload" : {
 		"psr-4" : {
