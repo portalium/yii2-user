@@ -21,6 +21,7 @@ class m010101_010101_user_user extends Migration
             'status' => $this->smallInteger()->notNull()->defaultValue(10),
             'date_create' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
             'date_update' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP')->append('ON UPDATE NOW()'),
+            'verification_token'=>$this->string()->notNull(),
         ]);
     }
 
