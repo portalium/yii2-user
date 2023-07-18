@@ -2,13 +2,13 @@
 
 namespace portalium\user\models;
 
-use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use portalium\user\Module;
 use portalium\base\Event;
 use portalium\site\models\Setting;
+
 
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -60,7 +60,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['first_name', 'last_name', 'username', 'email'], 'safe'],
             ['status', 'default', 'value' => self::STATUS_PASSIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED,self::STATUS_PASSIVE]],
+           ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED,self::STATUS_PASSIVE]],
         ];
     }
 
@@ -100,8 +100,17 @@ class User extends ActiveRecord implements IdentityInterface
 
     public static function findIdentity($id_user)
     {
-        return static::findOne(['id_user' => $id_user, 'status' => self::STATUS_ACTIVE]);
+
+        if(\Yii::$app->setting->getValue('site::verifyEmail'))
+        {
+            return static::findOne(['id_user' => $id_user, 'status' => self::STATUS_ACTIVE]);
+        }
+        else
+        {
+            return static::findOne(['id_user' => $id_user]);
+        }
     }
+
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
@@ -110,7 +119,15 @@ class User extends ActiveRecord implements IdentityInterface
 
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        if(\Yii::$app->setting->getValue('site::verifyEmail'))
+        {
+            return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        }
+        else
+        {
+            return static::findOne(['username' => $username]);
+        }
+
     }
 
     public static function findByPasswordResetToken($token)
