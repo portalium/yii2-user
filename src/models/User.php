@@ -2,13 +2,14 @@
 
 namespace portalium\user\models;
 
+
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use portalium\user\Module;
 use portalium\base\Event;
 use portalium\site\models\Setting;
-
+use Yii;
 
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -100,17 +101,8 @@ class User extends ActiveRecord implements IdentityInterface
 
     public static function findIdentity($id_user)
     {
-
-        if(\Yii::$app->setting->getValue('site::verifyEmail'))
-        {
-            return static::findOne(['id_user' => $id_user, 'status' => self::STATUS_ACTIVE]);
-        }
-        else
-        {
-            return static::findOne(['id_user' => $id_user]);
-        }
+        return static::findOne(['id_user' => $id_user]);
     }
-
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
@@ -119,15 +111,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public static function findByUsername($username)
     {
-        if(\Yii::$app->setting->getValue('site::verifyEmail'))
-        {
-            return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
-        }
-        else
-        {
-            return static::findOne(['username' => $username]);
-        }
-
+        return static::findOne(['username' => $username]);
     }
 
     public static function findByPasswordResetToken($token)
