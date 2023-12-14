@@ -2,18 +2,21 @@
 
 namespace portalium\user\models;
 
-use Yii;
+
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use portalium\user\Module;
 use portalium\base\Event;
 use portalium\site\models\Setting;
+use Yii;
 
 class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
+    const STATUS_PASSIVE=20;
+
 
     /**
      * {@inheritdoc}
@@ -57,8 +60,8 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['first_name', 'last_name', 'username', 'email'], 'safe'],
-            ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            ['status', 'default', 'value' => self::STATUS_PASSIVE],
+           ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED,self::STATUS_PASSIVE]],
         ];
     }
 
@@ -82,6 +85,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             self::STATUS_ACTIVE => Module::t('Active'),
             self::STATUS_DELETED => Module::t('Deleted'),
+            self::STATUS_PASSIVE=>Module::t('Passive'),
         ];
     }
     
@@ -97,7 +101,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public static function findIdentity($id_user)
     {
-        return static::findOne(['id_user' => $id_user, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['id_user' => $id_user]);
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
@@ -107,7 +111,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['username' => $username]);
     }
 
     public static function findByPasswordResetToken($token)
@@ -168,9 +172,29 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
+    /**
+     * Generates new token for email verification
+     */
+    public function generateEmailVerificationToken()
+    {
+        $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();
+    }
+
+    /**
+     * Finds user by verification email token
+     *
+     * @param string $token verify email token
+     * @return static|null
+     */
+    public static function findByVerificationToken($token) {
+        return static::findOne([
+            'verification_token' => $token,
+            'status' => self::STATUS_PASSIVE
+        ]);
+    }
+
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
     }
-
 }
