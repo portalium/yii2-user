@@ -60,7 +60,7 @@ Panel::begin([
                         return Html::a(
                             Html::tag('i', '', ['class' => 'fa fa-fw fa-lock']), 
                             Url::toRoute(['/rbac/assignment/view', 'id' => $model->id]),
-                            ['class' => 'btn btn-primary btn-xs', 'style' => 'padding: 2px 9px 2px 9px;'] 
+                            ['class' => 'btn btn-primary btn-xs', 'style' => 'padding: 2px 9px 2px 9px; display: inline-block;'] 
                         );
                     }
                 ]
