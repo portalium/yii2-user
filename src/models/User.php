@@ -127,8 +127,7 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findByVerificationToken($token)
     {
         return static::findOne([
-            'verification_token' => $token,
-            'status' => self::STATUS_PASSIVE,
+            'verification_token' => $token
         ]);
     }
 
