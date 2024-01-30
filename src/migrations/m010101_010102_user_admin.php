@@ -19,7 +19,6 @@ class m010101_010102_user_admin extends Migration
             'status' => '10',
             'date_create' => '2022-04-01 08:40:53',
             'date_update' => '2022-04-01 08:40:53',
-            'verification_token'=>"",
         ]);
     }
 
