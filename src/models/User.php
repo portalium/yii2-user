@@ -16,6 +16,9 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_ACTIVE = 10;
     const STATUS_PASSIVE = 20;
 
+    const EMAIL_VERIFY=10;
+    const EMAIL_NOT_VERIFY=20;
+
     /**
      * {@inheritdoc}
      */
@@ -59,7 +62,9 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['first_name', 'last_name', 'username', 'email'], 'safe'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED, self::STATUS_PASSIVE]]
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED, self::STATUS_PASSIVE]],
+            ['email_verify','default','value'=>self::EMAIL_NOT_VERIFY],
+            ['email_verify','in','range'=>[self::EMAIL_VERIFY,self::EMAIL_NOT_VERIFY]],
         ];
     }
 
@@ -84,6 +89,14 @@ class User extends ActiveRecord implements IdentityInterface
             self::STATUS_ACTIVE => Module::t('Active'),
             self::STATUS_DELETED => Module::t('Deleted'),
             self::STATUS_PASSIVE => Module::t('Passive'),
+        ];
+    }
+
+    public static function getEmailVerify()
+    {
+        return [
+            self::EMAIL_VERIFY => Module::t('Email Verify'),
+            self::EMAIL_NOT_VERIFY => Module::t('Email Not Verify'),
         ];
     }
     

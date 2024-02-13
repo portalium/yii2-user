@@ -18,6 +18,7 @@ class m010101_010101_user_user extends Migration
             'password_reset_token' => $this->string()->unique(),
             'email' => $this->string()->notNull()->unique(),
             'access_token' => $this->string()->notNull()->unique(),
+            'email_verify'=>$this->smallInteger()->notNull()->defaultValue(20),
             'status' => $this->smallInteger()->notNull()->defaultValue(10),
             'verification_token' => $this->string()->defaultValue(null),
             'date_create' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
