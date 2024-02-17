@@ -66,6 +66,7 @@ Panel::begin([
                 ]
             ],
         ],
+        'layout' => '{items}{summary}{pagesizer}{pager}',
     ]); ?>
 <?php Panel::end();
 ActiveForm::end();
