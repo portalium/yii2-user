@@ -4,7 +4,7 @@ namespace portalium\user\models;
 
 use Yii;
 use yii\base\Model;
-use yii\data\ActiveDataProvider;
+use portalium\data\ActiveDataProvider;
 use portalium\user\models\User;
 use portalium\user\Module;
 
