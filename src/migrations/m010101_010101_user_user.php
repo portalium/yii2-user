@@ -10,6 +10,7 @@ class m010101_010101_user_user extends Migration
 
         $this->createTable(Module::$tablePrefix . 'user', [
             'id_user' => $this->primaryKey(),
+            'id_avatar'=>$this->integer(),
             'username' => $this->string()->notNull()->unique(),
             'first_name' => $this->string(),
             'last_name' => $this->string(),
