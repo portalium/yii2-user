@@ -37,6 +37,12 @@ class UserForm extends Model
      */
     public $password;
 
+    /**
+     * @var integer
+     */
+    public $status;
+
+
     public $isNewRecord = true;
 
     /**
@@ -56,6 +62,8 @@ class UserForm extends Model
             ['email', 'unique', 'targetClass' => '\portalium\user\models\User', 'message' => Module::t('This email address has already been taken.')],
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+            ['status', 'required'], 
+            ['status', 'in', 'range' => [User::STATUS_ACTIVE, User::STATUS_DELETED, User::STATUS_PASSIVE]],
         ];
     }
 
@@ -69,7 +77,8 @@ class UserForm extends Model
             'last_name' => Module::t('Last Name'),
             'username' => Module::t('Username'),
             'email' => Module::t('Email'),
-            'password' => Module::t('Password')
+            'password' => Module::t('Password'),
+            'status' => Module::t('Status'),
         ];
     }
 
@@ -90,6 +99,10 @@ class UserForm extends Model
         $user->setPassword($this->password);
         $user->access_token = \Yii::$app->security->generateRandomString();
         $user->generateAuthKey();
+        if($this->status == User::STATUS_ACTIVE || $this->status == User::STATUS_PASSIVE || $this->status == User::STATUS_DELETED){
+            $user->status = $this->status;
+        }
+
         return $user->save() ? $user : null;
     }
 
