@@ -25,7 +25,7 @@ use portalium\user\models\User;
     <?= $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'status')->dropDownList(User::getStatus()) ?>
+    <?= $form->field($model, 'status')->dropDownList(User::getStatusList()) ?>
 
     <?php if($model->isNewRecord): ?>
         <?= $form->field($model, 'password')->passwordInput() ?>
