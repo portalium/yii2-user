@@ -83,7 +83,20 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
+    /**
+     * @deprecated Use getStatusList() method when you need to retrieve a list of statuses for dropdowns, filters, or any other scenario 
+     * where a list of all possible statuses is required.
+     */
     public static function getStatus()
+    {
+        return [
+            self::STATUS_ACTIVE => Module::t('Active'),
+            self::STATUS_DELETED => Module::t('Deleted'),
+            self::STATUS_PASSIVE => Module::t('Passive'),
+        ];
+    }
+
+    public static function getStatusList()
     {
         return [
             self::STATUS_ACTIVE => Module::t('Active'),
