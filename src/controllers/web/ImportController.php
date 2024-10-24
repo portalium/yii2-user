@@ -135,7 +135,6 @@ class ImportController extends WebController
                 if (isset($columnMappings['username']) && isset($line[$columnMappings['username']]) && 
                     isset($columnMappings['email']) && isset($line[$columnMappings['email']])) {
                     
-                    // Kullanıcı bilgilerini ekle
                     array_push($user, isset($line[$columnMappings['firstname']]) ? $line[$columnMappings['firstname']] : "");
                     array_push($user, isset($line[$columnMappings['lastname']]) ? $line[$columnMappings['lastname']] : "");
                     array_push($user, $line[$columnMappings['username']]);
