@@ -24,12 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ]) ?>
 
 
-<?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
-<?= $form->field($model, 'first_name')->textInput(['maxlength' => true]) ?>
-<?= $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
 
-<?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-<?= $form->field($model, 'password')->textInput(['maxlength' => true]) ?>
 <?= $form->field($model, 'group')->dropDownList(Group::getGroups(), ['prompt' => Module::t('Not Selected')]) ?>
 <?= $form->field($model, 'role')->dropDownList($roles, ['prompt' => Module::t('Not Selected')]) ?>
 
