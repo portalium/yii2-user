@@ -100,6 +100,11 @@ class m010101_010105_user_rbac extends Migration
         $userWebImportIndex->description = 'User Web Import Index';
         $auth->add($userWebImportIndex);
         $auth->addChild($admin, $userWebImportIndex);
+
+        $userWebImportGetColumn = $auth->createPermission('userWebImportGetColumn');
+        $userWebImportGetColumn->description = 'User Web Import GetColumn';
+        $auth->add($userWebImportGetColumn);
+        $auth->addChild($admin, $userWebImportGetColumn);
     }
 
     public function down()
@@ -123,6 +128,7 @@ class m010101_010105_user_rbac extends Migration
         $auth->remove($auth->getPermission('userWebGroupDelete'));
         $auth->remove($auth->getPermission('userWebImportIndex'));
         $auth->remove($auth->getPermission('userApiDefaultView'));
+        $auth->remove($auth->getPermission('userApiDefaultGetColumn'));
         
     }
 }

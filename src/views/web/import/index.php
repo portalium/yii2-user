@@ -6,6 +6,8 @@ use portalium\user\Module;
 use portalium\theme\widgets\Panel;
 use kartik\file\FileInput;
 use portalium\user\models\Group;
+use yii\helpers\Url;
+use yii\web\JsExpression;
 
 $this->title = Module::t('Import User');
 $this->params['breadcrumbs'][] = $this->title;
@@ -24,23 +26,23 @@ $this->params['breadcrumbs'][] = $this->title;
 ]) ?>
 
 
-<?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
-<?= $form->field($model, 'first_name')->textInput(['maxlength' => true]) ?>
-<?= $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'username')->dropDownList([], ['prompt' => Module::t('Select Column'), 'id' => 'username-dropdown']) ?>
+    <?= $form->field($model, 'first_name')->dropDownList([], ['prompt' => Module::t('Select Column'), 'id' => 'first-name-dropdown']) ?>
+    <?= $form->field($model, 'last_name')->dropDownList([], ['prompt' => Module::t('Select Column'), 'id' => 'last-name-dropdown']) ?>
+    <?= $form->field($model, 'email')->dropDownList([], ['prompt' => Module::t('Select Column'), 'id' => 'email-dropdown']) ?>
+    <?= $form->field($model, 'password')->dropDownList([], ['prompt' => Module::t('Select Column'), 'id' => 'password-dropdown']) ?>
+    <?= $form->field($model, 'group')->dropDownList(Group::getGroups(), ['prompt' => Module::t('Not Selected')]) ?>
+    <?= $form->field($model, 'role')->dropDownList($roles, ['prompt' => Module::t('Not Selected')]) ?>
 
-<?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-<?= $form->field($model, 'password')->textInput(['maxlength' => true]) ?>
-<?= $form->field($model, 'group')->dropDownList(Group::getGroups(), ['prompt' => Module::t('Not Selected')]) ?>
-<?= $form->field($model, 'role')->dropDownList($roles, ['prompt' => Module::t('Not Selected')]) ?>
 
-
-<div id="internal">
+<div id="file-input-section">
     <?= FileInput::widget([
         'model' => $model,
         'attribute' => 'file',
         'options' => [
             'multiple' => false,
-            'accept' => 'doc/*'
+            'accept' => 'doc/*',
+            'id' => 'file-input'
         ],
         'pluginOptions' => [
             'allowedFileExtensions' => ['csv'],
@@ -58,3 +60,40 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <?php Panel::end() ?>
 <?php ActiveForm::end(); ?>
+
+<?php
+$this->registerJs('
+    $("#file-input").on("fileloaded", function(event, file, previewId, index, reader) {
+        var formData = new FormData();
+        formData.append("file", file);
+        formData.append("_csrf-web", yii.getCsrfToken());
+        $.ajax({
+            url: "/user/import/get-column", 
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                var columns = response.columns;
+                updateDropdown("#username-dropdown", columns);
+                updateDropdown("#first-name-dropdown", columns);
+                updateDropdown("#last-name-dropdown", columns);
+                updateDropdown("#email-dropdown", columns);
+                updateDropdown("#password-dropdown", columns);
+            },
+            error: function() {
+                alert("Error occurred while fetching column names.");
+            }
+        });
+    });
+
+    function updateDropdown(dropdownId, columns) {
+        $(dropdownId).empty();
+        $(dropdownId).append("<option value=\"\">' . Module::t('Select Column') . '</option>");
+        $.each(columns, function(index, value) {
+            $(dropdownId).append("<option value=\"" + value + "\">" + value + "</option>");
+        });
+    }
+
+');
+?>
