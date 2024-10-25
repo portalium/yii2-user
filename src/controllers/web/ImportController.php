@@ -147,6 +147,9 @@ class ImportController extends WebController
 
     public function actionGetColumn()
     {
+        if (!Yii::$app->user->can('userWebImportGetColumn'))
+            throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to access the column details."));
+
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         
         if (Yii::$app->request->isPost) {
@@ -168,7 +171,6 @@ class ImportController extends WebController
                 }
             }
         }
-        
         return [
             'success' => false,
             'message' => 'Error in retrieving columns.',
