@@ -6,8 +6,6 @@ use portalium\user\Module;
 use portalium\theme\widgets\Panel;
 use kartik\file\FileInput;
 use portalium\user\models\Group;
-use yii\helpers\Url;
-use yii\web\JsExpression;
 
 $this->title = Module::t('Import User');
 $this->params['breadcrumbs'][] = $this->title;

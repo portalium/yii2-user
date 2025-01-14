@@ -42,7 +42,6 @@ class m010101_010106_user_rbac_rule extends Migration
             'userWebDefaultIndexOwn',
             'userWebGroupIndexOwn',
             'userWebImportIndexOwn',
-            'userWebImportGetColumnOwn',
         ];
 
         foreach ($permissionsName as $permissionName) {
@@ -74,6 +73,5 @@ class m010101_010106_user_rbac_rule extends Migration
         $auth->remove($auth->getPermission('userWebGroupDelete'));
         $auth->remove($auth->getPermission('userWebImportIndex'));
         $auth->remove($auth->getPermission('userApiDefaultView'));
-        $auth->remove($auth->getPermission('userWebİmportGetColumn'));
     }
 }

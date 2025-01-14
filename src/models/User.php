@@ -47,6 +47,11 @@ class User extends ActiveRecord implements IdentityInterface
             \Yii::$app->trigger(Module::EVENT_USER_CREATE, new Event(['payload' => $event->data]));
             Event::trigger(Yii::$app->getModules(), Module::EVENT_USER_CREATE, new Event(['payload' => $event->data]));
         }, $this);
+        
+        $this->on(self::EVENT_BEFORE_DELETE, function ($event) {
+            \Yii::$app->trigger(Module::EVENT_USER_DELETE_BEFORE, new Event(['payload' => $event->data]));
+            Event::trigger(Yii::$app->getModules(), Module::EVENT_USER_DELETE_BEFORE, new Event(['payload' => $event->data]));
+        }, $this);
 
         $this->on(self::EVENT_AFTER_UPDATE, function ($event) {
             \Yii::$app->trigger(Module::EVENT_USER_UPDATE, new Event(['payload' => $event->data]));
@@ -166,6 +171,16 @@ class User extends ActiveRecord implements IdentityInterface
         $timestamp = (int) substr($token, strrpos($token, '_') + 1);
         $expire = 3600;
         return $timestamp + $expire >= time();
+    }
+
+    public function getAuthor(){
+        return json_encode([
+            'id_user'=>$this->id_user,
+            'first_name'=>$this->first_name,
+            'last_name'=>$this->last_name,
+            'username'=>$this->username,
+            'email'=>$this->email
+        ]);
     }
 
     public function getId()

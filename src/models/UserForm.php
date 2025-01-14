@@ -5,6 +5,7 @@ namespace portalium\user\models;
 use yii\base\Model;
 use portalium\user\Module;
 use portalium\user\models\User;
+use Yii;
 
 /**
  * This is the registration form model class for `\portalium\user\models\User` model.
@@ -62,7 +63,7 @@ class UserForm extends Model
             ['email', 'unique', 'targetClass' => '\portalium\user\models\User', 'message' => Module::t('This email address has already been taken.')],
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
-            ['status', 'required'], 
+            ['status', 'safe'],
             ['status', 'in', 'range' => [User::STATUS_ACTIVE, User::STATUS_DELETED, User::STATUS_PASSIVE]],
         ];
     }
@@ -99,9 +100,6 @@ class UserForm extends Model
         $user->setPassword($this->password);
         $user->access_token = \Yii::$app->security->generateRandomString();
         $user->generateAuthKey();
-        if($this->status == User::STATUS_ACTIVE || $this->status == User::STATUS_PASSIVE || $this->status == User::STATUS_DELETED){
-            $user->status = $this->status;
-        }
 
         return $user->save() ? $user : null;
     }

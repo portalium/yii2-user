@@ -16,23 +16,24 @@ use portalium\user\Module as UserModule;
 
 class ImportController extends WebController
 {
-    
-    public function detectDelimiter($csvFile) {
-        $delimiters = [',', ';', "\t", '|']; 
+
+    public function detectDelimiter($csvFile)
+    {
+        $delimiters = [',', ';', "\t", '|'];
         $firstLine = fgets(fopen($csvFile, 'r'));
-    
+
         $result = ['delimiter' => null, 'count' => 0];
-    
+
         foreach ($delimiters as $delimiter) {
             $fields = str_getcsv($firstLine, $delimiter);
             if (count($fields) > $result['count']) {
                 $result = ['delimiter' => $delimiter, 'count' => count($fields)];
             }
         }
-    
+
         return $result['delimiter'];
     }
-    
+
 
     public function actionIndex()
     {
@@ -55,7 +56,7 @@ class ImportController extends WebController
             $fileName = $this->upload($model->file);
 
             $users = [];
-            $filePath = Yii::$app->basePath . '/../'.Yii::$app->setting->getValue('storage::path').'/'.$fileName;
+            $filePath = Yii::$app->basePath . '/../' . Yii::$app->setting->getValue('storage::path') . '/' . $fileName;
             if (!file_exists($filePath)) {
                 Yii::$app->session->addFlash('error', Module::t('File not found: ' . $filePath));
                 return $this->redirect(['index']);
@@ -64,22 +65,22 @@ class ImportController extends WebController
             $csv = array_map(function ($v) use ($filePath) {
                 return str_getcsv($v, $this->detectDelimiter($filePath));
             }, file($filePath, FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES));
-            $keys = array_shift($csv); 
+            $keys = array_shift($csv);
 
             foreach ($csv as $i => $row) {
                 $csv[$i] = array_combine($keys, $row);
             }
-           
+
             foreach ($model->attributes() as $attribute) {
                 if ($attribute != "file") {
                     $model[$attribute] = (array_search($model[$attribute], $keys) !== false) ? $model[$attribute] : null;
                 }
             }
-         
+
             if ($model->email == null || $model->username == null) {
                 Yii::$app->session->addFlash('error', Module::t('You entered the username or e-mail columns.'));
                 return $this->redirect(['index']);
-            } 
+            }
 
             foreach ($csv as $line) {
                 $user = array();
@@ -151,19 +152,19 @@ class ImportController extends WebController
             throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to access the column details."));
 
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        
+
         if (Yii::$app->request->isPost) {
             $file = UploadedFile::getInstanceByName('file');
-            
+
             if ($file && $file->tempName) {
                 $csvFile = $file->tempName;
-                $delimiter = $this->detectDelimiter($csvFile); 
+                $delimiter = $this->detectDelimiter($csvFile);
                 $csv = array_map(function ($v) use ($delimiter) {
                     return str_getcsv($v, $delimiter);
                 }, file($csvFile, FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES));
-                
+
                 if (!empty($csv)) {
-                    $columns = $csv[0]; 
+                    $columns = $csv[0];
                     return [
                         'success' => true,
                         'columns' => $columns,
@@ -175,7 +176,6 @@ class ImportController extends WebController
             'success' => false,
             'message' => 'Error in retrieving columns.',
         ];
-        
     }
 
 
