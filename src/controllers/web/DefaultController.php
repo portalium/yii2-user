@@ -54,15 +54,15 @@ class DefaultController extends WebController
         if (!\Yii::$app->user->can('userWebDefaultIndex') && !\Yii::$app->user->can('userWebDefaultIndexOwn')) {
             throw new \yii\web\ForbiddenHttpException(Module::t('You are not allowed to access this page.'));
         }
-        
+
         if ($this->request->isPost) {
             $this->actionMultipleDelete($this->request->post('selection'));
         }
 
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-        if(!\Yii::$app->user->can('userWebDefaultIndex'))
-            $dataProvider->query->andWhere(['id_user'=>\Yii::$app->user->id]);
+        if (!\Yii::$app->user->can('userWebDefaultIndex'))
+            $dataProvider->query->andWhere(['id_user' => \Yii::$app->user->id]);
         // $dataProvider->pagination->pageSize = 12;
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -143,7 +143,7 @@ class DefaultController extends WebController
                 }
             }
 
-            if($model->save()){
+            if ($model->save()) {
                 Yii::$app->session->addFlash('success', Module::t('User has been updated'));
                 return $this->redirect(['view', 'id' => $model->id_user]);
             }
@@ -166,8 +166,12 @@ class DefaultController extends WebController
         if (!Yii::$app->user->can('userWebDefaultDelete', ['model' => $this->findModel($id)]))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
 
-        if($this->findModel($id)->delete()){
-            Yii::$app->session->addFlash('info', Module::t('User has been deleted'));
+        try {
+            if ($this->findModel($id)->delete()) {
+                Yii::$app->session->addFlash('info', Module::t('User has been deleted'));
+            }
+        } catch (\Throwable $th) {
+            Yii::$app->session->addFlash('danger', Module::t('Please delete related models for delete user.'));
         }
 
         return $this->redirect(['index']);
@@ -192,7 +196,7 @@ class DefaultController extends WebController
     protected function actionMultipleDelete($selectedItems)
     {
         if (!Yii::$app->user->can('userWebDefaultDelete'))
-        throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
 
         User::deleteAll(['id_user' => $selectedItems]);
 
