@@ -24,7 +24,8 @@ Panel::begin([
     'actions' => [
         'header' => [
             Html::submitButton(Module::t(''), [
-                'class' => 'fa fa-trash btn btn-danger', 'id' => 'delete-select',
+                'class' => 'fa fa-trash btn btn-danger',
+                'id' => 'delete-select',
                 'data' => [
                     'confirm' => Module::t('If you continue, all your data will be reset. Do you want to continue?'),
                     'method' => 'post'
@@ -44,10 +45,10 @@ Panel::begin([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
             [
-                'class' => 'yii\grid\CheckboxColumn'
+                'class' => 'portalium\grid\CheckboxColumn'
             ],
+            ['class' => 'portalium\grid\SerialColumn'],
             'username',
             'first_name',
             'last_name',
@@ -58,9 +59,9 @@ Panel::begin([
                 'buttons' => [
                     'assignment' => function ($url, $model) {
                         return Html::a(
-                            Html::tag('i', '', ['class' => 'fa fa-fw fa-lock']), 
+                            Html::tag('i', '', ['class' => 'fa fa-fw fa-lock']),
                             Url::toRoute(['/rbac/assignment/view', 'id' => $model->id]),
-                            ['class' => 'btn btn-primary btn-xs', 'style' => 'padding: 2px 9px 2px 9px; display: inline-block;'] 
+                            ['class' => 'btn btn-primary btn-xs', 'style' => 'padding: 2px 9px 2px 9px; display: inline-block;']
                         );
                     }
                 ]

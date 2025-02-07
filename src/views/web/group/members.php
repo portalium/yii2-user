@@ -48,22 +48,15 @@ $this->registerJs($script);
                         'summary' => '',
                         'caption' => Module::t('Available Users'),
                         'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
-                            //'id_group',
+                            ['class' => 'portalium\grid\SerialColumn'],
                             'username',
-                            //'first_name',
-                            //'last_name',
                             'email:email',
-                            //'password_hash',
-                            //'password_reset_token',
-                            //'access_token',
-                            //'status',
-                            //'date_create',
-                            //'date_update',
                             [
-                                'class' => 'yii\grid\CheckboxColumn', 'name' => 'addUserIds', 'checkboxOptions' => function ($userModel) use ($model) {
-                                return ['value' => $userModel->id];
-                            },
+                                'class' => 'portalium\grid\CheckboxColumn',
+                                'name' => 'addUserIds',
+                                'checkboxOptions' => function ($userModel) use ($model) {
+                                    return ['value' => $userModel->id];
+                                },
                             ],
                         ],
                     ]); ?>
@@ -104,22 +97,15 @@ $this->registerJs($script);
                         'caption' => Module::t('Group Members'),
                         'summary' => '',
                         'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
-                            //'id_group',
+                            ['class' => 'portalium\grid\SerialColumn'],
                             'username',
-                            //'first_name',
-                            //'last_name',
                             'email:email',
-                            //'password_hash',
-                            //'password_reset_token',
-                            //'access_token',
-                            //'status',
-                            //'date_create',
-                            //'date_update',
                             [
-                                'class' => 'yii\grid\CheckboxColumn', 'name' => 'removeUserIds', 'checkboxOptions' => function ($userModel) use ($model) {
-                                return ['value' => $userModel->id];
-                            },
+                                'class' => 'portalium\grid\CheckboxColumn',
+                                'name' => 'removeUserIds',
+                                'checkboxOptions' => function ($userModel) use ($model) {
+                                    return ['value' => $userModel->id];
+                                },
                             ],
                         ],
                     ]); ?>

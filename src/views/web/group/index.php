@@ -22,12 +22,13 @@ $this->params['breadcrumbs'][] = $this->title;
         ]
     ]
 ]) ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); 
+    ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            ['class' => 'portalium\grid\SerialColumn'],
 
             'name',
             'description:ntext',
@@ -38,9 +39,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons' => [
                     'members' => function ($url, $model) {
                         return Html::a(
-                            Html::tag('i', '', ['class' => 'fa fa-fw fa-user']), 
+                            Html::tag('i', '', ['class' => 'fa fa-fw fa-user text-warning']),
                             Url::toRoute([$url]),
-                            ['class' => 'btn btn-primary btn-xs', 'style' => 'padding: 2px 9px 2px 9px; display: inline-block;'] 
+                            ['class' => 'btn btn-primary btn-xs', 'style' => 'padding: 2px 9px 2px 9px; display: inline-block;']
                         );
                     }
                 ],
