@@ -11,6 +11,9 @@ use portalium\user\Module;
 use portalium\user\models\User;
 use portalium\user\models\UserForm;
 use portalium\user\models\UserSearch;
+use portalium\user\models\Group;
+use portalium\user\models\UserGroup;
+
 use portalium\web\Controller as WebController;
 
 /**
@@ -166,11 +169,45 @@ class DefaultController extends WebController
         if (!Yii::$app->user->can('userWebDefaultDelete', ['model' => $this->findModel($id)]))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
 
-        if($this->findModel($id)->delete()){
-            Yii::$app->session->addFlash('info', Module::t('User has been deleted'));
-        }
+            $model = $this->findModel($id);
+            
+            
+            
+            $isInGroup = UserGroup::find()->where(['id_user' => $id])->exists();
 
-        return $this->redirect(['index']);
+            if (!$isInGroup) {
+                
+                if ($model->delete()) {
+                    Yii::$app->session->addFlash('info', Module::t('User has been deleted.'));
+                    return $this->redirect(['index']);
+                }
+            }
+
+            
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                
+                $groups = UserGroup::find()->where(['id_user' => $id])->all();
+
+                foreach ($groups as $group) {
+                    $groupModel = Group::findOne($group->id_group);
+                    if ($groupModel) {
+                        $groupModel->scenario = Group::SCENARIO_DELETE_USERS;
+                        $groupModel->setUserIds([$id]);
+                        $groupModel->save();
+                    }
+                }
+
+                if ($model->delete()) {
+                    Yii::$app->session->addFlash('info', Module::t('User has been removed from groups and deleted.'));
+                    $transaction->commit();
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                Yii::$app->session->addFlash('error', Module::t('Error deleting user: ' . $e->getMessage()));
+            }
+
+            return $this->redirect(['index']);
     }
 
     /**
