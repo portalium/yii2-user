@@ -8,6 +8,7 @@ use yii\filters\VerbFilter;
 use Yii;
 use portalium\user\Module;
 use portalium\user\models\Group;
+use portalium\user\models\UserGroup;
 use portalium\user\models\GroupSearch;
 use portalium\user\models\UserSearch;
 use portalium\web\Controller as WebController;
@@ -188,8 +189,33 @@ class GroupController extends WebController
     {
         if (!Yii::$app->user->can('userWebGroupDelete'))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete Group"));
+            
+        $model = $this->findModel($id);
 
-        $this->findModel($id)->delete();
+        $hasUsers = UserGroup::find()->where(['id_group' => $id])->exists();
+
+        if (!$hasUsers) {
+            
+            if ($model->delete()) {
+                Yii::$app->session->addFlash('info', Module::t('Group has been deleted.'));
+                return $this->redirect(['index']);
+            }
+        }
+        
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            UserGroup::deleteAll(['id_group' => $id]);
+
+            
+            if ($model->delete()) {
+                Yii::$app->session->addFlash('info', Module::t('Group has been cleared of users and deleted.'));
+                $transaction->commit();
+            }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            Yii::$app->session->addFlash('error', Module::t('Error deleting group: ' . $e->getMessage()));
+        }
+
         return $this->redirect(['index']);
     }
 
