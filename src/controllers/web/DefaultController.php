@@ -171,8 +171,6 @@ class DefaultController extends WebController
 
             $model = $this->findModel($id);
             
-            
-            
             $isInGroup = UserGroup::find()->where(['id_user' => $id])->exists();
 
             if (!$isInGroup) {
@@ -183,10 +181,8 @@ class DefaultController extends WebController
                 }
             }
 
-            
             $transaction = Yii::$app->db->beginTransaction();
             try {
-                
                 $groups = UserGroup::find()->where(['id_user' => $id])->all();
 
                 foreach ($groups as $group) {

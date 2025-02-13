@@ -205,7 +205,6 @@ class GroupController extends WebController
         $transaction = Yii::$app->db->beginTransaction();
         try {
             UserGroup::deleteAll(['id_group' => $id]);
-
             
             if ($model->delete()) {
                 Yii::$app->session->addFlash('info', Module::t('Group has been cleared of users and deleted.'));
