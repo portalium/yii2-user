@@ -18,10 +18,7 @@ $this->title = Module::t('Users');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php
-$form = ActiveForm::begin([
-    'method' => 'get',
-    'action' => ['index'],
-]);
+$form = ActiveForm::begin();
 Panel::begin([
     'title' => Module::t('Users'),
     'actions' => [
