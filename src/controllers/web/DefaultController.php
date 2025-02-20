@@ -57,15 +57,15 @@ class DefaultController extends WebController
         if (!\Yii::$app->user->can('userWebDefaultIndex') && !\Yii::$app->user->can('userWebDefaultIndexOwn')) {
             throw new \yii\web\ForbiddenHttpException(Module::t('You are not allowed to access this page.'));
         }
-        
+
         if ($this->request->isPost) {
             $this->actionMultipleDelete($this->request->post('selection'));
         }
 
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-        if(!\Yii::$app->user->can('userWebDefaultIndex'))
-            $dataProvider->query->andWhere(['id_user'=>\Yii::$app->user->id]);
+        if (!\Yii::$app->user->can('userWebDefaultIndex'))
+            $dataProvider->query->andWhere(['id_user' => \Yii::$app->user->id]);
         // $dataProvider->pagination->pageSize = 12;
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -146,7 +146,7 @@ class DefaultController extends WebController
                 }
             }
 
-            if($model->save()){
+            if ($model->save()) {
                 Yii::$app->session->addFlash('success', Module::t('User has been updated'));
                 return $this->redirect(['view', 'id' => $model->id_user]);
             }
@@ -169,41 +169,54 @@ class DefaultController extends WebController
         if (!Yii::$app->user->can('userWebDefaultDelete', ['model' => $this->findModel($id)]))
             throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
 
-            $model = $this->findModel($id);
-            
-            $isInGroup = UserGroup::find()->where(['id_user' => $id])->exists();
+        $model = $this->findModel($id);
+
+        $isInGroup = UserGroup::find()->where(['id_user' => $id])->exists();
+
+        $transaction = Yii::$app->db->beginTransaction();
+
+        try {
 
             if (!$isInGroup) {
-                
-                if ($model->delete()) {
-                    Yii::$app->session->addFlash('info', Module::t('User has been deleted.'));
-                    return $this->redirect(['index']);
-                }
-            }
-
-            $transaction = Yii::$app->db->beginTransaction();
-            try {
-                $groups = UserGroup::find()->where(['id_user' => $id])->all();
-
-                foreach ($groups as $group) {
-                    $groupModel = Group::findOne($group->id_group);
-                    if ($groupModel) {
-                        $groupModel->scenario = Group::SCENARIO_DELETE_USERS;
-                        $groupModel->setUserIds([$id]);
-                        $groupModel->save();
-                    }
-                }
 
                 if ($model->delete()) {
-                    Yii::$app->session->addFlash('info', Module::t('User has been removed from groups and deleted.'));
+                    Yii::$app->session->addFlash('success', Module::t('User has been deleted.'));
                     $transaction->commit();
+                    return $this->redirect(['index']);
+                } else {
+                    throw new \Exception("User could not be deleted.");
                 }
-            } catch (\Exception $e) {
-                $transaction->rollBack();
-                Yii::$app->session->addFlash('error', Module::t('Error deleting user: ' . $e->getMessage()));
             }
 
-            return $this->redirect(['index']);
+
+            $groups = UserGroup::find()->where(['id_user' => $id])->all();
+
+            foreach ($groups as $group) {
+                $groupModel = Group::findOne($group->id_group);
+                if ($groupModel) {
+                    $groupModel->scenario = Group::SCENARIO_DELETE_USERS;
+                    $groupModel->setUserIds([$id]);
+                    if (!$groupModel->save()) {
+                        throw new \Exception("Failed to remove user from group: {$groupModel->id_group}");
+                    }
+                    $groupModel->save();
+                }
+            }
+
+            if ($model->delete()) {
+                Yii::$app->session->addFlash('success', Module::t('User has been removed from groups and deleted.'));
+                $transaction->commit();
+                return $this->redirect(['index']);
+            } else {
+                throw new \Exception("User could not be deleted after group updates.");
+            }
+        } catch (\Throwable $e) {
+            $transaction->rollBack();
+            Yii::error("User delete error: " . $e->getMessage(), __METHOD__);
+            Yii::$app->session->addFlash('error', Module::t('An error occurred while deleting the user. Please try again.'));
+        }
+
+        return $this->redirect(['index']);
     }
 
     /**
@@ -225,7 +238,7 @@ class DefaultController extends WebController
     protected function actionMultipleDelete($selectedItems)
     {
         if (!Yii::$app->user->can('userWebDefaultDelete'))
-        throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
 
         User::deleteAll(['id_user' => $selectedItems]);
 
