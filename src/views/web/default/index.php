@@ -44,9 +44,9 @@ Panel::begin([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            ['class' => 'portalium\grid\SerialColumn'],
             [
-                'class' => 'yii\grid\CheckboxColumn'
+                'class' => 'portalium\grid\CheckboxColumn'
             ],
             'username',
             'first_name',
