@@ -7,10 +7,11 @@ use portalium\user\Module;
 
 $this->title = Module::t('Update Group: {name}', [
     'name' => $model->name,
+    
 ]);
 $this->params['breadcrumbs'][] = ['label' => Module::t('Groups'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id_group]];
-$this->params['breadcrumbs'][] = Module::t('Update');
+$this->params['breadcrumbs'][] = ;
 ?>
 <?= $this->render('_form', [
     'model' => $model,

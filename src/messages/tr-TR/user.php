@@ -74,4 +74,10 @@ return [
     'User has been deleted' => 'Kullanıcı silindi',
     'User has been updated' => 'Kullanıcı güncellendi',
     'User has been created' => 'Kullanıcı oluşturuldu',
+    'Actions'  => 'Eylemler',
+    'Assignment' => 'Görevlendirme',
+    'Deleted' => 'Silinen',
+    'Update User' => 'Kullanıcı Güncelle',
+    'Date Create' => 'Oluşturulma Tarihi',
+    'Access Token' => 'Erişim Parolası',
 ];
