@@ -11,7 +11,7 @@ $this->title = Module::t('Update Group: {name}', [
 ]);
 $this->params['breadcrumbs'][] = ['label' => Module::t('Groups'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id_group]];
-$this->params['breadcrumbs'][] = ;
+$this->params['breadcrumbs'][] = Module::t('Update');
 ?>
 <?= $this->render('_form', [
     'model' => $model,
