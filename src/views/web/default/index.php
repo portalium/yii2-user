@@ -23,15 +23,7 @@ Panel::begin([
     'title' => Module::t('Users'),
     'actions' => [
         'header' => [
-            Html::submitButton(Module::t(''), [
-                'class' => 'fa fa-trash btn btn-danger', 'id' => 'delete-select',
-                'data' => [
-                    'confirm' => Module::t('If you continue, all your data will be reset. Do you want to continue?'),
-                    'method' => 'post'
-
-                ]
-            ]),
-            Html::a(Module::t(''), ['create'], ['class' => 'fa fa-plus btn btn-success']),
+            Html::a(Module::t(''), ['create'], ['class' => 'fa fa-plus btn btn-success', 'title' => Module::t('Create')]),
         ]
     ]
 ]) ?>
@@ -53,14 +45,14 @@ Panel::begin([
             'last_name',
             'email:email',
             [
-                'class' => ActionColumn::class,
+                'class' => ActionColumn::class, 'header' => Module::t('Actions'),
                 'template' => '{view} {update} {assignment} {delete}',
                 'buttons' => [
                     'assignment' => function ($url, $model) {
                         return Html::a(
                             Html::tag('i', '', ['class' => 'fa fa-fw fa-lock']), 
                             Url::toRoute(['/rbac/assignment/view', 'id' => $model->id]),
-                            ['class' => 'btn btn-primary btn-xs', 'style' => 'padding: 2px 9px 2px 9px; display: inline-block;'] 
+                            ['class' => 'btn btn-primary btn-xs', 'title' => Module::t('Assignment'), 'style' => 'padding: 2px 9px 2px 9px; display: inline-block;']
                         );
                     }
                 ]
