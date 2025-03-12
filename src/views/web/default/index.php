@@ -23,13 +23,18 @@ Panel::begin([
     'title' => Module::t('Users'),
     'actions' => [
         'header' => [
+            Html::submitButton(Module::t(''), [
+                'class' => 'fa fa-trash btn btn-danger', 'id' => 'delete-select',
+                'data' => [
+                    'confirm' => Module::t('If you continue, all your data will be reset. Do you want to continue?'),
+                    'method' => 'post'
+                ]
+            ]),
             Html::a(Module::t(''), ['create'], ['class' => 'fa fa-plus btn btn-success', 'title' => Module::t('Create')]),
         ]
     ]
 ]) ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); 
-
-
 
     ?>
     <?= GridView::widget([
