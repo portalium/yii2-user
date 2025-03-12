@@ -16,7 +16,7 @@ use portalium\user\Module;
         'header' => [
         ],
         'footer' => [
-            Html::submitButton(Module::t( 'Save'), ['class' => 'btn btn-success']),
+            Html::submitButton(Module::t('Save'), ['class' => 'btn btn-success']),
         ]
     ],
 ]) ?>
