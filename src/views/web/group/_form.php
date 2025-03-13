@@ -21,6 +21,6 @@ use portalium\user\Module;
     ],
 ]) ?>
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'description')->textarea(['rows' => 6, 'style' => 'resize:none']) ?>
 <?php Panel::end() ?>
 <?php ActiveForm::end(); ?>
