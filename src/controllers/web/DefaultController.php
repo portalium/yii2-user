@@ -2,6 +2,7 @@
 
 namespace portalium\user\controllers\web;
 
+use portalium\menu\models\MenuItem;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
@@ -241,8 +242,11 @@ class DefaultController extends WebController
         if (!Yii::$app->user->can('userWebDefaultDelete'))
             throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to view this page."));
 
-        User::deleteAll(['id_user' => $selectedItems]);
-
-        return $this->redirect(['index']);
+        $menuRecords = MenuItem::find()->where(['id_user' => $selectedItems])->count();
+        if ($menuRecords > 0)
+            Yii::$app->session->setFlash('error', Module::t('User cannot be deleted without deleting menu items!'));
+        else
+            if(User::deleteAll(['id_user' => $selectedItems]))
+                Yii::$app->session->setFlash('success', Module::t('User has been deleted'));
     }
 }

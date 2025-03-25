@@ -10,7 +10,6 @@ use portalium\user\Module;
  * This is the model class for table "user_group".
  *
  * @property int $id_user
- * @property int $id_user
  * @property int $id_group
  * @property int $date_create
  *
