@@ -24,7 +24,7 @@ Panel::begin([
     'actions' => [
         'header' => [
             Html::submitButton(Module::t(''), [
-                'class' => 'fa fa-trash btn btn-danger', 'id' => 'delete-select', 'title' => Module::t('Delete'),
+                'class' => 'fa fa-trash btn btn-danger', 'id' => 'delete-select', 'title' => Module::t('Delete Multiple'),
                 'data' => [
                     'confirm' => Module::t('If you continue, all your data will be reset. Do you want to continue?'),
                     'method' => 'post'
@@ -35,11 +35,7 @@ Panel::begin([
         ]
     ]
 ]) ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); 
 
-
-
-    ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

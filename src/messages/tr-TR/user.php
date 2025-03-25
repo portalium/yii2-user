@@ -96,5 +96,6 @@ return [
     'You entered the username or e-mail columns.' => 'Kullanıcı adı veya e-posta sütunlarını girdiniz.',
     'Username contains invalid characters.' => 'Kullanıcı adı geçersiz karakterler içeriyor.',
     'Date Create' => 'Oluşturma Tarihi',
-
+    'Delete Multiple' => 'Çoklu Sil',
+    'User cannot be deleted without deleting menu items!' => 'Menü öğeleri silinmeden kullanıcı silinemez!'
 ];
