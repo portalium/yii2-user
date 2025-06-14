@@ -52,7 +52,7 @@ return [
     'Permissions' => 'İzinler',
     'Password' => 'Şifre',
     'Import User' => 'Kullanıcı Aktar',
-    'First column index starts from 0'=>'İlk kolonun indeks değeri 0\'dan başlar',
+    'First column index starts from 0' => 'İlk kolonun indeks değeri 0\'dan başlar',
     'First Name Column Name' => 'İsim Sütunu Adı',
     'Lastname Name Column Name' => 'Soyisim Sütunu Adı',
     'Username Column Name' => 'Kullanıcı Adı Sütunu Adı',
@@ -74,4 +74,11 @@ return [
     'User has been deleted' => 'Kullanıcı silindi',
     'User has been updated' => 'Kullanıcı güncellendi',
     'User has been created' => 'Kullanıcı oluşturuldu',
+    'Modules to be deleted' => 'Silinecek Modüller',
+    'Default User' => 'Varsayılan Kullanıcı',
+    'Select Modules to Delete' => 'Silinecek Modülleri Seç',
+    'Transfer remaining data to' => 'Verilerin aktarılacağı kullanıcı',
+    'When this user is deleted, records in the selected modules will be <strong>permanently deleted</strong>. Unchecked modules will be transferred to the selected user below.'
+    => 'Bu kullanıcı silindiğinde, seçilen modüllerdeki veriler <strong>kalıcı olarak silinecektir</strong>. İşaretlenmeyen modüllerdeki veriler aşağıda seçilen kullanıcıya aktarılacaktır.',
+
 ];

@@ -2,6 +2,8 @@
 
 namespace portalium\user\controllers\web;
 
+use portalium\base\Event;
+use portalium\user\models\ModuleForm;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
@@ -12,6 +14,7 @@ use portalium\user\models\User;
 use portalium\user\models\UserForm;
 use portalium\user\models\UserSearch;
 use portalium\web\Controller as WebController;
+use yii\helpers\ArrayHelper;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -54,7 +57,7 @@ class DefaultController extends WebController
         if (!\Yii::$app->user->can('userWebDefaultIndex') && !\Yii::$app->user->can('userWebDefaultIndexOwn')) {
             throw new \yii\web\ForbiddenHttpException(Module::t('You are not allowed to access this page.'));
         }
-
+        // Yii::$app->session->addFlash('warning', Module::t('When this user is deleted, records in the selected modules will be <strong>permanently deleted</strong>. Unchecked modules will be transferred to the selected user below.'));
         if ($this->request->isPost) {
             $this->actionMultipleDelete($this->request->post('selection'));
         }
@@ -171,10 +174,52 @@ class DefaultController extends WebController
                 Yii::$app->session->addFlash('info', Module::t('User has been deleted'));
             }
         } catch (\Throwable $th) {
+            Yii::warning($th->getMessage());
+            Yii::warning($th->getTraceAsString());
             Yii::$app->session->addFlash('danger', Module::t('Please delete related models for delete user.'));
         }
 
         return $this->redirect(['index']);
+    }
+
+    public function actionDeleteManage($id)
+    {
+        
+        if (!Yii::$app->user->can('userWebDefaultDelete', ['model' => $this->findModel($id)]))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
+
+        $model = new ModuleForm();
+        $modules = [];
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $modules = Yii::$app->getModules();
+            foreach ($modules as $key => $value) {
+                if (!empty($model->modules) && !in_array($key, $model->modules)) {
+                    unset($modules[$key]);
+                }
+            }
+            if (empty($model->modules)) {
+                $modules = [];
+            }
+            Event::trigger($modules, Module::EVENT_USER_DELETE_BEFORE, new Event(['payload' => ['id' => $id, 'action' => 'delete', 'default_user' => $model->default_user]]));
+            Event::trigger(Yii::$app->getModules(), Module::EVENT_USER_DELETE_BEFORE, new Event(['payload' => ['id' => $id, 'action' => 'transfer', 'default_user' => $model->default_user]]));
+            $this->actionDelete($id);
+        }
+
+
+        foreach (Yii::$app->getModules() as $key => $module) {
+            if (Event::hasHandlers($module::className(), Module::EVENT_USER_DELETE_BEFORE)) {
+                $modules[$key] = $key;
+            }
+        }
+        //get users array map for dropdown
+        $users = ArrayHelper::map(User::find()->all(), 'id', 'username');
+
+        return $this->renderAjax('delete-manage', [
+            'model' => $model,
+            'modules' => $modules,
+            'id_user' => $id,
+            'users' => $users,
+        ]);
     }
 
     /**
