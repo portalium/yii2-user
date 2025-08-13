@@ -8,6 +8,7 @@ use portalium\rest\ActiveController as RestActiveController;
 use portalium\site\Module;
 use portalium\site\models\SignupForm;
 use portalium\user\models\UserSearch;
+use portalium\user\models\User;
 
 class UsersController extends RestActiveController
 {
@@ -33,9 +34,20 @@ class UsersController extends RestActiveController
         if (!parent::beforeAction($action)) {
             return false;
         }
+
+        $id = Yii::$app->request->get('id');
+        $model = null;
+
+        if (in_array($action->id, ['view', 'update', 'delete']) && $id) {
+            $model = User::findOne($id);
+            if (!$model) {
+                throw new \yii\web\NotFoundHttpException(Module::t('User not found.'));
+            }
+        }
+
         switch ($action->id) {
             case 'view':
-                if (!Yii::$app->user->can('userApiDefaultView')) 
+                if (!Yii::$app->user->can('userApiDefaultView') && !Yii::$app->user->can('userApiDefaultViewOwn',['model' => $model])) 
                     throw new \yii\web\ForbiddenHttpException(Module::t('You do not have permission to view this menu.'));
                 break;
             case 'create':
@@ -43,11 +55,11 @@ class UsersController extends RestActiveController
                     throw new \yii\web\ForbiddenHttpException(Module::t('You do not have permission to create this menu.'));
                 break;
             case 'update':
-                if (!Yii::$app->user->can('userApiDefaultUpdate')) 
+                if (!Yii::$app->user->can('userApiDefaultUpdate') && !Yii::$app->user->can('userApiDefaultUpdateOwn',['model' => $model])) 
                     throw new \yii\web\ForbiddenHttpException(Module::t('You do not have permission to update this menu.'));
                 break;
             case 'delete':
-                if (!Yii::$app->user->can('userApiDefaultDelete'))
+                if (!Yii::$app->user->can('userApiDefaultDelete') && !Yii::$app->user->can('userApiDefaultDeleteOwn',['model' => $model]))
                     throw new \yii\web\ForbiddenHttpException(Module::t('You do not have permission to delete this menu.'));
                 break;
             default:
