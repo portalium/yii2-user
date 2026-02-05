@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'header' => [
             Html::a(Module::t(''), ['update', 'id' => $model->id], ['class' => 'fa fa-pencil btn btn-primary', 'title' => Module::t('Update')]),
             Html::a(Module::t(''), ['delete', 'id' => $model->id], [
-                'class' => 'fa fa-trash btn btn-danger', 'title' => Module::t('Delete'),
+                'class' => 'fa fa-trash btn btn-danger','title' => Module::t('Delete'),
                 'data' => [
                     'confirm' => Module::t( 'Are you sure you want to delete this item?'),
                     'method' => 'post',
@@ -29,19 +29,26 @@ $this->params['breadcrumbs'][] = $this->title;
         ]
     ]
 ]) ?>
-    <?= DetailView::widget([
+<?= DetailView::widget([
         'model' => $model,
-        'attributes' => [
+        'attributes' => [ 
             'username',
             'first_name',
             'last_name',
-            'access_token',
+            [
+                'attribute' => 'access_token',
+                'label' => Module::t('Access Token'),
+            ],
             'email:email',
-            'date_create',
+            [
+                'attribute' => 'date_create',
+                'label' => Module::t('Date Create'),
+            ],
+            
         ],
     ]) ?>
 
-    <?php
+<?php
     if (empty($groupNames)) {
         echo Module::t('User does not belong to any group.');
     } else {
