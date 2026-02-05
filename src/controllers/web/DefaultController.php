@@ -2,6 +2,7 @@
 
 namespace portalium\user\controllers\web;
 
+use portalium\menu\models\MenuItem;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
@@ -55,7 +56,7 @@ class DefaultController extends WebController
     public function actionIndex()
     {
         if (!\Yii::$app->user->can('userWebDefaultIndex') && !\Yii::$app->user->can('userWebDefaultIndexOwn')) {
-            throw new \yii\web\ForbiddenHttpException(Module::t('You are not allowed to access this page.'));
+            throw new \yii\web\ForbiddenHttpException(Module::t('Sorry, you are not allowed to view this page.'));
         }
 
         if ($this->request->isPost) {
@@ -82,9 +83,10 @@ class DefaultController extends WebController
     public function actionView($id)
     {
         if (!Yii::$app->user->can('userWebDefaultView', ['model' => $this->findModel($id)]))
-            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view User"));
+            throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to view this page."));
 
         $model = $this->findModel($id);
+
         return $this->render('view', [
             'model' => $model,
             'groupNames' => $model->getGroups()->select('name')->column()
@@ -99,7 +101,7 @@ class DefaultController extends WebController
     public function actionCreate()
     {
         if (!Yii::$app->user->can('userWebDefaultCreate'))
-            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to create User"));
+            throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to view this page."));
 
         $model = new UserForm();
 
@@ -126,7 +128,7 @@ class DefaultController extends WebController
     public function actionUpdate($id)
     {
         if (!Yii::$app->user->can('userWebDefaultUpdate', ['model' => $this->findModel($id)]))
-            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to Update User"));
+            throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to view this page."));
 
         $model = $this->findModel($id);
 
@@ -167,7 +169,7 @@ class DefaultController extends WebController
     public function actionDelete($id)
     {
         if (!Yii::$app->user->can('userWebDefaultDelete', ['model' => $this->findModel($id)]))
-            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
+            throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to view this page."));
 
         $model = $this->findModel($id);
 
@@ -238,10 +240,13 @@ class DefaultController extends WebController
     protected function actionMultipleDelete($selectedItems)
     {
         if (!Yii::$app->user->can('userWebDefaultDelete'))
-            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
+            throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to view this page."));
 
-        User::deleteAll(['id_user' => $selectedItems]);
-
-        return $this->redirect(['index']);
+        $menuRecords = MenuItem::find()->where(['id_user' => $selectedItems])->count();
+        if ($menuRecords > 0)
+            Yii::$app->session->setFlash('error', Module::t('User cannot be deleted without deleting menu items!'));
+        else
+            if(User::deleteAll(['id_user' => $selectedItems]))
+                Yii::$app->session->setFlash('success', Module::t('User has been deleted'));
     }
 }

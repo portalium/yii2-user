@@ -80,6 +80,7 @@ class User extends ActiveRecord implements IdentityInterface
             'email' => Module::t('Email'),
             'password' => Module::t('Password'),
             'status' => Module::t('Status'),
+            'date_create' => Module::t('Date Create'),
         ];
     }
 

@@ -37,7 +37,7 @@ class ImportController extends WebController
     public function actionIndex()
     {
         if (!Yii::$app->user->can('userWebImportIndex'))
-            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to import User"));
+            throw new ForbiddenHttpException(Module::t('Sorry, you are not allowed to view this page.'));
 
         $model = new ImportForm(["first_name" => "firstname", "last_name" => "lastname", "username" => "username", "password" => "password", "email" => "email"]);
 
@@ -148,7 +148,7 @@ class ImportController extends WebController
     public function actionGetColumn()
     {
         if (!Yii::$app->user->can('userWebImportGetColumn'))
-            throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to access the column details."));
+            throw new ForbiddenHttpException(Module::t('Sorry, you are not allowed to view this page.'));
 
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         
