@@ -8,6 +8,7 @@ use yii\filters\VerbFilter;
 use Yii;
 use portalium\user\Module;
 use portalium\user\models\Group;
+use portalium\user\models\UserGroup;
 use portalium\user\models\GroupSearch;
 use portalium\user\models\UserSearch;
 use portalium\web\Controller as WebController;
@@ -72,7 +73,7 @@ class GroupController extends WebController
     public function actionView($id)
     {
         if (!Yii::$app->user->can('userWebGroupView'))
-            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view Group"));
+            throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to view this page."));
         $model = $this->findModel($id);
         return $this->render('view', [
             'model' => $model,
@@ -88,7 +89,7 @@ class GroupController extends WebController
     public function actionCreate()
     {
         if (!Yii::$app->user->can('userWebGroupCreate'))
-            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to create Group"));
+            throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to view this page."));
 
         $model = new Group();
 
@@ -115,7 +116,7 @@ class GroupController extends WebController
     public function actionUpdate($id)
     {
         if (!Yii::$app->user->can('userWebGroupUpdate'))
-            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to update Group"));
+            throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to view this page."));
 
         $model = $this->findModel($id);
 
@@ -144,7 +145,7 @@ class GroupController extends WebController
     public function actionMembers($id)
     {
         if (!Yii::$app->user->can('userWebGroupMembers'))
-            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to members Group"));
+            throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to view this page."));
 
         $model = $this->findModel($id);
 
@@ -187,9 +188,33 @@ class GroupController extends WebController
     public function actionDelete($id)
     {
         if (!Yii::$app->user->can('userWebGroupDelete'))
-            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete Group"));
+            throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to view this page."));
+            
+        $model = $this->findModel($id);
 
-        $this->findModel($id)->delete();
+        $hasUsers = UserGroup::find()->where(['id_group' => $id])->exists();
+
+        if (!$hasUsers) {
+            
+            if ($model->delete()) {
+                Yii::$app->session->addFlash('info', Module::t('Group has been deleted.'));
+                return $this->redirect(['index']);
+            }
+        }
+        
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            UserGroup::deleteAll(['id_group' => $id]);
+            
+            if ($model->delete()) {
+                Yii::$app->session->addFlash('info', Module::t('Group has been cleared of users and deleted.'));
+                $transaction->commit();
+            }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            Yii::$app->session->addFlash('error', Module::t('Error deleting group: ' . $e->getMessage()));
+        }
+
         return $this->redirect(['index']);
     }
 

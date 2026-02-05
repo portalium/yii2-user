@@ -4,6 +4,7 @@ use portalium\theme\helpers\Html;
 use portalium\theme\widgets\ActiveForm;
 use portalium\theme\widgets\Panel;
 use portalium\user\Module;
+use portalium\user\models\User;
 
 /* @var $this yii\web\View */
 /* @var $model portalium\user\models\User */
@@ -24,6 +25,8 @@ use portalium\user\Module;
     <?= $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'status')->dropDownList(User::getStatusList()) ?>
+
     <?php if($model->isNewRecord): ?>
         <?= $form->field($model, 'password')->passwordInput() ?>
     <?php endif; ?>

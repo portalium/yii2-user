@@ -48,7 +48,7 @@ $this->registerJs($script);
                         'summary' => '',
                         'caption' => Module::t('Available Users'),
                         'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
+                            ['class' => 'portalium\grid\SerialColumn'],
                             //'id_group',
                             'username',
                             //'first_name',
@@ -61,7 +61,7 @@ $this->registerJs($script);
                             //'date_create',
                             //'date_update',
                             [
-                                'class' => 'yii\grid\CheckboxColumn', 'name' => 'addUserIds', 'checkboxOptions' => function ($userModel) use ($model) {
+                                'class' => 'portalium\grid\CheckboxColumn', 'name' => 'addUserIds', 'checkboxOptions' => function ($userModel) use ($model) {
                                 return ['value' => $userModel->id];
                             },
                             ],
@@ -104,7 +104,7 @@ $this->registerJs($script);
                         'caption' => Module::t('Group Members'),
                         'summary' => '',
                         'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
+                            ['class' => 'portalium\grid\SerialColumn'],
                             //'id_group',
                             'username',
                             //'first_name',
@@ -117,7 +117,7 @@ $this->registerJs($script);
                             //'date_create',
                             //'date_update',
                             [
-                                'class' => 'yii\grid\CheckboxColumn', 'name' => 'removeUserIds', 'checkboxOptions' => function ($userModel) use ($model) {
+                                'class' => 'portalium\grid\CheckboxColumn', 'name' => 'removeUserIds', 'checkboxOptions' => function ($userModel) use ($model) {
                                 return ['value' => $userModel->id];
                             },
                             ],

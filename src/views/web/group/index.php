@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     'title' => Html::encode($this->title),
     'actions' => [
         'header' => [
-            Html::a(Module::t(''), ['create'], ['class' => 'fa fa-plus btn btn-success']),
+            Html::a(Module::t(''), ['create'], ['class' => 'fa fa-plus btn btn-success', 'title' => Module::t('Create Group')]),
         ]
     ]
 ]) ?>
@@ -27,20 +27,20 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            ['class' => 'portalium\grid\SerialColumn'],
 
             'name',
             'description:ntext',
 
             [
-                'class' => ActionColumn::class,
+                'class' => ActionColumn::class, 'header' => Module::t('Actions'),
                 'template' => '{view} {update} {members} {delete}',
                 'buttons' => [
                     'members' => function ($url, $model) {
                         return Html::a(
                             Html::tag('i', '', ['class' => 'fa fa-fw fa-user']), 
                             Url::toRoute([$url]),
-                            ['class' => 'btn btn-primary btn-xs', 'style' => 'padding: 2px 9px 2px 9px; display: inline-block;'] 
+                            ['class' => 'btn btn-primary btn-xs', 'title' => Module::t('Manage Members'), 'style' => 'padding: 2px 9px 2px 9px; display: inline-block;']
                         );
                     }
                 ],

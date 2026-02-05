@@ -36,8 +36,8 @@ class m010101_010102_user_menu extends Migration
         $id_item = MenuItem::find()->where(['slug' => 'site'])->one()->id_item;
 
         $this->batchInsert('menu_item', ['id_item', 'label', 'slug', 'type', 'style', 'data', 'sort', 'id_menu', 'name_auth', 'id_user', 'date_create', 'date_update'], [
-            [NULL, 'Groups', 'users-groups', '2', '{"icon":"fa fa fa-users","color":"","iconSize":"","display":false,"childDisplay":false}', '{"data":{"module":"user","routeType":"action","route":"\\/user\\/group\\/index","model":"","menuRoute":null,"menuType":"web"}}', '6', $id_menu, 'userWebGroupIndex', 1, '2022-06-13 15:32:26', '2022-06-13 15:32:26'],
-            [NULL, 'Users', 'users-users', '2', '{"icon":"","color":"","iconSize":"","display":false,"childDisplay":false}', '{"data":{"module":"user","routeType":"action","route":"\\/user\\/default\\/index","model":null,"menuRoute":null,"menuType":"web"}}', '7', $id_menu, 'userWebDefaultIndex', 1, '2022-06-13 15:32:26', '2022-06-13 15:32:26'],
+            [NULL, 'Groups', 'users-groups', '2', '{"icon":"fa fa fa-users","color":"","iconSize":"","display":"","childDisplay":false}', '{"data":{"module":"user","routeType":"action","route":"\\/user\\/group\\/index","model":"","menuRoute":null,"menuType":"web"}}', '6', $id_menu, 'userWebGroupIndex', 1, '2022-06-13 15:32:26', '2022-06-13 15:32:26'],
+            [NULL, 'Users', 'users-users', '2', '{"icon":"","color":"","iconSize":"","display":"","childDisplay":false}', '{"data":{"module":"user","routeType":"action","route":"\\/user\\/default\\/index","model":null,"menuRoute":null,"menuType":"web"}}', '7', $id_menu, 'userWebDefaultIndex', 1, '2022-06-13 15:32:26', '2022-06-13 15:32:26'],
         ]);
 
         $ids = MenuItem::find()->where(['slug' => ['users-groups', 'users-users']])->select('id_item')->column();
