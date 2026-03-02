@@ -18,11 +18,12 @@ $this->title = Module::t('Users');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php
-$form = ActiveForm::begin();
+
 Panel::begin([
     'title' => Module::t('Users'),
     'actions' => [
         'header' => [
+            Html::beginForm(['index'],'post'),
             Html::submitButton(Module::t(''), [
                 'class' => 'fa fa-trash btn btn-danger', 'title' => Module::t('Delete'),'id' => 'delete-select',
                 'data' => [
@@ -33,6 +34,7 @@ Panel::begin([
                 ]
             ]),
             Html::a(Module::t(''), ['create'], ['class' => 'fa fa-plus btn btn-success', 'title' => Module::t('Create'),]),
+            Html::endForm()
         ]
     ]
 ]) ?>
@@ -74,5 +76,5 @@ Panel::begin([
         'layout' => '{items}{summary}{pagesizer}{pager}',
     ]); ?>
 <?php Panel::end();
-ActiveForm::end();
+Html::endForm();
 ?>
