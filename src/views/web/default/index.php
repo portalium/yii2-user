@@ -34,7 +34,7 @@ Panel::begin([
                 ]
             ]),
             Html::a(Module::t(''), ['create'], ['class' => 'fa fa-plus btn btn-success', 'title' => Module::t('Create'),]),
-            Html::endForm()
+            Html::endForm(),
         ]
     ]
 ]) ?>
@@ -76,5 +76,4 @@ Panel::begin([
         'layout' => '{items}{summary}{pagesizer}{pager}',
     ]); ?>
 <?php Panel::end();
-Html::endForm();
 ?>
