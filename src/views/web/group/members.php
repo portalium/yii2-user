@@ -41,7 +41,7 @@ $this->registerJs($script);
         <div class="row">
             <div class="col-md-5">
                 <div class="group-form">
-                    <?= Html::beginForm('', 'post', ['id' => 'availableUsersForm']) ?>
+              
                     <?= GridView::widget([
                         'dataProvider' => $dataProviderOutGroup,
                         'filterModel' => $searchModel,
@@ -97,7 +97,7 @@ $this->registerJs($script);
 
             <div class="col-md-5">
                 <div class="group-form">
-                    <?= Html::beginForm('', 'post', ['id' => 'groupMembersForm']) ?>
+                    
                     <?= GridView::widget([
                         'dataProvider' => $dataProviderInGroup,
                         'filterModel' => $searchModel,
