@@ -23,7 +23,7 @@ Panel::begin([
     'title' => Module::t('Users'),
     'actions' => [
         'header' => [
-            Html::beginForm(['index'],'post'),
+           
             Html::submitButton(Module::t(''), [
                 'class' => 'fa fa-trash btn btn-danger', 'title' => Module::t('Delete'),'id' => 'delete-select',
                 'data' => [
