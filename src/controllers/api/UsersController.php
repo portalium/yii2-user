@@ -9,6 +9,7 @@ use portalium\site\Module;
 use portalium\site\models\SignupForm;
 use portalium\user\models\UserSearch;
 use portalium\user\models\User;
+use portalium\data\ActiveDataProvider;
 
 class UsersController extends RestActiveController
 {
@@ -92,7 +93,8 @@ class UsersController extends RestActiveController
      * Search users by partial username.
      * 
      * @param string $username
-     * @return array
+     * @return ActiveDataProvider
+     * @throws \yii\web\BadRequestHttpException
      */
     public function actionSearchUsername($username)
     {
@@ -100,11 +102,20 @@ class UsersController extends RestActiveController
             throw new \yii\web\BadRequestHttpException(Module::t('Username parameter is required.'));
         }
 
-        return User::find()
-            ->select(['username', 'id_avatar'])
-            ->where(['like', 'username', $username])
-            ->andWhere(['status' => User::STATUS_ACTIVE])
-            ->asArray()
-            ->all();
-    }
+        $query = User::find()
+        ->select(['username', 'id_avatar'])
+        ->where(['like', 'username', $username])
+        ->andWhere(['status' => User::STATUS_ACTIVE])
+        ->asArray();
+
+        return new ActiveDataProvider([
+            'query' => $query,
+            'key' => 'username',
+            'pagination' => [
+                'defaultPageSize' => 10,
+            ],
+        ]);
+        }
+
+    
 }
