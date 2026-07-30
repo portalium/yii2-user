@@ -62,6 +62,8 @@ class UsersController extends RestActiveController
                 if (!Yii::$app->user->can('userApiDefaultDelete') && !Yii::$app->user->can('userApiDefaultDeleteOwn',['model' => $model]))
                     throw new \yii\web\ForbiddenHttpException(Module::t('You do not have permission to delete this menu.'));
                 break;
+            case 'search-username': 
+                break;//TODO: Dont think this needs a special permission but leaving it like this dosent feel right either
             default:
                 if (!Yii::$app->user->can('userApiDefaultIndex') && !Yii::$app->user->can('userApiDefaultIndexOwn'))
                     throw new \yii\web\ForbiddenHttpException(Module::t('You do not have permission to delete this menu.'));
@@ -84,5 +86,25 @@ class UsersController extends RestActiveController
         }else{
             return $this->error(['SignupForm' => Module::t("Username (username), Password (password) and Email (email) required.")]);
         }
+    }
+
+    /**
+     * Search users by partial username.
+     * 
+     * @param string $username
+     * @return array
+     */
+    public function actionSearchUsername($username)
+    {
+        if (empty($username)) {
+            throw new \yii\web\BadRequestHttpException(Module::t('Username parameter is required.'));
+        }
+
+        return User::find()
+            ->select(['username', 'id_avatar'])
+            ->where(['like', 'username', $username])
+            ->andWhere(['status' => User::STATUS_ACTIVE])
+            ->asArray()
+            ->all();
     }
 }
