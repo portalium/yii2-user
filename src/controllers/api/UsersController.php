@@ -108,14 +108,17 @@ class UsersController extends RestActiveController
         ->andWhere(['status' => User::STATUS_ACTIVE])
         ->asArray();
 
-        return new ActiveDataProvider([
+        $dataprovider = new ActiveDataProvider([
             'query' => $query,
             'key' => 'username',
             'pagination' => [
                 'defaultPageSize' => 10,
+                'validatePage' => false,
             ],
         ]);
-        }
+
+        return $dataprovider;
+    }
 
     
 }
