@@ -19,7 +19,14 @@ class Module extends \portalium\base\Module
             'class' => 'yii\rest\UrlRule',
             'controller' => [
                 'user/users'
-            ]
+            ],
+
+            'extraPatterns' => 
+            [
+                'GET search-username' => 'search-username',
+                'GET search_username' => 'search-username',
+                'GET searchUsername' => 'search-username',
+            ],
         ],
     ];
 
