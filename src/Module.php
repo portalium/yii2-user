@@ -20,14 +20,9 @@ class Module extends \portalium\base\Module
             'controller' => [
                 'user/users'
             ],
-
-            'extraPatterns' => 
-            [
-                'GET search-username' => 'search-username',
-                'GET search_username' => 'search-username',
-                'GET searchUsername' => 'search-username',
-            ],
+            'pluralize' => false
         ],
+
     ];
 
     public static $tablePrefix = 'user_';

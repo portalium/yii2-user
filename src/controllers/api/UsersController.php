@@ -25,6 +25,9 @@ class UsersController extends RestActiveController
             if(!Yii::$app->user->can('userApiDefaultIndex')){
                 $dataProvider->query->andWhere(['id_user'=>Yii::$app->user->id]);
             }
+            if (Yii::$app->request->get('is_virtual') === null) {
+                $dataProvider->query->andWhere(['is_virtual' => User::IS_VIRTUAL_FALSE]);
+            }
             return $dataProvider;
         };  
         return $actions;
@@ -88,37 +91,4 @@ class UsersController extends RestActiveController
             return $this->error(['SignupForm' => Module::t("Username (username), Password (password) and Email (email) required.")]);
         }
     }
-
-    /**
-     * Search users by partial username.
-     * 
-     * @param string $username
-     * @return ActiveDataProvider
-     * @throws \yii\web\BadRequestHttpException
-     */
-    public function actionSearchUsername($username)
-    {
-        if (empty($username)) {
-            throw new \yii\web\BadRequestHttpException(Module::t('Username parameter is required.'));
-        }
-
-        $query = User::find()
-        ->select(['username', 'id_avatar'])
-        ->where(['like', 'username', $username])
-        ->andWhere(['status' => User::STATUS_ACTIVE])
-        ->asArray();
-
-        $dataprovider = new ActiveDataProvider([
-            'query' => $query,
-            'key' => 'username',
-            'pagination' => [
-                'defaultPageSize' => 10,
-                'validatePage' => false,
-            ],
-        ]);
-
-        return $dataprovider;
-    }
-
-    
 }

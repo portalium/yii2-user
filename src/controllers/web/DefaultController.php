@@ -2,7 +2,8 @@
 
 namespace portalium\user\controllers\web;
 
-use portalium\menu\models\MenuItem;
+use portalium\base\Event;
+use portalium\user\models\ModuleForm;
 use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
@@ -12,10 +13,9 @@ use portalium\user\Module;
 use portalium\user\models\User;
 use portalium\user\models\UserForm;
 use portalium\user\models\UserSearch;
-use portalium\user\models\Group;
-use portalium\user\models\UserGroup;
 
 use portalium\web\Controller as WebController;
+use yii\helpers\ArrayHelper;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -56,7 +56,7 @@ class DefaultController extends WebController
     public function actionIndex()
     {
         if (!\Yii::$app->user->can('userWebDefaultIndex') && !\Yii::$app->user->can('userWebDefaultIndexOwn')) {
-            throw new \yii\web\ForbiddenHttpException(Module::t('Sorry, you are not allowed to view this page.'));
+            throw new \yii\web\ForbiddenHttpException(Module::t('You are not allowed to access this page.'));
         }
 
         if ($this->request->isPost) {
@@ -83,10 +83,9 @@ class DefaultController extends WebController
     public function actionView($id)
     {
         if (!Yii::$app->user->can('userWebDefaultView', ['model' => $this->findModel($id)]))
-            throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to view this page."));
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to view User"));
 
         $model = $this->findModel($id);
-
         return $this->render('view', [
             'model' => $model,
             'groupNames' => $model->getGroups()->select('name')->column()
@@ -101,7 +100,7 @@ class DefaultController extends WebController
     public function actionCreate()
     {
         if (!Yii::$app->user->can('userWebDefaultCreate'))
-            throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to view this page."));
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to create User"));
 
         $model = new UserForm();
 
@@ -119,6 +118,33 @@ class DefaultController extends WebController
     }
 
     /**
+     * Creates a new virtual User model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreateVirtual()
+    {
+        if (!Yii::$app->user->can('userWebDefaultCreate'))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to create User"));
+
+        $model = new UserForm();
+        $model->is_virtual = User::IS_VIRTUAL_TRUE;
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+                $model->is_virtual = User::IS_VIRTUAL_TRUE;
+                if ($user = $model->createUser()) {
+                    Yii::$app->session->addFlash('success', Module::t('Virtual user has been created'));
+                    return $this->redirect(['view', 'id' => $user->id_user]);
+                }
+            }
+        }
+        return $this->render('create-virtual', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
      * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -128,7 +154,7 @@ class DefaultController extends WebController
     public function actionUpdate($id)
     {
         if (!Yii::$app->user->can('userWebDefaultUpdate', ['model' => $this->findModel($id)]))
-            throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to view this page."));
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to Update User"));
 
         $model = $this->findModel($id);
 
@@ -169,56 +195,59 @@ class DefaultController extends WebController
     public function actionDelete($id)
     {
         if (!Yii::$app->user->can('userWebDefaultDelete', ['model' => $this->findModel($id)]))
-            throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to view this page."));
-
-        $model = $this->findModel($id);
-
-        $isInGroup = UserGroup::find()->where(['id_user' => $id])->exists();
-
-        $transaction = Yii::$app->db->beginTransaction();
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
 
         try {
-
-            if (!$isInGroup) {
-
-                if ($model->delete()) {
-                    Yii::$app->session->addFlash('success', Module::t('User has been deleted.'));
-                    $transaction->commit();
-                    return $this->redirect(['index']);
-                } else {
-                    throw new \Exception("User could not be deleted.");
-                }
+            if ($this->findModel($id)->delete()) {
+                Yii::$app->session->addFlash('info', Module::t('User has been deleted'));
             }
-
-
-            $groups = UserGroup::find()->where(['id_user' => $id])->all();
-
-            foreach ($groups as $group) {
-                $groupModel = Group::findOne($group->id_group);
-                if ($groupModel) {
-                    $groupModel->scenario = Group::SCENARIO_DELETE_USERS;
-                    $groupModel->setUserIds([$id]);
-                    if (!$groupModel->save()) {
-                        throw new \Exception("Failed to remove user from group: {$groupModel->id_group}");
-                    }
-                    $groupModel->save();
-                }
-            }
-
-            if ($model->delete()) {
-                Yii::$app->session->addFlash('success', Module::t('User has been removed from groups and deleted.'));
-                $transaction->commit();
-                return $this->redirect(['index']);
-            } else {
-                throw new \Exception("User could not be deleted after group updates.");
-            }
-        } catch (\Throwable $e) {
-            $transaction->rollBack();
-            Yii::error("User delete error: " . $e->getMessage(), __METHOD__);
-            Yii::$app->session->addFlash('error', Module::t('An error occurred while deleting the user. Please try again.'));
+        } catch (\Throwable $th) {
+            Yii::warning($th->getMessage());
+            Yii::warning($th->getTraceAsString());
+            Yii::$app->session->addFlash('danger', Module::t('Please delete related models for delete user.'));
         }
 
         return $this->redirect(['index']);
+    }
+
+    public function actionDeleteManage($id)
+    {
+        
+        if (!Yii::$app->user->can('userWebDefaultDelete', ['model' => $this->findModel($id)]))
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
+
+        $model = new ModuleForm();
+        $modules = [];
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $modules = Yii::$app->getModules();
+            foreach ($modules as $key => $value) {
+                if (!empty($model->modules) && !in_array($key, $model->modules)) {
+                    unset($modules[$key]);
+                }
+            }
+            if (empty($model->modules)) {
+                $modules = [];
+            }
+            Event::trigger($modules, Module::EVENT_USER_DELETE_BEFORE, new Event(['payload' => ['id' => $id, 'action' => 'delete', 'default_user' => $model->default_user]]));
+            Event::trigger(Yii::$app->getModules(), Module::EVENT_USER_DELETE_BEFORE, new Event(['payload' => ['id' => $id, 'action' => 'transfer', 'default_user' => $model->default_user]]));
+            $this->actionDelete($id);
+        }
+
+
+        foreach (Yii::$app->getModules() as $key => $module) {
+            if (Event::hasHandlers($module::className(), Module::EVENT_USER_DELETE_BEFORE)) {
+                $modules[$key] = $key;
+            }
+        }
+        //get users array map for dropdown
+        $users = ArrayHelper::map(User::find()->all(), 'id', 'username');
+
+        return $this->renderAjax('delete-manage', [
+            'model' => $model,
+            'modules' => $modules,
+            'id_user' => $id,
+            'users' => $users,
+        ]);
     }
 
     /**
@@ -240,13 +269,10 @@ class DefaultController extends WebController
     protected function actionMultipleDelete($selectedItems)
     {
         if (!Yii::$app->user->can('userWebDefaultDelete'))
-            throw new ForbiddenHttpException(Module::t("Sorry, you are not allowed to view this page."));
+            throw new ForbiddenHttpException(Module::t("Sorry you are not allowed to delete User"));
 
-        $menuRecords = MenuItem::find()->where(['id_user' => $selectedItems])->count();
-        if ($menuRecords > 0)
-            Yii::$app->session->setFlash('error', Module::t('User cannot be deleted without deleting menu items!'));
-        else
-            if(User::deleteAll(['id_user' => $selectedItems]))
-                Yii::$app->session->setFlash('success', Module::t('User has been deleted'));
+        User::deleteAll(['id_user' => $selectedItems]);
+
+        return $this->redirect(['index']);
     }
 }
