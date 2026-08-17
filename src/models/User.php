@@ -203,6 +203,15 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->getPrimaryKey();
     }
 
+    /**
+     * Get current user's email
+     * @return string|null User email or null if not set
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
     public function getAuthKey()
     {
         return $this->auth_key;

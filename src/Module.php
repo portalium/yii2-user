@@ -17,9 +17,18 @@ class Module extends \portalium\base\Module
     public $apiRules = [
         [
             'class' => 'yii\rest\UrlRule',
-            'controller' => [
+            'controller' =>
+            [
                 'user/users'
             ],
+
+            'extraPatterns' => 
+            [
+                'GET search-username' => 'search-username',
+                'GET search_username' => 'search-username',
+                'GET searchUsername' => 'search-username',
+            ],
+
             'pluralize' => false
         ],
 
