@@ -18,12 +18,13 @@ $this->params['breadcrumbs'][] = $this->title;
     'title' => Html::encode($this->title),
     'actions' => [
         'header' => [
-            Html::a(Module::t(''), ['create'], ['class' => 'fa fa-plus btn btn-success', 'title' => Module::t('Create Group')]),
+            Html::a(Module::t(''), ['create'], ['class' => 'fa fa-plus btn btn-success']),
         ]
     ]
 ]) ?>
-<?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-<?= GridView::widget([
+    <?php // echo $this->render('_search', ['model' => $searchModel]); 
+    ?>
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -33,24 +34,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'description:ntext',
 
             [
-                'class' => ActionColumn::class, 'header' => Module::t('Actions'),
+                'class' => ActionColumn::class,
                 'template' => '{view} {update} {members} {delete}',
                 'buttons' => [
                     'members' => function ($url, $model) {
                         return Html::a(
-                            Html::tag('i', '', ['class' => 'fa fa-fw fa-user']), 
+                            Html::tag('i', '', ['class' => 'fa fa-fw fa-user text-warning']),
                             Url::toRoute([$url]),
-                            ['class' => 'btn btn-primary btn-xs','style' => 'padding: 2px 9px 2px 9px; display: inline-block;'],
+                            ['class' => 'btn btn-primary btn-xs', 'style' => 'padding: 2px 9px 2px 9px; display: inline-block;']
                         );
-                    } 
-                
-                
+                    }
                 ],
-                
-                
             ],
         ],
         'layout' => '{items}{summary}{pagesizer}{pager}',
-        
     ]); ?>
 <?php Panel::end() ?>

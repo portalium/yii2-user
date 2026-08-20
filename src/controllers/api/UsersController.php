@@ -9,6 +9,7 @@ use portalium\site\Module;
 use portalium\site\models\SignupForm;
 use portalium\user\models\UserSearch;
 use portalium\user\models\User;
+use portalium\data\ActiveDataProvider;
 
 class UsersController extends RestActiveController
 {
@@ -23,6 +24,9 @@ class UsersController extends RestActiveController
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
             if(!Yii::$app->user->can('userApiDefaultIndex')){
                 $dataProvider->query->andWhere(['id_user'=>Yii::$app->user->id]);
+            }
+            if (Yii::$app->request->get('is_virtual') === null) {
+                $dataProvider->query->andWhere(['is_virtual' => User::IS_VIRTUAL_FALSE]);
             }
             return $dataProvider;
         };  
@@ -62,6 +66,8 @@ class UsersController extends RestActiveController
                 if (!Yii::$app->user->can('userApiDefaultDelete') && !Yii::$app->user->can('userApiDefaultDeleteOwn',['model' => $model]))
                     throw new \yii\web\ForbiddenHttpException(Module::t('You do not have permission to delete this menu.'));
                 break;
+            case 'search-username': 
+                break;//TODO: Dont think this needs a special permission but leaving it like this dosent feel right either
             default:
                 if (!Yii::$app->user->can('userApiDefaultIndex') && !Yii::$app->user->can('userApiDefaultIndexOwn'))
                     throw new \yii\web\ForbiddenHttpException(Module::t('You do not have permission to delete this menu.'));

@@ -30,7 +30,7 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id_user', 'status'], 'integer'],
+            [['id_user', 'status', 'is_virtual'], 'integer'],
             [['username', 'first_name', 'last_name', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'access_token'], 'safe'],
         ];
     }
@@ -81,6 +81,7 @@ class UserSearch extends User
         $query->andFilterWhere([
             'id_user' => $this->id_user,
             'status' => $this->status,
+            'is_virtual' => $this->is_virtual,
             'date_create' => $this->date_create,
             'date_update' => $this->date_update,
         ]);

@@ -27,6 +27,10 @@ use portalium\user\models\User;
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'status')->dropDownList(User::getStatusList()) ?>
 
+    <?php if(!$model->isNewRecord): ?>
+        <?= $form->field($model, 'is_virtual')->dropDownList(User::getIsVirtualList()) ?>
+    <?php endif; ?>
+
     <?php if($model->isNewRecord): ?>
         <?= $form->field($model, 'password')->passwordInput() ?>
     <?php endif; ?>

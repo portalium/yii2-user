@@ -19,8 +19,10 @@ class Module extends \portalium\base\Module
             'class' => 'yii\rest\UrlRule',
             'controller' => [
                 'user/users'
-            ]
+            ],
+            'pluralize' => false
         ],
+
     ];
 
     public static $tablePrefix = 'user_';
