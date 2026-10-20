@@ -145,7 +145,15 @@ class Group extends \yii\db\ActiveRecord
      */
     protected function validateUserIds()
     {
-        return (is_array($this->_userIds) && count($this->_userIds) === count($this->_userIds, COUNT_RECURSIVE));
+        if (!is_array($this->_userIds) || count($this->_userIds) !== count($this->_userIds, COUNT_RECURSIVE)) {
+            return false;
+        }
+        foreach ($this->_userIds as $userId) {
+            if (!is_int($userId) && !(is_string($userId) && ctype_digit($userId))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -256,11 +264,13 @@ class Group extends \yii\db\ActiveRecord
         if (count($userIds) > 0) {
             try {
                 $transaction = Yii::$app->db->beginTransaction();
-                $numberAffectedRows = Yii::$app->db->createCommand('DELETE FROM '
-                    . UserGroup::getTableSchema()->fullName
-                    . ' WHERE id_group=:id_group AND id_user IN ('
-                    . implode(', ', $userIds) . ')')
-                    ->bindValue(':id_group', $this->id_group)
+                $numberAffectedRows = Yii::$app->db->createCommand()
+                    ->delete(UserGroup::getTableSchema()->fullName, [
+                        'id_group' => $this->id_group,
+                        'id_user' => array_map('intval', array_filter($userIds, function ($userId) {
+                            return is_int($userId) || (is_string($userId) && ctype_digit($userId));
+                        })),
+                    ])
                     ->execute();
                 $transaction->commit();
             } catch (\Exception $e) {
