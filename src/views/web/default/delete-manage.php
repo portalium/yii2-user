@@ -43,7 +43,7 @@ use portalium\user\Module;
 <div class="mb-3">
     <?= $form->field($model, 'default_user')->dropDownList(
         $users,
-        ['class' => 'form-select']
+        ['class' => 'form-select', 'prompt' => Module::t('Select a user')]
     )->label(Module::t('Transfer remaining data to')) ?>
 </div>
 <?php ActiveForm::end(); ?>
