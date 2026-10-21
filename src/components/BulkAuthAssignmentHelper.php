@@ -55,6 +55,8 @@ class BulkAuthAssignmentHelper
         if (!empty($data['users'])) {
             $success += static::revokeByUserIds($itemName, $data['users']);
         }
+
+        return $success;
     }
 
     /**
@@ -66,7 +68,11 @@ class BulkAuthAssignmentHelper
      */
     public static function assignByGroupId($itemName, $groupId)
     {
-        $userIds = Group::findOne(['id' => $groupId])->getUsers()->select('id')->column();
+        $group = Group::findOne(['id_group' => $groupId]);
+        if ($group === null) {
+            return 0;
+        }
+        $userIds = $group->getUsers()->select('id_user')->column();
         return static::assignByUserIds($itemName, $userIds);
     }
 
@@ -80,8 +86,11 @@ class BulkAuthAssignmentHelper
     public static function revokeByGroupId($itemName, $groupId)
     {
         $ids = \Yii::$app->authManager->getUserIdsByRole($itemName);
-        $groupUsers = Group::findOne(['id' => $groupId])->getUsers();
-        $userIds = $groupUsers->where(['id' => $ids])->select('id')->column();
+        $group = Group::findOne(['id_group' => $groupId]);
+        if ($group === null) {
+            return 0;
+        }
+        $userIds = $group->getUsers()->andWhere(['id_user' => $ids])->select('id_user')->column();
         return static::revokeByUserIds($itemName, $userIds);
     }
 

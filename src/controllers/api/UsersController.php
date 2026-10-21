@@ -9,6 +9,8 @@ use portalium\site\Module;
 use portalium\site\models\SignupForm;
 use portalium\user\models\UserSearch;
 use portalium\user\models\User;
+use portalium\user\components\UserDeleteException;
+use portalium\user\components\UserDeleter;
 use portalium\data\ActiveDataProvider;
 
 class UsersController extends RestActiveController
@@ -18,7 +20,7 @@ class UsersController extends RestActiveController
     public function actions()
     {
         $actions = parent::actions();
-        unset($actions[ 'create' ]);
+        unset($actions[ 'create' ], $actions['delete']);
         $actions['index']['prepareDataProvider'] = function ($action) {
             $searchModel = new UserSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -124,4 +126,25 @@ class UsersController extends RestActiveController
         return $dataprovider;
     }
 
+    /**
+     * Deletes the user through the same service the web UI uses.
+     * Body or query: `modules` (modules to delete), `default_user` (user to transfer remaining data to).
+     */
+    public function actionDelete($id)
+    {
+        $request = Yii::$app->getRequest();
+        $body = array_merge($request->getQueryParams(), $request->getBodyParams());
+        $modules = array_map('strval', (array) ($body['modules'] ?? []));
+        $defaultUser = empty($body['default_user']) ? null : (int) $body['default_user'];
+
+        try {
+            UserDeleter::delete((int) $id, $modules, $defaultUser);
+        } catch (UserDeleteException $e) {
+            Yii::$app->response->statusCode = 422;
+            return ['message' => $e->getMessage()];
+        }
+
+        Yii::$app->response->statusCode = 204;
+        return null;
+    }
 }

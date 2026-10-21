@@ -23,9 +23,7 @@ class ModuleForm extends Model
         return [
             [['modules'], 'safe'],
             [['default_user'], 'integer'],
-            //array
-            [['modules'], 'each'],
-            [['default_user'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['default_user' => 'id']],
+            [['default_user'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['default_user' => 'id_user']],
             [['modules'], 'each', 'rule' => ['string']],
             [['modules'], 'each', 'rule' => ['in', 'range' => array_keys(Yii::$app->getModules())]],
         ];

@@ -80,5 +80,17 @@ return [
     'Transfer remaining data to' => 'Verilerin aktarılacağı kullanıcı',
     'When this user is deleted, records in the selected modules will be <strong>permanently deleted</strong>. Unchecked modules will be transferred to the selected user below.'
     => 'Bu kullanıcı silindiğinde, seçilen modüllerdeki veriler <strong>kalıcı olarak silinecektir</strong>. İşaretlenmeyen modüllerdeki veriler aşağıda seçilen kullanıcıya aktarılacaktır.',
+    'Could not delete a record in {table}.' => '{table} tablosundaki bir kayıt silinemedi.',
+    'Select a user to transfer the records in {table} to.' => '{table} tablosundaki kayıtların aktarılacağı kullanıcıyı seçin.',
+    'Records cannot be transferred to the user being deleted.' => 'Kayıtlar silinen kullanıcının kendisine aktarılamaz.',
+    'The user could not be deleted: records in {table} still belong to this user or to their data.'
+    => 'Kullanıcı silinemedi: {table} tablosunda bu kullanıcıya ya da verisine bağlı kayıtlar var.',
+    'Please delete related models for delete user.' => 'Kullanıcı silinemedi: bağlı kayıtlar var.',
+    'Delete User' => 'Kullanıcıyı Sil',
+    'You cannot delete your own account.' => 'Kendi hesabınızı silemezsiniz.',
+    'The last administrator cannot be deleted.' => 'Son yönetici silinemez.',
+    'The user to transfer records to was not found.' => 'Kayıtların aktarılacağı kullanıcı bulunamadı.',
+    'Select a user' => 'Kullanıcı seçin',
+    'The requested page does not exist.' => 'İstenen sayfa bulunamadı.',
 
 ];

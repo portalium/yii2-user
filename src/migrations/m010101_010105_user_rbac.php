@@ -11,9 +11,12 @@ class m010101_010105_user_rbac extends Migration
         $admin = (isset($role) && $role != '') ? $auth->getRole($role) : $auth->getRole('admin');
         $auth->assign($admin, 1);
 
-        $user = $auth->createRole('user');
-        $user->description = 'User';
-        $auth->add($user);
+        $user = $auth->getRole('user');
+        if ($user === null) {
+            $user = $auth->createRole('user');
+            $user->description = 'User';
+            $auth->add($user);
+        }
         $auth->addChild($admin, $user);
 
         $userApiDefaultView = $auth->createPermission('userApiDefaultView');
