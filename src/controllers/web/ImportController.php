@@ -56,7 +56,7 @@ class ImportController extends WebController
             $fileName = $this->upload($model->file);
 
             $users = [];
-            $filePath = Yii::$app->basePath . '/../' . Yii::$app->setting->getValue('storage::path') . '/' . $fileName;
+            $filePath = self::getImportPath() . '/' . $fileName;
             if (!file_exists($filePath)) {
                 Yii::$app->session->addFlash('error', Module::t('File not found: ' . $filePath));
                 return $this->redirect(['index']);
@@ -182,8 +182,12 @@ class ImportController extends WebController
 
     public function upload($file)
     {
-        $path = realpath(Yii::$app->basePath . '/../data');
+        $path = self::getImportPath();
         $filename = md5(rand()) . ".csv";
+
+        if (!is_dir($path)) {
+            mkdir($path, 0775, true);
+        }
 
         if ($file->saveAs($path . '/' . $filename)) {
 
@@ -191,5 +195,16 @@ class ImportController extends WebController
         }
 
         return false;
+    }
+
+    /**
+     * Directory holding uploaded import files.
+     *
+     * These are scratch files consumed by the importer, not Storage records, so
+     * they stay on local disk regardless of the configured storage provider.
+     */
+    public static function getImportPath()
+    {
+        return rtrim(Yii::$app->basePath . '/../' . Yii::$app->setting->getValue('storage::path'), '/');
     }
 }

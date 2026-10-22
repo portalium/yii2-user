@@ -9,8 +9,6 @@ use portalium\theme\widgets\GridView;
 use portalium\theme\widgets\ActiveForm;
 use portalium\theme\widgets\ActionColumn;
 use portalium\site\helpers\ActiveForm as HelpersActiveForm;
-use portalium\theme\widgets\Modal;
-use portalium\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel portalium\user\models\UserSearch */
@@ -88,25 +86,7 @@ Panel::begin([
     ]); ?>
 <?php Panel::end();
 
-Modal::begin([
-    'id' => 'modal-user-delete',
-    'size' => Modal::SIZE_LARGE,
-    'centerVertical' => true,
-    'title' => Module::t('Delete User'),
-    'footer' => Html::button(Module::t('Delete'), [
-        'class' => 'btn btn-danger',
-        'onclick' => 'deleteUser(this)',
-    ]),
-    'titleOptions' => [
-        'style' => 'margin-left: 0px;'
-    ],
-]);
-Pjax::begin([
-    'id' => 'user-delete-pjax'
-]);
-
-Pjax::end();
-Modal::end();
+echo $this->render('_delete-modal');
 
 $indexUrl = Url::to(['index']);
 $csrfParam = \Yii::$app->request->csrfParam;
@@ -125,34 +105,6 @@ $('#delete-select').on('click', function () {
     });
     \$form.submit();
 });
-function openDeleteModal(e, id) {
-    $.pjax.reload({
-        container: '#user-delete-pjax',
-        url: '/user/default/delete-manage?id=' + id,
-        type: 'GET',
-        push: false,
-        replace: false,
-        timeout: 10000
-    }).done(function() {
-        $('#modal-user-delete').modal('show');
-    });
-}
-function deleteUser(e) {
-    var form = $('#user-delete-pjax').find('form');
-    var formData = form.serialize();
-    $.ajax({
-        url: form.attr('action'),
-        type: 'POST',
-        data: formData,
-        success: function (data) {
-        },
-        error: function (data) {
-        },
-        complete: function (data) {
-            location.reload();
-        }
-    });
-}
 JS;
 $this->registerJs($js, \yii\web\View::POS_END);
 ?>

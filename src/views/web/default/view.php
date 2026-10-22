@@ -19,13 +19,11 @@ $this->params['breadcrumbs'][] = $this->title;
     'actions' => [
         'header' => [
             Html::a(Module::t(''), ['update', 'id' => $model->id], ['class' => 'fa fa-pencil btn btn-primary']),
-            Html::a(Module::t(''), ['delete', 'id' => $model->id], [
+            Yii::$app->user->can('userWebDefaultDelete', ['model' => $model]) ? Html::button(Module::t(''), [
                 'class' => 'fa fa-trash btn btn-danger',
-                'data' => [
-                    'confirm' => Module::t( 'Are you sure you want to delete this item?'),
-                    'method' => 'post',
-                ],
-            ]),
+                'title' => Module::t('Delete'),
+                'onclick' => 'openDeleteModal(this, ' . (int) $model->id . ')',
+            ]) : '',
         ]
     ]
 ]) ?>
@@ -49,3 +47,5 @@ $this->params['breadcrumbs'][] = $this->title;
     }
     ?>
 <?php Panel::end() ?>
+
+<?= $this->render('_delete-modal') ?>
