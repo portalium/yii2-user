@@ -19,6 +19,9 @@ class User extends ActiveRecord implements IdentityInterface
     const EMAIL_VERIFY = 10;
     const EMAIL_NOT_VERIFY = 20;
 
+    const SMS_VERIFY = 10;
+    const SMS_NOT_VERIFY = 20;
+
     const IS_VIRTUAL_FALSE = 0;
     const IS_VIRTUAL_TRUE = 1;
     /**
@@ -72,6 +75,13 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED, self::STATUS_PASSIVE]],
             ['email_verify', 'default', 'value' => self::EMAIL_NOT_VERIFY],
             ['email_verify', 'in', 'range' => [self::EMAIL_VERIFY, self::EMAIL_NOT_VERIFY]],
+            ['tel_no', 'string', 'max' => 16],
+            ['tel_no', 'match', 'pattern' => '/^\+[1-9]\d{1,14}$/'],
+            ['tel_no', 'unique'],
+            ['sms_verified', 'default', 'value' => self::SMS_NOT_VERIFY],
+            ['sms_verified', 'integer'],
+            ['sms_verified', 'in', 'range' => [self::SMS_VERIFY, self::SMS_NOT_VERIFY]],
+            ['sms_verified', 'unsafe'],
             ['id_avatar', 'integer'],
             ['is_virtual', 'default', 'value' => self::IS_VIRTUAL_FALSE],
             ['is_virtual', 'in', 'range' => [self::IS_VIRTUAL_FALSE, self::IS_VIRTUAL_TRUE]],
@@ -90,7 +100,7 @@ class User extends ActiveRecord implements IdentityInterface
 
         $currentId = Yii::$app->has('user') ? Yii::$app->user->id : null;
         if ($currentId === null || (int) $currentId !== (int) $this->id_user) {
-            unset($fields['access_token']);
+            unset($fields['access_token'], $fields['tel_no']);
         }
 
         return $fields;
@@ -114,7 +124,9 @@ class User extends ActiveRecord implements IdentityInterface
             'last_name' => Module::t('Last Name'),
             'username' => Module::t('Username'),
             'email' => Module::t('Email'),
+            'tel_no' => Module::t('Telephone Number'),
             'password' => Module::t('Password'),
+            'sms_verified' => Module::t('SMS Verified'),
             'status' => Module::t('Status'),
             'date_create' => Module::t('Date Create'),
             'is_virtual' => Module::t('Virtual'),
@@ -148,6 +160,14 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             self::EMAIL_VERIFY => Module::t('Email Verify'),
             self::EMAIL_NOT_VERIFY => Module::t('Email Not Verify'),
+        ];
+    }
+
+    public static function getSmsVerify()
+    {
+        return [
+            self::SMS_VERIFY => Module::t('SMS Verified'),
+            self::SMS_NOT_VERIFY => Module::t('SMS Not Verified'),
         ];
     }
 
@@ -236,6 +256,15 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->getPrimaryKey();
     }
 
+    /**
+     * Get current user's email
+     * @return string|null User email or null if not set
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
     public function getAuthKey()
     {
         return $this->auth_key;
@@ -294,6 +323,10 @@ class User extends ActiveRecord implements IdentityInterface
         if (!$insert && $closed && (int) $this->getOldAttribute('status') !== (int) $this->status) {
             $this->verification_token = null;
             $this->access_token = Yii::$app->security->generateRandomString(40);
+        }
+
+        if (!$insert && $this->isAttributeChanged('tel_no')) {
+            $this->sms_verified = self::SMS_NOT_VERIFY;
         }
 
         return true;

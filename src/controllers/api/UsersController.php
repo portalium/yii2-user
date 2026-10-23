@@ -214,6 +214,38 @@ class UsersController extends RestActiveController
         ];
     }
 
+
+    /**
+     * Search users by partial username.
+     * 
+     * @param string $username
+     * @return ActiveDataProvider
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function actionSearchUsername($username)
+    {
+        if (empty($username)) {
+            throw new \yii\web\BadRequestHttpException(Module::t('Username parameter is required.'));
+        }
+
+        $query = User::find()
+        ->select(['username', 'id_avatar'])
+        ->where(['like', 'username', $username])
+        ->andWhere(['status' => User::STATUS_ACTIVE])
+        ->asArray();
+
+        $dataprovider = new ActiveDataProvider([
+            'query' => $query,
+            'key' => 'username',
+            'pagination' => [
+                'defaultPageSize' => 10,
+                'validatePage' => false,
+            ],
+        ]);
+
+        return $dataprovider;
+    }
+
     /**
      * Deletes the user through the same service the web UI uses.
      * Body or query: `modules` (modules to delete), `default_user` (user to transfer remaining data to).

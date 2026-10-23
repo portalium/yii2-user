@@ -21,6 +21,14 @@ class Module extends \portalium\base\Module
                 'user/users',
                 'user/group',
             ],
+
+            'extraPatterns' => 
+            [
+                'GET search-username' => 'search-username',
+                'GET search_username' => 'search-username',
+                'GET searchUsername' => 'search-username',
+            ],
+
             'pluralize' => false
         ],
 
