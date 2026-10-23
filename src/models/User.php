@@ -107,6 +107,14 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * REST `?expand=groups` returns the user's groups.
+     */
+    public function extraFields()
+    {
+        return ['groups'];
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function attributeLabels()

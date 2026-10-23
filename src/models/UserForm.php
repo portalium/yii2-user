@@ -107,6 +107,9 @@ class UserForm extends Model
         $user->access_token = \Yii::$app->security->generateRandomString();
         $user->generateAuthKey();
         $user->is_virtual = $this->is_virtual;
+        if ($this->status !== null && $this->status !== '') {
+            $user->status = (int) $this->status;
+        }
 
         return $user->save() ? $user : null;
     }

@@ -17,9 +17,9 @@ class Module extends \portalium\base\Module
     public $apiRules = [
         [
             'class' => 'yii\rest\UrlRule',
-            'controller' =>
-            [
-                'user/users'
+            'controller' => [
+                'user/users',
+                'user/group',
             ],
 
             'extraPatterns' => 

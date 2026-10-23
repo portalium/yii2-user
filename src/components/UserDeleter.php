@@ -63,6 +63,7 @@ class UserDeleter
             }
 
             UserGroup::deleteAll(['id_user' => $idUser]);
+            Yii::$app->authManager->revokeAll($idUser);
 
             if ($user->delete() === false) {
                 throw new UserDeleteException(Module::t('Could not delete a record in {table}.', ['table' => 'user_user']));
