@@ -18,7 +18,8 @@ class Module extends \portalium\base\Module
         [
             'class' => 'yii\rest\UrlRule',
             'controller' => [
-                'user/users'
+                'user/users',
+                'user/group',
             ],
             'pluralize' => false
         ],

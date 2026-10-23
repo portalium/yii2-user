@@ -278,7 +278,8 @@ class Group extends \yii\db\ActiveRecord
                 $transaction->rollBack();
             }
             $numberAffectedRows = !empty($numberAffectedRows) ? $numberAffectedRows : 0;
-            $isFailed = !($numberAffectedRows === count($userIds));
+            // A duplicate membership row can make the deleted-row count exceed the id count.
+            $isFailed = $isFailed || $numberAffectedRows < count($userIds);
 
             if (!$isFailed) {
                 \Yii::$app->trigger(Module::EVENT_USER_GROUP_REMOVE, new Event(['payload' => ['group' => $this,'users' => $userIds]]));
@@ -291,6 +292,14 @@ class Group extends \yii\db\ActiveRecord
         }
 
         return true;
+    }
+
+    /**
+     * REST `?expand=users` returns the group's members.
+     */
+    public function extraFields()
+    {
+        return ['users'];
     }
 
     /**
