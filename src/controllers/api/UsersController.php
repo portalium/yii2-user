@@ -72,7 +72,8 @@ class UsersController extends RestActiveController
         $id = Yii::$app->request->get('id');
         $model = null;
 
-        if (in_array($action->id, ['view', 'update', 'delete', 'delete-options']) && $id) {
+        // "0" is falsy: compare with null/'' so id 0 is looked up (404) instead of skipping the check.
+        if (in_array($action->id, ['view', 'update', 'delete', 'delete-options']) && $id !== null && $id !== '') {
             $model = User::findOne($id);
             if (!$model) {
                 throw new \yii\web\NotFoundHttpException(Module::t('User not found.'));
