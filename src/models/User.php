@@ -24,6 +24,8 @@ class User extends ActiveRecord implements IdentityInterface
 
     const IS_VIRTUAL_FALSE = 0;
     const IS_VIRTUAL_TRUE = 1;
+
+    private $_smsVerificationConfirmed = false;
     /**
      * {@inheritdoc}
      */
@@ -81,7 +83,6 @@ class User extends ActiveRecord implements IdentityInterface
             ['sms_verified', 'default', 'value' => self::SMS_NOT_VERIFY],
             ['sms_verified', 'integer'],
             ['sms_verified', 'in', 'range' => [self::SMS_VERIFY, self::SMS_NOT_VERIFY]],
-            ['sms_verified', 'unsafe'],
             ['id_avatar', 'integer'],
             ['is_virtual', 'default', 'value' => self::IS_VIRTUAL_FALSE],
             ['is_virtual', 'in', 'range' => [self::IS_VIRTUAL_FALSE, self::IS_VIRTUAL_TRUE]],
@@ -325,11 +326,31 @@ class User extends ActiveRecord implements IdentityInterface
             $this->access_token = Yii::$app->security->generateRandomString(40);
         }
 
-        if (!$insert && $this->isAttributeChanged('tel_no')) {
+        if (!$insert && $this->isAttributeChanged('tel_no') && !$this->_smsVerificationConfirmed) {
             $this->sms_verified = self::SMS_NOT_VERIFY;
         }
 
         return true;
+    }
+
+    public function verifySmsPhone($phone)
+    {
+        if (!is_string($phone) || !preg_match('/^\+[1-9]\d{1,14}\z/', $phone)) {
+            return false;
+        }
+
+        $this->_smsVerificationConfirmed = true;
+        $this->tel_no = $phone;
+        $this->sms_verified = self::SMS_VERIFY;
+
+        try {
+            if($this->validate(['tel_no'])) 
+            {
+                return $this->save(false, ['tel_no', 'sms_verified']);
+            }
+        } finally {
+            $this->_smsVerificationConfirmed = false;
+        }
     }
 
     public function beforeDelete()
